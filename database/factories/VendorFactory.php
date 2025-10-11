@@ -3,12 +3,13 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use App\Models\Vendor;
 
-class UserFactory extends Factory
+class VendorFactory extends Factory
 {
-    protected $model = User::class;
+    protected $model = Vendor::class;
 
     public function definition(): array
     {
@@ -18,7 +19,10 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'password' => Hash::make('password123'),
             'phone' => $this->faker->phoneNumber,
-            'status' => true,
+            'company_name' => $this->faker->company,
+            'company_website' => $this->faker->url,
+            'status' => 'active',
+            'verified' => true,
             'created_at' => now(),
             'updated_at' => now(),
         ];

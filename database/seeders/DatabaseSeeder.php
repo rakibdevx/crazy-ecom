@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Vendor;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,10 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-
-        $this->call([SettingSeeder::class,]);
-        $this->call([TimeZoneSeeder::class,]);
+        // User::factory(100)->create();
+        // Vendor::factory(100)->create();
+        // $this->call([
+        //     TimeZoneSeeder::class,
+        //     SettingSeeder::class,
+        //     AdminSeeder::class,
+        //     VendorSeeder::class,
+        //     UserSeeder::class,
+        // ]);
     }
 }

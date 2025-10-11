@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('admins', function (Blueprint $table) {
             $table->id();
 
             // Basic Info
@@ -21,16 +21,9 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone')->nullable();
             $table->string('profile_image')->nullable();
-            $table->string('slug')->unique()->nullable();
+            $table->text('bio')->nullable();
 
-            // Address Info
-            $table->text('address')->nullable();
-            $table->string('city')->nullable();
-            $table->string('state')->nullable();
-            $table->string('country')->nullable();
-            $table->string('postal_code')->nullable();
-
-            // Login / Security
+            // Login & Security
             $table->enum('status',['active','suspend','pending'])->default('active');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken()->nullable();
@@ -42,29 +35,9 @@ return new class extends Migration
             $table->string('two_factor_secret')->nullable();
             $table->timestamp('last_password_change')->nullable();
 
-            $table->string('notification_preferences')->nullable();
-
 
             $table->timestamps();
             $table->softDeletes();
-        });
-
-        Schema::create('password_resets', function (Blueprint $table) {
-            $table->string('email')->index();
-            $table->string('token');
-            $table->string('guard');
-            $table->timestamp('created_at')->nullable();
-        });
-
-
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->index();
-            $table->string('guard');
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
         });
 
     }
@@ -74,8 +47,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('admins');
     }
 };
