@@ -255,4 +255,39 @@ class SettingController extends Controller
         return redirect()->back()->with('success', 'Security updated successfully!');
     }
 
+    public function image()
+    {
+        return view('backend.admin.setting.image');
+    }
+
+    public function image_update(Request $request)
+    {
+        $request->validate([
+            'login_background'=> ['nullable', 'file', new ValidImage()],
+            'registration_background'=> ['nullable', 'file', new ValidImage()],
+            'forgot_background'=> ['nullable', 'file', new ValidImage()],
+            'reset_background'=> ['nullable', 'file', new ValidImage()],
+            'default_profile_image'=> ['nullable', 'file', new ValidImage()],
+            'default_product_image'=> ['nullable', 'file', new ValidImage()],
+        ]);
+
+        $imageSettings = ['login_background', 'registration_background', 'forgot_background','reset_background','default_profile_image','default_product_image'];
+        foreach ($imageSettings as $key) {
+            if ($request->hasFile($key)) {
+                $file = $request->file($key);
+                if (setting($key)) {
+                    $oldPath = public_path(setting($key));
+                    if (file_exists($oldPath)) {
+                        @unlink($oldPath);
+                    }
+                }
+                $filename = $key . '_' . time() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('backend/images/default'), $filename);
+                Setting::updateOrCreate(['key' => $key],['value' => 'backend/images/default/' . $filename]);
+            }
+        }
+        clearSettingCache();
+        return redirect()->back()->with('success', 'Settings updated successfully!');
+    }
+
 }

@@ -152,32 +152,81 @@
                 </div>
             </li>
             <li class="nav-item dropdown">
-                <a href="javascrpt:;" class="dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
-                <img src="{{asset('/')}}backend/images/avatars/01.png" class="rounded-circle p-1 border" width="45" height="45">
-                </a>
-                <div class="dropdown-menu dropdown-user dropdown-menu-end shadow">
-                <a class="dropdown-item  gap-2 py-2" href="javascript:;">
-                    <div class="text-center">
-                    <img src="{{asset('/')}}backend/images/avatars/01.png" class="rounded-circle p-1 shadow mb-3" width="90" height="90"
+                @if(request()->is('admin/*'))
+                    <a href="javascrpt:;" class="dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
+                    <img src="
+                        {{ auth()->guard('admin')->user()->profile_image
+                        ? asset('storage/' . auth()->guard('admin')->user()->profile_image)
+                        : asset(setting('default_profile_image')) }}
+                    " class="rounded-circle p-1 border" width="45" height="45">
+                    </a>
+                    <div class="dropdown-menu dropdown-user dropdown-menu-end shadow">
+                    <a class="dropdown-item  gap-2 py-2" href="javascript:;">
+                        <div class="text-center">
+                        <img src="
+                            {{ auth()->guard('admin')->user()->profile_image
+                            ? asset('storage/' . auth()->guard('admin')->user()->profile_image)
+                            : asset(setting('default_profile_image')) }}
+                        " class="rounded-circle p-1 shadow mb-3" width="90" height="90"
                         alt="">
-                    <h5 class="user-name mb-0 fw-bold">Hello, Jhon</h5>
-                    </div>
-                </a>
-                <hr class="dropdown-divider">
-                <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
-                    class="material-icons-outlined">person_outline</i>Profile</a>
-                <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
-                    class="material-icons-outlined">local_bar</i>Setting</a>
-                <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
-                    class="material-icons-outlined">dashboard</i>Dashboard</a>
-                <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
-                    class="material-icons-outlined">account_balance</i>Earning</a>
+                        <h5 class="user-name mb-0 fw-bold">Hello, {{ auth()->guard('admin')->user()->name }} ({{auth()->guard('admin')->user()->id }})</h5>
+                        </div>
+                    </a>
+                    <hr class="dropdown-divider">
                     <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
-                    class="material-icons-outlined">cloud_download</i>Downloads</a>
-                <hr class="dropdown-divider">
-                <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
-                class="material-icons-outlined">power_settings_new</i>Logout</a>
-                </div>
+                        class="material-icons-outlined">person_outline</i>Profile</a>
+                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{{route('admin.dashboard')}}"><i
+                        class="material-icons-outlined">home</i>Dashboard</a>
+
+                    <hr class="dropdown-divider">
+                    <a class="dropdown-item d-flex align-items-center gap-2 py-2"
+                        href="{{ route('admin.logout') }}"
+                        onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();">
+                        <i class="material-icons-outlined">power_settings_new</i> Logout
+                    </a>
+
+                    <form id="admin-logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                @endif
+                @if(request()->is('vendor/*'))
+                    <a href="javascrpt:;" class="dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
+                    <img src="
+                        {{ auth()->guard('vendor')->user()->profile_image
+                        ? asset('storage/' . auth()->guard('vendor')->user()->profile_image)
+                        : asset(setting('default_profile_image')) }}
+                    " class="rounded-circle p-1 border" width="45" height="45">
+                    </a>
+                    <div class="dropdown-menu dropdown-user dropdown-menu-end shadow">
+                    <a class="dropdown-item  gap-2 py-2" href="javascript:;">
+                        <div class="text-center">
+                        <img src="
+                            {{ auth()->guard('vendor')->user()->profile_image
+                            ? asset('storage/' . auth()->guard('vendor')->user()->profile_image)
+                            : asset(setting('default_profile_image')) }}
+                        " class="rounded-circle p-1 shadow mb-3" width="90" height="90"
+                        alt="">
+                        <h5 class="user-name mb-0 fw-bold text-truncate">Hello, {{ auth()->guard('vendor')->user()->name }} ({{auth()->guard('vendor')->user()->id }})</h5>
+                        </div>
+                    </a>
+                    <hr class="dropdown-divider">
+                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
+                        class="material-icons-outlined">person_outline</i>Profile</a>
+                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{{route('vendor.dashboard')}}"><i
+                        class="material-icons-outlined">home</i>Dashboard</a>
+
+                    <hr class="dropdown-divider">
+                    <a class="dropdown-item d-flex align-items-center gap-2 py-2"
+                        href="{{ route('vendor.logout') }}"
+                        onclick="event.preventDefault(); document.getElementById('vendor-logout-form').submit();">
+                        <i class="material-icons-outlined">power_settings_new</i> Logout
+                    </a>
+
+                    <form id="vendor-logout-form" action="{{ route('vendor.logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                @endif
+
             </li>
         </ul>
     </nav>

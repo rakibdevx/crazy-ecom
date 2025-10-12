@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
             'name' => 'Demo Customer',
             'username' => 'demouser',
             'email' => 'user@example.com',
-            'password' => Hash::make('password123'),
+            'password' => Hash::make('password'),
             'phone' => '01730000000',
             'status' => 'active',
         ]);

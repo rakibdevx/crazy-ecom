@@ -85,8 +85,12 @@ class SettingSeeder extends Seeder
 
             // 🔹 Theme / UI
             ['key' => 'theme_color', 'value' => '#3b82f6'],
-            ['key' => 'homepage_banner', 'value' => 'backend/images/banner.jpg'],
             ['key' => 'login_background', 'value' => 'backend/images/login-bg.jpg'],
+            ['key' => 'registration_background', 'value' => 'backend/images/login-bg.jpg'],
+            ['key' => 'forgot_background', 'value' => 'backend/images/login-bg.jpg'],
+            ['key' => 'reset_background', 'value' => 'backend/images/login-bg.jpg'],
+            ['key' => 'default_profile_image', 'value' => 'backend/images/login-bg.jpg'],
+            ['key' => 'default_product_image', 'value' => 'backend/images/login-bg.jpg'],
 
            // Image Upload Config
             ['key' => 'support_image_type', 'value' => 'png,jpg,jpeg,gif'],

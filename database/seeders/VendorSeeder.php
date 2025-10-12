@@ -18,7 +18,7 @@ class VendorSeeder extends Seeder
             'name' => 'Demo Vendor',
             'username' => 'demovendor',
             'email' => 'vendor@example.com',
-            'password' => Hash::make('password123'),
+            'password' => Hash::make('password'),
             'phone' => '01720000000',
             'company_name' => 'Demo Company Ltd.',
             'status' => 'active',

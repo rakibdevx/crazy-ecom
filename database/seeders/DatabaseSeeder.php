@@ -14,14 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(100)->create();
-        // Vendor::factory(100)->create();
-        // $this->call([
-        //     TimeZoneSeeder::class,
-        //     SettingSeeder::class,
-        //     AdminSeeder::class,
-        //     VendorSeeder::class,
-        //     UserSeeder::class,
-        // ]);
+        $this->call([
+            TimeZoneSeeder::class,
+            SettingSeeder::class,
+            AdminSeeder::class,
+            VendorSeeder::class,
+            UserSeeder::class,
+        ]);
+        User::factory(100)->create();
+        Vendor::factory(100)->create();
     }
 }

@@ -11,6 +11,7 @@
     <div class="sidebar-nav" data-simplebar="true">
         <!--navigation-->
         <ul class="metismenu" id="sidenav">
+            @if(request()->is('admin/*'))
             <li>
                 <a href="javascript:;" class="has-arrow">
                     <div class="parent-icon"><i class="material-icons-outlined">home</i></div>
@@ -49,6 +50,9 @@
                     <li {{ request()->routeIs('admin.setting.config') ? 'mm-active' : '' }}>
                         <a href="{{route('admin.setting.config')}}"><i class="material-icons-outlined">arrow_right</i>System Config</a>
                     </li>
+                     <li {{ request()->routeIs('admin.setting.image') ? 'mm-active' : '' }}>
+                        <a href="{{route('admin.setting.image')}}"><i class="material-icons-outlined">arrow_right</i>Image Setting</a>
+                    </li>
                 </ul>
             </li>
 
@@ -58,8 +62,29 @@
                     <div class="menu-title">Documentation</div>
                 </a>
             </li>
-
+            @endif
+            @if(request()->is('vendor/*'))
+            <li {{ request()->routeIs('vendor.dashboard') ? 'mm-active' : '' }}>
+                <a href="{{route('vendor.dashboard')}}">
+                    <div class="parent-icon"><i class="material-icons-outlined">home</i></div>
+                    <div class="menu-title">Dashboard</div>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;" class="has-arrow">
+                    <div class="parent-icon"><i class="material-icons-outlined">home</i></div>
+                    <div class="menu-title">Dashboard</div>
+                </a>
+                <ul>
+                    <li>
+                        <a href="index.html"><i class="material-icons-outlined">arrow_right</i>eCommerce</a>
+                    </li>
+                    <li>
+                        <a href="index2.html"><i class="material-icons-outlined">arrow_right</i>Alternate</a>
+                    </li>
+                </ul>
+            </li>
+            @endif
         </ul>
-        <!--end navigation-->
     </div>
 </aside>
