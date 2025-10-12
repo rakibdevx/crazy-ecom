@@ -3,17 +3,17 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingController;
-
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\MailTemplateController;
 
-Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['web','guest:admin'])->group(function () {
     Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('login', [AuthController::class, 'login'])->name('login.submit');
 });
 
 
 
-Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.admin'])->group(function () {
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -30,6 +30,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
 
         Route::get('/mail', [SettingController::class, 'mail'])->name('mail');
         Route::post('/mail', [SettingController::class, 'mail_update'])->name('mail.update');
+        Route::post('/check', [SettingController::class, 'testMail'])->name('mail.check');
 
         Route::get('/system', [SettingController::class, 'system'])->name('system');
         Route::post('/system', [SettingController::class, 'system_update'])->name('system.update');
@@ -42,6 +43,10 @@ Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
 
         Route::get('/image', [SettingController::class, 'image'])->name('image');
         Route::post('/image', [SettingController::class, 'image_update'])->name('image.update');
+
+        Route::get('/mail-template', [MailTemplateController::class, 'index'])->name('mail.template.index');
+        Route::get('/mail-template/edit/{id}', [MailTemplateController::class, 'edit'])->name('mail.template.edit');
+        Route::post('/mail-template/edit/{id}', [MailTemplateController::class, 'update'])->name('mail.template.update');
     });
 
 });

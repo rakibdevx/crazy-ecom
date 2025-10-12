@@ -67,9 +67,10 @@ class SettingSeeder extends Seeder
 
             // 🔹 System / App Config
             ['key' => 'maintenance_mode', 'value' => '0'],
-            ['key' => 'registration_enabled', 'value' => '1'],
+            ['key' => 'vendor_registration_enabled', 'value' => '1'],
+            ['key' => 'user_registration_enabled', 'value' => '1'],
             ['key' => 'email_verification', 'value' => '1'],
-            ['key' => 'two_factor_auth', 'value' => '0'],
+            ['key' => 'app_debug', 'value' => '0'],
             ['key' => 'currency', 'value' => 'BDT'],
             ['key' => 'currency_symbol', 'value' => '৳'],
             ['key' => 'date_format', 'value' => 'd-m-Y'],

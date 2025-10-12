@@ -8,6 +8,8 @@ use App\Models\TimeZone;
 use App\Models\Setting;
 use App\Rules\ValidImage;
 use Flasher\Notyf\Prime\NotyfInterface;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Config;
 
 
 class SettingController extends Controller
@@ -33,6 +35,7 @@ class SettingController extends Controller
         ]);
 
         Setting::updateOrCreate(['key' => 'site_name'],['value' => $request->site_name]);
+        $this->env_update('APP_NAME', '"' . addslashes($request->site_name) . '"');
         Setting::updateOrCreate(['key' => 'address'],['value' => $request->address]);
         Setting::updateOrCreate(['key' => 'timezone'],['value' => $request->timezone]);
         Setting::updateOrCreate(['key' => 'site_description'],['value' => $request->site_description]);
@@ -147,16 +150,17 @@ class SettingController extends Controller
     public function mail_update(Request $request)
     {
         $request->validate([
-            'mail_mailer' => 'required|string|max:50',
-            'mail_host' => 'required|string|max:100',
-            'mail_port' => 'required|numeric',
-            'mail_username' => 'required|string|max:100',
-            'mail_password' => 'required|string|max:100',
-            'mail_encryption' => 'nullable|string|max:20',
-            'mail_from_address' => 'required|email|max:90',
-            'mail_from_name' => 'required|string|max:50',
+            'mail_mailer' => ['required', 'string', 'max:50', 'regex:/^\S+$/'],
+            'mail_host' => ['required', 'string', 'max:100', 'regex:/^\S+$/'],
+            'mail_port' => ['required', 'numeric'],
+            'mail_username' => ['required', 'string', 'max:100', 'regex:/^\S+$/'],
+            'mail_password' => ['required', 'string', 'max:100', 'regex:/^\S+$/'],
+            'mail_encryption' => ['nullable', 'string', 'max:20', 'regex:/^\S*$/'],
+            'mail_from_address' => ['required', 'email', 'max:90', 'regex:/^\S+$/'],
+            'mail_from_name' => ['required', 'string', 'max:50',],
+        ], [
+            'regex' => 'The :attribute must not contain spaces.',
         ]);
-
 
         Setting::updateOrCreate(['key' => 'mail_mailer'],['value' => $request->mail_mailer]);
         Setting::updateOrCreate(['key' => 'mail_host'],['value' => $request->mail_host]);
@@ -166,6 +170,15 @@ class SettingController extends Controller
         Setting::updateOrCreate(['key' => 'mail_encryption'],['value' => $request->mail_encryption]);
         Setting::updateOrCreate(['key' => 'mail_from_address'],['value' => $request->mail_from_address]);
         Setting::updateOrCreate(['key' => 'mail_from_name'],['value' => $request->mail_from_name]);
+
+        $this->env_update('MAIL_MAILER', $request->mail_mailer);
+        $this->env_update('MAIL_HOST', $request->mail_host);
+        $this->env_update('MAIL_PORT', $request->mail_port);
+        $this->env_update('MAIL_USERNAME', $request->mail_username);
+        $this->env_update('MAIL_PASSWORD', $request->mail_password);
+        $this->env_update('MAIL_ENCRYPTION', $request->mail_encryption);
+        $this->env_update('MAIL_FROM_ADDRESS', $request->mail_from_address);
+        $this->env_update('MAIL_FROM_NAME', '"' . addslashes($request->mail_from_name) . '"');
 
         clearSettingCache();
         return redirect()->back()->with('success', 'Mail updated successfully!');
@@ -180,9 +193,10 @@ class SettingController extends Controller
     {
         $request->validate([
             'maintenance_mode' => 'required|boolean',
-            'registration_enabled' => 'required|boolean',
+            'user_registration_enabled' => 'required|boolean',
+            'vendor_registration_enabled' => 'required|boolean',
             'email_verification' => 'required|boolean',
-            'two_factor_auth' => 'required|boolean',
+            'app_debug' => 'required|boolean',
             'currency' => 'required|string|max:10',
             'currency_symbol' => 'required|string|max:5',
             'date_format' => 'required|string|max:20',
@@ -192,9 +206,12 @@ class SettingController extends Controller
 
 
         Setting::updateOrCreate(['key' => 'maintenance_mode'],['value' => $request->maintenance_mode]);
-        Setting::updateOrCreate(['key' => 'registration_enabled'],['value' => $request->registration_enabled]);
+        Setting::updateOrCreate(['key' => 'user_registration_enabled'],['value' => $request->user_registration_enabled]);
+        Setting::updateOrCreate(['key' => 'vendor_registration_enabled'],['value' => $request->vendor_registration_enabled]);
         Setting::updateOrCreate(['key' => 'email_verification'],['value' => $request->email_verification]);
-        Setting::updateOrCreate(['key' => 'two_factor_auth'],['value' => $request->two_factor_auth]);
+        Setting::updateOrCreate(['key' => 'app_debug'],['value' => $request->app_debug]);
+        $debugValue = $request->app_debug == 1 ? 'true' : 'false';
+        $this->env_update('APP_DEBUG', $debugValue);
         Setting::updateOrCreate(['key' => 'currency'],['value' => $request->currency]);
         Setting::updateOrCreate(['key' => 'currency_symbol'],['value' => $request->currency_symbol]);
         Setting::updateOrCreate(['key' => 'date_format'],['value' => $request->date_format]);
@@ -238,18 +255,16 @@ class SettingController extends Controller
     public function config_update(Request $request)
     {
         $request->validate([
-            'support_image_type' => 'required|string|in:png,jpg,jpeg,gif,bmp,svg,webp,tiff,ico,heic,avif',
+            'support_image_type' => 'required|string',
             'support_image_max' => 'required|integer|min:1|max:10000',
             'phone_digit_min' => 'required|integer|min:1|max:20',
             'phone_digit_max' => 'required|integer|min:1|max:20|gte:phone_digit_min',
         ]);
 
-
-        Setting::updateOrCreate(['key' => 'max_login_attempts'],['value' => $request->max_login_attempts]);
-        Setting::updateOrCreate(['key' => 'lockout_time'],['value' => $request->lockout_time]);
-        Setting::updateOrCreate(['key' => 'recaptcha_enabled'],['value' => $request->recaptcha_enabled]);
-        Setting::updateOrCreate(['key' => 'recaptcha_site_key'],['value' => $request->recaptcha_site_key]);
-        Setting::updateOrCreate(['key' => 'recaptcha_secret_key'],['value' => $request->recaptcha_secret_key]);
+        Setting::updateOrCreate(['key' => 'support_image_type'],['value' => $request->support_image_type]);
+        Setting::updateOrCreate(['key' => 'support_image_max'],['value' => $request->support_image_max]);
+        Setting::updateOrCreate(['key' => 'phone_digit_min'],['value' => $request->phone_digit_min]);
+        Setting::updateOrCreate(['key' => 'phone_digit_max'],['value' => $request->phone_digit_max]);
 
         clearSettingCache();
         return redirect()->back()->with('success', 'Security updated successfully!');
@@ -290,4 +305,42 @@ class SettingController extends Controller
         return redirect()->back()->with('success', 'Settings updated successfully!');
     }
 
+    public function testMail(Request $request)
+    {
+        $request->validate([
+            'sent_to_mail' => 'required|email',
+            'sent_message' => 'required|string',
+        ]);
+
+        try {
+            Mail::raw($request->sent_message, function($message) use ($request) {
+                $message->to($request->sent_to_mail)
+                        ->subject('Test Email')
+                        ->from(config('mail.from.address'), config('mail.from.name'));
+            });
+
+            return back()->with('success', 'Test email sent successfully!');
+        } catch (\Exception $e) {
+            \Log::error('Mail failed: ' . $e->getMessage());
+            return back()->withErrors(['mail' => 'Failed to send test email: ' . $e->getMessage()]);
+        }
+    }
+    private function env_update($key, $value)
+    {
+        $envPath = base_path('.env');
+        if (!file_exists($envPath)) {
+            return false;
+        }
+
+        $content = file_get_contents($envPath);
+        $pattern = "/^" . preg_quote($key, '/') . "=.*/m";
+
+        if (preg_match($pattern, $content)) {
+            $content = preg_replace($pattern, $key . '=' . $value, $content);
+        } else {
+            $content .= "\n" . $key . '=' . $value;
+        }
+        file_put_contents($envPath, $content);
+        return true;
+    }
 }

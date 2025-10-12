@@ -7,6 +7,7 @@ use App\Models\Vendor;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             VendorSeeder::class,
             UserSeeder::class,
+            MailTemplatesSeeder::class,
         ]);
         User::factory(100)->create();
         Vendor::factory(100)->create();

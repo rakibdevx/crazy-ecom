@@ -3,14 +3,20 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
 use App\Models\Vendor;
+use Illuminate\Support\Facades\Hash;
 
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Vendor>
+ */
 class VendorFactory extends Factory
 {
-    protected $model = Vendor::class;
-
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
     public function definition(): array
     {
         return [

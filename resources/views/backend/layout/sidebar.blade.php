@@ -26,7 +26,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="{{ request()->routeIs('admin.setting.index') ? 'mm-active' : '' }}">
+            <li class="{{ request()->routeIs('admin.setting.*') ? 'mm-active' : '' }}">
                 <a href="javascript:;" class="has-arrow">
                     <div class="parent-icon"><i class="material-icons-outlined">settings</i></div>
                     <div class="menu-title">Sytem Settings</div>
@@ -35,23 +35,29 @@
                     <li class="{{ request()->routeIs('admin.setting.index') ? 'mm-active' : '' }}">
                         <a href="{{route('admin.setting.index')}}"><i class="material-icons-outlined">arrow_right</i>General Settings</a>
                     </li>
-                    <li {{ request()->routeIs('admin.setting.seo') ? 'mm-active' : '' }}>
+                    <li class="{{ request()->routeIs('admin.setting.seo') ? 'mm-active' : '' }}">
                         <a href="{{route('admin.setting.seo')}}"><i class="material-icons-outlined">arrow_right</i>Seo Setting</a>
                     </li>
-                    <li {{ request()->routeIs('admin.setting.contact') ? 'mm-active' : '' }}>
+                    <li class="{{ request()->routeIs('admin.setting.contact') ? 'mm-active' : '' }}">
                         <a href="{{route('admin.setting.contact')}}"><i class="material-icons-outlined">arrow_right</i>Contact & Support Setting</a>
                     </li >
-                    <li {{ request()->routeIs('admin.setting.mail') ? 'mm-active' : '' }}>
+                    <li class="{{ request()->routeIs('admin.setting.mail') ? 'mm-active' : '' }}">
                         <a href="{{route('admin.setting.mail')}}"><i class="material-icons-outlined">arrow_right</i>Mail Config</a>
                     </li>
-                    <li {{ request()->routeIs('admin.setting.security') ? 'mm-active' : '' }}>
+                    <li class="{{ request()->routeIs('admin.setting.security') ? 'mm-active' : '' }}">
                         <a href="{{route('admin.setting.security')}}"><i class="material-icons-outlined">arrow_right</i>security Setting</a>
                     </li>
-                    <li {{ request()->routeIs('admin.setting.config') ? 'mm-active' : '' }}>
-                        <a href="{{route('admin.setting.config')}}"><i class="material-icons-outlined">arrow_right</i>System Config</a>
+                    <li class="{{ request()->routeIs('admin.setting.config') ? 'mm-active' : '' }}">
+                        <a href="{{route('admin.setting.config')}}"><i class="material-icons-outlined">arrow_right</i>Configerations</a>
                     </li>
-                     <li {{ request()->routeIs('admin.setting.image') ? 'mm-active' : '' }}>
+                    <li class="{{ request()->routeIs('admin.setting.system') ? 'mm-active' : '' }}">
+                        <a href="{{route('admin.setting.system')}}"><i class="material-icons-outlined">arrow_right</i>System Configerations</a>
+                    </li>
+                    <li class="{{ request()->routeIs('admin.setting.image') ? 'mm-active' : '' }}">
                         <a href="{{route('admin.setting.image')}}"><i class="material-icons-outlined">arrow_right</i>Image Setting</a>
+                    </li>
+                    <li class="{{ request()->routeIs('admin.setting.mail.template.*') ? 'mm-active' : '' }}">
+                        <a href="{{route('admin.setting.mail.template.index')}}"><i class="material-icons-outlined">arrow_right</i>Mail Template</a>
                     </li>
                 </ul>
             </li>
@@ -64,7 +70,7 @@
             </li>
             @endif
             @if(request()->is('vendor/*'))
-            <li {{ request()->routeIs('vendor.dashboard') ? 'mm-active' : '' }}>
+            <li class="{{ request()->routeIs('vendor.dashboard') ? 'mm-active' : '' }}">
                 <a href="{{route('vendor.dashboard')}}">
                     <div class="parent-icon"><i class="material-icons-outlined">home</i></div>
                     <div class="menu-title">Dashboard</div>

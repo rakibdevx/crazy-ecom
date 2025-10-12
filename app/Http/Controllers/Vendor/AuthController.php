@@ -156,7 +156,6 @@ class AuthController extends Controller
             'created_at' => now(),
         ]);
 
-        // TODO: send $token via email (Mail::to($vendor->email)->send(...))
         $resetLink = URL::temporarySignedRoute(
             'vendor.resetPassword',
             now()->addMinutes(60),
@@ -166,7 +165,13 @@ class AuthController extends Controller
                 'guard' => 'vendor'
             ]
         );
-        return $resetLink;
+        $mailData = \App\Services\MailTemplateService::prepare('Password Reset', [
+            'name' => $vendor->name,
+            'email' => $vendor->email,
+            'reset_link' => $resetLink,
+        ]);
+
+        Mail::to($vendor->email)->send(new CustomMail($mailData['subject'], $mailData['body']));
 
         return back()->with('success', 'Password reset link has been sent to your email.');
     }

@@ -23,113 +23,114 @@
             </div>
         </div>
     <!--end breadcrumb-->
-        <div class="col-6 col-xl-6 d-flex">
-            <div class="card w-100 rounded-4">
-                <div class="card-header">
-                    <h5>Update Setting Info</h5>
-                </div>
-            <div class="card-body">
-                <form action="{{ route('admin.setting.update') }}" method="POST" enctype="multipart/form-data"
-                    @class([
-                        'row g-3 needs-validation',
-                        'was-validated' => $errors->any()
-                    ])>
+        <div class="row">
+            <div class="col-xl-6 d-flex">
+                <div class="card w-100 rounded-4">
+                    <div class="card-header">
+                        <h5>Update Setting Info</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('admin.setting.update') }}" method="POST" enctype="multipart/form-data"
+                            @class([
+                                'row g-3 needs-validation',
+                                'was-validated' => $errors->any()
+                            ])>
 
-                    @csrf
-                    <div class="mb-3">
-                        <label class="form-label">System  Name:</label>
-                        <input type="text" name="site_name" value="{{ old('site_name', setting('site_name')) }}" class="form-control @error('site_name') is-invalid @enderror" placeholder="System Name"  @error('site_name') required @enderror>
-                        <div class="invalid-feedback">
-                            @error('site_name')
-                                {{ $message }}
-                            @enderror
-                        </div>
+                            @csrf
+                            <div class="mb-3">
+                                <label class="form-label">System  Name:</label>
+                                <input type="text" name="site_name" value="{{ old('site_name', setting('site_name')) }}" class="form-control @error('site_name') is-invalid @enderror" placeholder="System Name"  @error('site_name') required @enderror>
+                                <div class="invalid-feedback">
+                                    @error('site_name')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">System  Address:</label>
+                                <input type="text" value="{{ old('address', setting('address')) }}" name="address" class="form-control @error('address') is-invalid @enderror" placeholder="System  Address"  @error('address') required @enderror>
+                                <div class="invalid-feedback">
+                                    @error('address')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">System  Timezone:</label>
+                                <select class="form-select  @error('timezone') is-invalid @enderror" name="timezone" id="single-select-field" data-placeholder="Choose one thing" @error('timezone') required @enderror>
+                                    @foreach ($time_zones as $time_zone)
+                                        <option value="{{$time_zone->name}}" {{setting('timezone') == $time_zone->name?'selected':'' }}>{{$time_zone->name}}({{$time_zone->offset}})</option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback">
+                                    @error('timezone')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">System  Description:</label>
+                                <textarea name="site_description" class="form-control  @error('site_description') is-invalid @enderror" placeholder="System Description" rows="1"  @error('site_description') required @enderror>{{ old('site_description', setting('site_description')) }}</textarea>
+                                <div class="invalid-feedback">
+                                    @error('site_description')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Footer Text:</label>
+                                <input type="text" value="{{ old('footer_text', setting('footer_text')) }}" name="footer_text" class="form-control @error('footer_text') is-invalid @enderror" placeholder="Footer Text" @error('footer_text') required @enderror>
+                                <div class="invalid-feedback">
+                                    @error('footer_text')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Logo</label>
+                                <input class="form-control @error('site_logo') is-invalid @enderror" type="file" name="site_logo" id="formFile"  @error('site_logo') required @enderror>
+                                <div class="invalid-feedback">
+                                    @error('site_logo')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                                @if (!empty(setting('site_logo')))
+                                    <img src="{{asset(setting('site_logo'))}}" height="40px" width="auto" alt="{{setting('site_name')}}">
+                                @endif
+                            </div>
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Dark Logo</label>
+                                <input class="form-control @error('site_logo_dark') is-invalid @enderror" type="file" name="site_logo_dark" id="formFile"  @error('site_logo_dark') required @enderror>
+                                <div class="invalid-feedback">
+                                    @error('site_logo_dark')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                            @if (!empty(setting('site_logo_dark')))
+                                    <img src="{{ asset(setting('site_logo_dark')) }}" height="40px" width="auto" alt="{{ setting('site_name') }}">
+                                @endif
+                            </div>
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Fav Icon</label>
+                                <input class="form-control  @error('site_favicon') is-invalid @enderror" type="file" name="site_favicon" id="formFile" @error('site_favicon') required @enderror>
+                                <div class="invalid-feedback">
+                                    @error('site_favicon')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                                @if (!empty(setting('site_favicon')))
+                                    <img src="{{asset(setting('site_favicon'))}}" height="40px" width="auto" alt="{{setting('site_name')}}">
+                                @endif
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-success px-5 raised">Update</button>
+                                <a href="{{route('admin.dashboard')}}" class="btn btn-primary px-5 raised">back</a>
+                            </div>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">System  Address:</label>
-                        <input type="text" value="{{ old('address', setting('address')) }}" name="address" class="form-control @error('address') is-invalid @enderror" placeholder="System  Address"  @error('address') required @enderror>
-                        <div class="invalid-feedback">
-                            @error('address')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">System  Timezone:</label>
-                        <select class="form-select  @error('timezone') is-invalid @enderror" name="timezone" id="single-select-field" data-placeholder="Choose one thing" @error('timezone') required @enderror>
-                            @foreach ($time_zones as $time_zone)
-                                <option value="{{$time_zone->name}}" {{setting('timezone') == $time_zone->name?'selected':'' }}>{{$time_zone->name}}({{$time_zone->offset}})</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback">
-                            @error('timezone')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">System  Description:</label>
-                        <textarea name="site_description" class="form-control  @error('site_description') is-invalid @enderror" placeholder="System Description" rows="1"  @error('site_description') required @enderror>{{ old('site_description', setting('site_description')) }}</textarea>
-                        <div class="invalid-feedback">
-                            @error('site_description')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Footer Text:</label>
-                        <input type="text" value="{{ old('footer_text', setting('footer_text')) }}" name="footer_text" class="form-control @error('footer_text') is-invalid @enderror" placeholder="Footer Text" @error('footer_text') required @enderror>
-                        <div class="invalid-feedback">
-                            @error('footer_text')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">Logo</label>
-                        <input class="form-control @error('site_logo') is-invalid @enderror" type="file" name="site_logo" id="formFile"  @error('site_logo') required @enderror>
-                        <div class="invalid-feedback">
-                            @error('site_logo')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                        @if (!empty(setting('site_logo')))
-                            <img src="{{asset(setting('site_logo'))}}" height="40px" width="auto" alt="{{setting('site_name')}}">
-                        @endif
-                    </div>
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">Dark Logo</label>
-                        <input class="form-control @error('site_logo_dark') is-invalid @enderror" type="file" name="site_logo_dark" id="formFile"  @error('site_logo_dark') required @enderror>
-                        <div class="invalid-feedback">
-                            @error('site_logo_dark')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                       @if (!empty(setting('site_logo_dark')))
-                            <img src="{{ asset(setting('site_logo_dark')) }}" height="40px" width="auto" alt="{{ setting('site_name') }}">
-                        @endif
-                    </div>
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">Fav Icon</label>
-                        <input class="form-control  @error('site_favicon') is-invalid @enderror" type="file" name="site_favicon" id="formFile" @error('site_favicon') required @enderror>
-                        <div class="invalid-feedback">
-                            @error('site_favicon')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                        @if (!empty(setting('site_favicon')))
-                            <img src="{{asset(setting('site_favicon'))}}" height="40px" width="auto" alt="{{setting('site_name')}}">
-                        @endif
-                    </div>
-                    <div class="col">
-                        <button type="submit" class="btn btn-success px-5 raised">Update</button>
-                        <a href="{{route('admin.dashboard')}}" class="btn btn-primary px-5 raised">back</a>
-                    </div>
-                </form>
+                </div>
             </div>
-          </div>
-        </div>
-      </div><!--end row-->
+        </div><!--end row-->
 
     </div>
 @endsection
