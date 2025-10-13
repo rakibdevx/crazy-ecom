@@ -66,7 +66,8 @@ class SettingSeeder extends Seeder
             ['key' => 'push_notification', 'value' => '0'],
 
             // 🔹 System / App Config
-            ['key' => 'maintenance_mode', 'value' => '0'],
+            ['key' => 'front_maintenance_mode', 'value' => '0'],
+            ['key' => 'vendor_maintenance_mode', 'value' => '0'],
             ['key' => 'vendor_registration_enabled', 'value' => '1'],
             ['key' => 'user_registration_enabled', 'value' => '1'],
             ['key' => 'email_verification', 'value' => '1'],
@@ -91,6 +92,7 @@ class SettingSeeder extends Seeder
             ['key' => 'forgot_background', 'value' => 'backend/images/login-bg.jpg'],
             ['key' => 'reset_background', 'value' => 'backend/images/login-bg.jpg'],
             ['key' => 'default_profile_image', 'value' => 'backend/images/login-bg.jpg'],
+            ['key' => 'default_profile_banner', 'value' => 'backend/images/login-bg.jpg'],
             ['key' => 'default_product_image', 'value' => 'backend/images/login-bg.jpg'],
 
            // Image Upload Config

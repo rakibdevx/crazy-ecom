@@ -18,11 +18,12 @@ class MailTemplateService
         }
 
         $search = [
-            '@{{name}}','@{{email}}','@{{site_name}}','@{{order_id}}','@{{reset_link}}',
-            '@{{verification_link}}','@{{subscription_end_date}}','@{{support_email}}','@{{tracking_link}}',
-            '@{{order_details_link}}','@{{maintenance_date}}','@{{start_time}}','@{{end_time}}',
-            '@{{support_ticket}}','@{{login_link}}','@{{custom_variable}}'
+            '{{name}}','{{email}}','{{site_name}}','{{order_id}}','{{reset_link}}',
+            '{{verification_link}}','{{subscription_end_date}}','{{support_email}}','{{tracking_link}}',
+            '{{order_details_link}}','{{maintenance_date}}','{{start_time}}','{{end_time}}',
+            '{{support_ticket}}','{{login_link}}','{{custom_variable}}'
         ];
+
 
         $replace = [
             $data['name'] ?? '',

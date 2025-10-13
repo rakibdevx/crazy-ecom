@@ -64,12 +64,14 @@ Login
                     </div>
                     <div class="col-md-6 text-end">	<a href="{{route('vendor.forgot')}}">Forgot Password ?</a>
                     </div>
-                    <div class="col-12">
-                        <div class="text-start">
-                            <p class="mb-0">Don't have an account yet? <a href="{{route('vendor.registration')}}">Sign up here</a>
-                            </p>
+                    @if(setting('vendor_registration_enabled') == 1)
+                        <div class="col-12">
+                            <div class="text-start">
+                                <p class="mb-0">Don't have an account yet? <a href="{{route('vendor.registration')}}">Sign up here</a>
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                     {{-- Submit --}}
                     <div class="col-12">
                         <div class="d-grid">

@@ -5,13 +5,21 @@
         </div>
         <div class="search-bar flex-grow-1"></div>
         <ul class="navbar-nav gap-1 nav-right-links align-items-center">
+            @if(request()->is('admin/*'))
+                <li>
+                    <div class="">
+                        <a href="{{route('admin.setting.clear')}}" class="" title="Clear Cache">
+                            <i class="material-icons-outlined">refresh</i>
+                        </a>
+                    </div>
+                </li>
+            @endif
             <li>
                 <div class="dark-mode">
-                    <a href="javascript:;" class="footer-icon dark-mode-icon">
+                    <a href="javascript:;" class="footer-icon dark-mode-icon" title="Change Mode">
                         <i class="material-icons-outlined">dark_mode</i>
                     </a>
                 </div>
-
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" data-bs-auto-close="outside"
@@ -156,7 +164,7 @@
                     <a href="javascrpt:;" class="dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
                     <img src="
                         {{ auth()->guard('admin')->user()->profile_image
-                        ? asset('storage/' . auth()->guard('admin')->user()->profile_image)
+                        ? asset(auth()->guard('admin')->user()->profile_image)
                         : asset(setting('default_profile_image')) }}
                     " class="rounded-circle p-1 border" width="45" height="45">
                     </a>
@@ -165,15 +173,15 @@
                         <div class="text-center">
                         <img src="
                             {{ auth()->guard('admin')->user()->profile_image
-                            ? asset('storage/' . auth()->guard('admin')->user()->profile_image)
+                            ? asset(auth()->guard('admin')->user()->profile_image)
                             : asset(setting('default_profile_image')) }}
                         " class="rounded-circle p-1 shadow mb-3" width="90" height="90"
                         alt="">
-                        <h5 class="user-name mb-0 fw-bold">Hello, {{ auth()->guard('admin')->user()->name }} ({{auth()->guard('admin')->user()->id }})</h5>
+                        <h5 class="user-name mb-0 fw-bold">{{ auth()->guard('admin')->user()->username }} ({{auth()->guard('admin')->user()->id }})</h5>
                         </div>
                     </a>
                     <hr class="dropdown-divider">
-                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
+                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{{route('admin.profile.index')}}"><i
                         class="material-icons-outlined">person_outline</i>Profile</a>
                     <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{{route('admin.dashboard')}}"><i
                         class="material-icons-outlined">home</i>Dashboard</a>
@@ -193,7 +201,7 @@
                     <a href="javascrpt:;" class="dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
                     <img src="
                         {{ auth()->guard('vendor')->user()->profile_image
-                        ? asset('storage/' . auth()->guard('vendor')->user()->profile_image)
+                        ? asset(auth()->guard('vendor')->user()->profile_image)
                         : asset(setting('default_profile_image')) }}
                     " class="rounded-circle p-1 border" width="45" height="45">
                     </a>
@@ -202,7 +210,7 @@
                         <div class="text-center">
                         <img src="
                             {{ auth()->guard('vendor')->user()->profile_image
-                            ? asset('storage/' . auth()->guard('vendor')->user()->profile_image)
+                            ? asset(auth()->guard('vendor')->user()->profile_image)
                             : asset(setting('default_profile_image')) }}
                         " class="rounded-circle p-1 shadow mb-3" width="90" height="90"
                         alt="">
@@ -210,7 +218,7 @@
                         </div>
                     </a>
                     <hr class="dropdown-divider">
-                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
+                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{{route('vendor.profile.index')}}"><i
                         class="material-icons-outlined">person_outline</i>Profile</a>
                     <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{{route('vendor.dashboard')}}"><i
                         class="material-icons-outlined">home</i>Dashboard</a>

@@ -10,7 +10,7 @@
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">System Settings</li>
                 </ol>
             </nav>
@@ -27,12 +27,20 @@
                         class="row g-3 needs-validation @if($errors->any()) was-validated @endif">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label">Maintenance Mode:</label>
-                            <select name="maintenance_mode" class="form-control @error('maintenance_mode') is-invalid @enderror" @error('maintenance_mode') required @enderror>
-                                <option value="1" {{ old('maintenance_mode', setting('maintenance_mode')) == 1 ? 'selected' : '' }}>Enabled</option>
-                                <option value="0" {{ old('maintenance_mode', setting('maintenance_mode')) == 0 ? 'selected' : '' }}>Disabled</option>
+                            <label class="form-label">Maintenance Mode Front:</label>
+                            <select name="front_maintenance_mode" class="form-control @error('front_maintenance_mode') is-invalid @enderror" @error('front_maintenance_mode') required @enderror>
+                                <option value="1" {{ old('front_maintenance_mode', setting('front_maintenance_mode')) == 1 ? 'selected' : '' }}>Enabled</option>
+                                <option value="0" {{ old('front_maintenance_mode', setting('front_maintenance_mode')) == 0 ? 'selected' : '' }}>Disabled</option>
                             </select>
-                            <div class="invalid-feedback">@error('maintenance_mode') {{ $message }} @enderror</div>
+                            <div class="invalid-feedback">@error('front_maintenance_mode') {{ $message }} @enderror</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Maintenance Mode Vendor:</label>
+                            <select name="vendor_maintenance_mode" class="form-control @error('vendor_maintenance_mode') is-invalid @enderror" @error('vendor_maintenance_mode') required @enderror>
+                                <option value="1" {{ old('vendor_maintenance_mode', setting('vendor_maintenance_mode')) == 1 ? 'selected' : '' }}>Enabled</option>
+                                <option value="0" {{ old('vendor_maintenance_mode', setting('vendor_maintenance_mode')) == 0 ? 'selected' : '' }}>Disabled</option>
+                            </select>
+                            <div class="invalid-feedback">@error('vendor_maintenance_mode') {{ $message }} @enderror</div>
                         </div>
 
                         <!-- Registration Enabled -->
@@ -45,7 +53,7 @@
                             <div class="invalid-feedback">@error('user_registration_enabled') {{ $message }} @enderror</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Registration Enabled:</label>
+                            <label class="form-label">Vendor Registration Enabled:</label>
                             <select name="vendor_registration_enabled" class="form-control @error('vendor_registration_enabled') is-invalid @enderror" @error('vendor_registration_enabled') required @enderror>
                                 <option value="1" {{ old('vendor_registration_enabled', setting('vendor_registration_enabled')) == 1 ? 'selected' : '' }}>Enabled</option>
                                 <option value="0" {{ old('vendor_registration_enabled', setting('vendor_registration_enabled')) == 0 ? 'selected' : '' }}>Disabled</option>

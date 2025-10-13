@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Auth\Events\PasswordReset;
 use URL;
+use Mail;
 
 
 class AuthController extends Controller
@@ -86,29 +87,72 @@ class AuthController extends Controller
      */
     public function showRegistrationForm()
     {
+        if (setting('vendor_registration_enabled') == 0) {
+            return redirect()->route('vendor.login')
+                ->with('error', 'Registration temporarily off');
+        }
         return view('backend.vendor.auth.registration');
     }
 
     public function registration(Request $request)
     {
+        if (setting('vendor_registration_enabled') == 0) {
+            return redirect()->route('vendor.login')
+                ->with('error', 'Registration temporarily off');
+        }
+
         $request->validate([
-            'name' => 'required|string|max:100|min:2',
+            'name' => 'required|string|min:2|max:100',
             'email' => 'required|email|max:100|unique:vendors,email',
             'password' => 'required|string|min:6|confirmed',
             'checkbox' => 'required',
         ]);
+        $name = $request->name;
+        $baseUsername = strtolower(str_replace(' ', '.', $name));
+        $slugname = strtolower(str_replace(' ', '-', $name));
+        $username = $baseUsername . rand(10000, 99999);
+        $slug = $slugname . rand(10000, 99999);
 
-
-        $vendor = Vendor::create([
+        $vendorData = [
             'name' => $request->name,
+            'username' => $username,
+            'slug' => $slug,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
+        ];
+
+        if (setting('email_verification') != 1) {
+            $vendorData['email_verified_at'] = now();
+        }
+
+        $vendor = Vendor::create($vendorData);
 
         Auth::guard('vendor')->login($vendor);
 
-        return redirect()->route('vendor.dashboard')->with('success', 'Welcome, ' . $vendor->name . '!');
+        if (setting('email_verification') == 1) {
+            $verification_link = route('vendor.verify', [
+                'id' => $vendor->id,
+                'token' => sha1($vendor->email)
+            ]);
+
+            $mailData = \App\Services\MailTemplateService::prepare('Email Verification', [
+                'name' => $vendor->name,
+                'site_name' => setting('site_name'),
+                'email' => $vendor->email,
+                'verification_link' => $verification_link,
+            ]);
+
+            Mail::to($vendor->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
+
+            return redirect()->route('vendor.dashboard')
+                ->with('success', 'Welcome, ' . $vendor->name . '! Please verify your email.');
+        }
+
+        // No verification → already verified
+        return redirect()->route('vendor.dashboard')
+            ->with('success', 'Welcome, ' . $vendor->name . '!');
     }
+
 
     /**
      * --------------------------
@@ -171,7 +215,7 @@ class AuthController extends Controller
             'reset_link' => $resetLink,
         ]);
 
-        Mail::to($vendor->email)->send(new CustomMail($mailData['subject'], $mailData['body']));
+        Mail::to($vendor->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
 
         return back()->with('success', 'Password reset link has been sent to your email.');
     }
@@ -208,12 +252,80 @@ class AuthController extends Controller
 
         $vendor = Vendor::where('email', $request->email)->first();
         $vendor->update([
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
+            'last_password_change' =>now()
         ]);
 
         // delete token
         DB::table('password_resets')->where('email', $request->email)->delete();
 
         return redirect()->route('vendor.login')->with('success', 'Password reset successfully!');
+    }
+
+    public function verify($id, $token)
+    {
+        $vendor = Vendor::find($id);
+        if (! $vendor) {
+            return redirect()->route('vendor.login')
+                ->with('error', 'Invalid verification link.');
+        }
+
+
+        if ($token !== sha1($vendor->email)) {
+            return redirect()->route('vendor.login')
+                ->with('error', 'Invalid or expired verification link.');
+        }
+
+        if ($vendor->email_verified_at) {
+            return redirect()->route('vendor.dashboard')
+                ->with('success', 'Your email is already verified.');
+        }
+
+        $vendor->email_verified_at = now();
+        $vendor->save();
+
+        Auth::guard('vendor')->login($vendor);
+
+        return redirect()->route('vendor.dashboard')
+            ->with('success', 'Your email has been verified successfully!');
+    }
+
+    public function resend(Request $request)
+    {
+        $vendor = Auth::guard('vendor')->user();
+
+        if (!$vendor) {
+            return redirect()->route('vendor.login')
+                ->with('error', 'You must be logged in to resend verification.');
+        }
+
+        if ($vendor->email_verified_at) {
+            return redirect()->route('vendor.dashboard')
+                ->with('success', 'Your email is already verified.');
+        }
+
+        $verification_link = route('vendor.verify', [
+            'id' => $vendor->id,
+            'token' => sha1($vendor->email)
+        ]);
+        $mailData = \App\Services\MailTemplateService::prepare('Email Verification', [
+            'name' => $vendor->name,
+            'email' => $vendor->email,
+            'verification_link' => $verification_link,
+        ]);
+
+        Mail::to($vendor->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
+
+        return redirect()->back()->with('success', 'Verification email resent successfully!');
+    }
+
+    public function unverified()
+    {
+        $vendor = Auth::guard('vendor')->user();
+        if ($vendor->email_verified_at) {
+            return redirect()->route('vendor.dashboard')
+                ->with('success', 'Your email is already verified.');
+        }
+        return view('backend.vendor.unverified.unverified');
     }
 }

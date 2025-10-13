@@ -192,7 +192,8 @@ class SettingController extends Controller
     public function system_update(Request $request)
     {
         $request->validate([
-            'maintenance_mode' => 'required|boolean',
+            'front_maintenance_mode' => 'required|boolean',
+            'vendor_maintenance_mode' => 'required|boolean',
             'user_registration_enabled' => 'required|boolean',
             'vendor_registration_enabled' => 'required|boolean',
             'email_verification' => 'required|boolean',
@@ -205,7 +206,8 @@ class SettingController extends Controller
         ]);
 
 
-        Setting::updateOrCreate(['key' => 'maintenance_mode'],['value' => $request->maintenance_mode]);
+        Setting::updateOrCreate(['key' => 'front_maintenance_mode'],['value' => $request->front_maintenance_mode]);
+        Setting::updateOrCreate(['key' => 'vendor_maintenance_mode'],['value' => $request->vendor_maintenance_mode]);
         Setting::updateOrCreate(['key' => 'user_registration_enabled'],['value' => $request->user_registration_enabled]);
         Setting::updateOrCreate(['key' => 'vendor_registration_enabled'],['value' => $request->vendor_registration_enabled]);
         Setting::updateOrCreate(['key' => 'email_verification'],['value' => $request->email_verification]);
@@ -219,7 +221,7 @@ class SettingController extends Controller
         Setting::updateOrCreate(['key' => 'default_pagination'],['value' => $request->default_pagination]);
 
         clearSettingCache();
-        return redirect()->back()->with('success', 'Mail updated successfully!');
+        return redirect()->back()->with('success', 'System updated successfully!');
     }
     public function security()
     {
@@ -267,7 +269,7 @@ class SettingController extends Controller
         Setting::updateOrCreate(['key' => 'phone_digit_max'],['value' => $request->phone_digit_max]);
 
         clearSettingCache();
-        return redirect()->back()->with('success', 'Security updated successfully!');
+        return redirect()->back()->with('success', 'Config updated successfully!');
     }
 
     public function image()
@@ -284,9 +286,10 @@ class SettingController extends Controller
             'reset_background'=> ['nullable', 'file', new ValidImage()],
             'default_profile_image'=> ['nullable', 'file', new ValidImage()],
             'default_product_image'=> ['nullable', 'file', new ValidImage()],
+            'default_profile_banner'=> ['nullable', 'file', new ValidImage()],
         ]);
 
-        $imageSettings = ['login_background', 'registration_background', 'forgot_background','reset_background','default_profile_image','default_product_image'];
+        $imageSettings = ['login_background', 'registration_background', 'forgot_background','reset_background','default_profile_image','default_product_image','default_profile_banner'];
         foreach ($imageSettings as $key) {
             if ($request->hasFile($key)) {
                 $file = $request->file($key);
@@ -302,7 +305,7 @@ class SettingController extends Controller
             }
         }
         clearSettingCache();
-        return redirect()->back()->with('success', 'Settings updated successfully!');
+        return redirect()->back()->with('success', 'Image updated successfully!');
     }
 
     public function testMail(Request $request)
@@ -342,5 +345,23 @@ class SettingController extends Controller
         }
         file_put_contents($envPath, $content);
         return true;
+    }
+
+   public function clear(Request $request)
+    {
+        try {
+            \Artisan::call('optimize:clear');
+            \Artisan::call('event:clear');
+            \Artisan::call('queue:clear');
+            \Artisan::call('clear-compiled');
+            \Cache::forget('settings_cache');
+            if (function_exists('clearSettingCache')) {
+                clearSettingCache();
+            }
+
+            return back()->with('success', '🔥 All caches (config, route, view, compiled, settings_cache) cleared successfully!');
+        } catch (\Throwable $e) {
+            return back()->with(['error' => '❌ Cache clear failed: ' . $e->getMessage()]);
+        }
     }
 }

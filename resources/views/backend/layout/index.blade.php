@@ -7,14 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{setting('site_name')}}| @stack('title')</title>
 
-    {{-- SEO (Search Engine Optimization) --}}
-    <title>{{ setting('meta_title') }}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
     <meta name="title" content="{{ setting('meta_title') }}">
     <meta name="description" content="{{ setting('meta_description') }}">
     <meta name="keywords" content="{{ setting('meta_keywords') }}">
 
-    <!-- Open Graph (Facebook / WhatsApp / LinkedIn) -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="{{ setting('og_title') ?? setting('meta_title') }}">
     <meta property="og:description" content="{{ setting('og_description') ?? setting('meta_description') }}">
@@ -122,6 +121,12 @@
         }
         updateLogo();
         new MutationObserver(updateLogo).observe(htmlTag, { attributes: true });
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
     </script>
 </body>
 

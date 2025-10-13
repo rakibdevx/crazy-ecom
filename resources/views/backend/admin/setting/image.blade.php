@@ -14,9 +14,7 @@
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
-                        <li class="breadcrumb-item">
-                            <a href="{{route('admin.dashboard')}}">Dashboard</a>
-                        </li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}"><i class="bx bx-home-alt"></i></a></li>
                         <li class="breadcrumb-item active" aria-current="page">Image Setting</li>
                     </ol>
                 </nav>
@@ -96,6 +94,18 @@
                                 </div>
                                 @if (!empty(setting('default_profile_image')))
                                     <img src="{{asset(setting('default_profile_image'))}}" height="100px" width="auto" alt="{{setting('site_name')}}">
+                                @endif
+                            </div>
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Default profile Banner</label>
+                                <input class="form-control  @error('default_profile_banner') is-invalid @enderror" type="file" name="default_profile_banner" id="formFile" @error('default_profile_banner') required @enderror>
+                                <div class="invalid-feedback">
+                                    @error('default_profile_banner')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                                @if (!empty(setting('default_profile_banner')))
+                                    <img src="{{asset(setting('default_profile_banner'))}}" height="100px" width="auto" alt="{{setting('site_name')}}">
                                 @endif
                             </div>
                             <div class="mb-3">

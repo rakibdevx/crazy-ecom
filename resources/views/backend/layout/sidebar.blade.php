@@ -26,6 +26,19 @@
                     </li>
                 </ul>
             </li>
+            <li class="{{ request()->routeIs('admin.user.*') ? 'mm-active' : '' }}">
+                <a href="{{route('admin.user.index')}}">
+                    <div class="parent-icon"><i class="material-icons-outlined">person_outline</i></div>
+                    <div class="menu-title">Users</div>
+                </a>
+            </li>
+            <li class="{{ request()->routeIs('admin.vendor.*') ? 'mm-active' : '' }}">
+                <a href="{{route('admin.vendor.index')}}">
+                    <div class="parent-icon"><i class="material-icons-outlined">person_outline</i></div>
+                    <div class="menu-title">Vendors</div>
+                </a>
+            </li>
+
             <li class="{{ request()->routeIs('admin.setting.*') ? 'mm-active' : '' }}">
                 <a href="javascript:;" class="has-arrow">
                     <div class="parent-icon"><i class="material-icons-outlined">settings</i></div>
@@ -63,9 +76,9 @@
             </li>
 
             <li>
-                <a href="javascrpt:;">
-                    <div class="parent-icon"><i class="material-icons-outlined">description</i></div>
-                    <div class="menu-title">Documentation</div>
+                <a href="{{route('admin.profile.index')}}">
+                    <div class="parent-icon"><i class="material-icons-outlined">person_outline</i></div>
+                    <div class="menu-title">Profile</div>
                 </a>
             </li>
             @endif

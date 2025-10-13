@@ -10,7 +10,7 @@ Mail Templates
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">Mail Templates</li>
                 </ol>
             </nav>
@@ -44,7 +44,7 @@ Mail Templates
                                 <td>{{$mailtemplate->updated_at->diffForHumans() }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{route('admin.setting.mail.template.edit',$mailtemplate->id)}}" class="btn btn-primary btn-circle raised rounded-circle d-flex gap-2 wh-48">
+                                        <a href="{{route('admin.setting.mail.template.edit',$mailtemplate->id)}}" class="btn btn-primary btn-circle raised rounded-circle d-flex gap-2 wh-35">
                                             <i class="material-icons-outlined">settings</i>
                                         </a>
                                     </div>

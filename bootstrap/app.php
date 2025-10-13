@@ -6,6 +6,8 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\Vendor;
 use App\Http\Middleware\User;
+use App\Http\Middleware\VendorMaintenanceMode;
+use App\Http\Middleware\VendorVerify;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -22,6 +24,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth.admin' => Admin::class,
             'auth.vendor' => Vendor::class,
             'auth.user' => User::class,
+            'vendor.maintenance' => VendorMaintenanceMode::class,
+            'vendor.verified' => VendorVerify::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
