@@ -36,7 +36,7 @@
             </div>
             <div class="col-auto">
                 <div class="d-flex align-items-center gap-2 justify-content-lg-end">
-                    <a href="{{route('admin.vendor.create')}}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-2"></i>Add Customers</a>
+                    <a href="{{route('admin.vendor.create')}}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-2"></i>Add Vendor</a>
                 </div>
             </div>
         </div><!--end row-->
