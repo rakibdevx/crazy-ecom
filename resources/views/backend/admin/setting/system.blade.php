@@ -96,19 +96,37 @@
                             <div class="invalid-feedback">@error('currency_symbol') {{ $message }} @enderror</div>
                         </div>
 
-                        <!-- Date Format -->
                         <div class="mb-3">
                             <label class="form-label">Date Format:</label>
-                            <input type="text" name="date_format" value="{{ old('date_format', setting('date_format')) }}" class="form-control @error('date_format') is-invalid @enderror" placeholder="e.g. d-m-Y" @error('date_format') required @enderror>
+                            <select name="date_format"
+                                    class="form-select @error('date_format') is-invalid @enderror"
+                                    required>
+                                @foreach($dateFormats as $format)
+                                    <option value="{{ $format->format }}"
+                                        {{ old('date_format', setting('date_format')) == $format->format ? 'selected' : '' }}>
+                                        {{ $format->format }} - ({{ $format->example }})
+                                    </option>
+                                @endforeach
+                            </select>
                             <div class="invalid-feedback">@error('date_format') {{ $message }} @enderror</div>
                         </div>
 
                         <!-- Time Format -->
                         <div class="mb-3">
                             <label class="form-label">Time Format:</label>
-                            <input type="text" name="time_format" value="{{ old('time_format', setting('time_format')) }}" class="form-control @error('time_format') is-invalid @enderror" placeholder="e.g. H:i" @error('time_format') required @enderror>
+                            <select name="time_format"
+                                    class="form-select @error('time_format') is-invalid @enderror"
+                                    required>
+                                @foreach($timeFormats as $format)
+                                    <option value="{{ $format->format }}"
+                                        {{ old('time_format', setting('time_format')) == $format->format ? 'selected' : '' }}>
+                                        {{ $format->format }} - ({{ $format->example }})
+                                    </option>
+                                @endforeach
+                            </select>
                             <div class="invalid-feedback">@error('time_format') {{ $message }} @enderror</div>
                         </div>
+
 
                         <!-- Default Pagination -->
                         <div class="mb-3">

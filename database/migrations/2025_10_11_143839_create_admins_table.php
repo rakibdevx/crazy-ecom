@@ -17,10 +17,12 @@ return new class extends Migration
             // Basic Info
             $table->string('name');
             $table->string('username')->unique()->nullable();
+            $table->string('slug')->unique()->nullable();
             $table->string('email')->unique();
             $table->string('password');
             $table->string('phone')->nullable();
             $table->string('profile_image')->nullable();
+            $table->string('banner_image')->nullable();
             $table->text('bio')->nullable();
 
             // Login & Security

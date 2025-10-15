@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TimeZone;
 use App\Models\Setting;
+use App\Models\DateFormat;
+use App\Models\TimeFormat;
 use App\Rules\ValidImage;
 use Flasher\Notyf\Prime\NotyfInterface;
 use Illuminate\Support\Facades\Mail;
@@ -14,6 +16,20 @@ use Illuminate\Support\Facades\Config;
 
 class SettingController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:General-setting')->only(['index', 'update']);
+        $this->middleware('permission:Seo-setting')->only(['seo', 'seo_update']);
+        $this->middleware('permission:Contact-setting')->only(['contact', 'contact_update']);
+        $this->middleware('permission:Mail-setting')->only(['mail', 'mail_update', 'testMail']);
+        $this->middleware('permission:System-setting')->only(['system', 'system_update']);
+        $this->middleware('permission:Security-setting')->only(['security', 'security_update']);
+        $this->middleware('permission:Config-setting')->only(['config', 'config_update']);
+        $this->middleware('permission:Image-setting')->only(['image', 'image_update']);
+        $this->middleware('permission:Clear-cache')->only(['clear']);
+    }
+
     public function index()
     {
         $time_zones = TimeZone::get();
@@ -145,7 +161,7 @@ class SettingController extends Controller
         return redirect()->back()->with('success', 'Contact updated successfully!');
     }
 
-     public function mail()
+    public function mail()
     {
         return view('backend.admin.setting.mail');
     }
@@ -189,7 +205,9 @@ class SettingController extends Controller
 
     public function system()
     {
-        return view('backend.admin.setting.system');
+        $dateFormats = DateFormat::all();
+        $timeFormats = TimeFormat::all();
+        return view('backend.admin.setting.system',compact('dateFormats','timeFormats'));
     }
 
     public function system_update(Request $request)
@@ -203,8 +221,8 @@ class SettingController extends Controller
             'app_debug' => 'required|boolean',
             'currency' => 'required|string|max:10',
             'currency_symbol' => 'required|string|max:5',
-            'date_format' => 'required|string|max:20',
-            'time_format' => 'required|string|max:20',
+            'date_format' => 'required|exists:date_formats,format',
+            'time_format' => 'required|exists:time_formats,format',
             'default_pagination' => 'required|integer|min:1|max:500',
         ]);
 
@@ -350,7 +368,7 @@ class SettingController extends Controller
         return true;
     }
 
-   public function clear(Request $request)
+    public function clear(Request $request)
     {
         try {
             \Artisan::call('optimize:clear');

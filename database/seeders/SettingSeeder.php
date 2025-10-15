@@ -107,5 +107,7 @@ class SettingSeeder extends Seeder
         ];
 
         DB::table('settings')->insert($settings);
+
+        $this->command->info('Setting seeded successfully!');
     }
 }

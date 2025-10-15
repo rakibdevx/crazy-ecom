@@ -64,6 +64,8 @@ Edit {{$mailtemplate->name}}
                         <li><code>@{{name}}</code> – User's full name (all templates)</li>
                         <li><code>@{{email}}</code> – User's email (all templates)</li>
                         <li><code>@{{site_name}}</code> – Website / Platform name (all templates)</li>
+                        <li><code>@{{login_url}}</code> – Login Url (New Account Create)</li>
+                        <li><code>@{{password}}</code> – Login Url (New Account Create)</li>
                         <li><code>@{{verification_code}}</code> – Verification Code (Two Step Verification)</li>
                         <li><code>@{{time}}</code> – Verification Code Expire Time (Two Step Verification , Order Delevary Confirmation)</li>
                         <li><code>@{{order_id}}</code> – Order number (Order Confirmation, Shipping Notification, Invoice Email, Payment Failed, Payment Successful)</li>

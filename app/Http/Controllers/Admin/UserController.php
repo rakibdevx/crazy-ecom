@@ -8,10 +8,21 @@ use App\Models\User;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-
+use Mail;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:User-view|User-create|User-edit|User-delete')->only(['index','store']);
+        $this->middleware('permission:User-create')->only(['create','store']);
+        $this->middleware('permission:User-edit')->only(['edit','update']);
+        $this->middleware('permission:User-delete')->only(['destroy']);
+        $this->middleware('permission:User-verify')->only(['verify']);
+        $this->middleware('permission:User-login')->only(['login']);
+    }
+
+
     public function index()
     {
 
@@ -70,43 +81,54 @@ class UserController extends Controller
                     if ($user->email_verified_at) {
                         return '
                         <span class="btn m-1 btn-success text-white btn-circle raised rounded-circle d-flex align-items-center justify-content-center wh-35"
-                            title="'.format_date($user->email_verified_at) .'">
+                            title="'.format_date($user->email_verified_at).'">
                             <i class="material-icons-outlined">check</i>
                         </span>';
                     }
-
                     $url = route('admin.user.verify', $user->id);
+                    if (auth('admin')->user()->can('User-verify')) {
+                        return '
+                        <button onclick="verifyUser(\''.$url.'\')"
+                                class="btn m-1 btn-danger text-white btn-circle raised rounded-circle d-flex align-items-center justify-content-center wh-35"
+                                title="Verify Now">
+                            <i class="material-icons-outlined">close</i>
+                        </button>';
+                    }
                     return '
-                    <button onclick="verifyUser(\''.$url.'\')"
-                            class="btn m-1 btn-danger text-white btn-circle raised rounded-circle d-flex align-items-center justify-content-center wh-35"
-                            title="Verify Now">
+                    <span class="btn m-1 btn-warning text-white btn-circle raised rounded-circle d-flex align-items-center justify-content-center wh-35"
+                        title="Not Allowed">
                         <i class="material-icons-outlined">close</i>
-                    </button>';
+                    </span>';
                 })
 
-               ->addColumn('action', function($user) {
+                ->addColumn('action', function($user) {
                     $show = route('admin.user.show', $user->id);
                     $edit = route('admin.user.edit', $user->id);
                     $login = route('admin.user.login', $user->id);
                     $deleteUrl = route('admin.user.destroy', $user->id);
 
-                    $action = '
-
-                    <div class="btn-group" role="group" aria-label="First group">
-                        <a href="'.$show.'" class="btn m-1 btn-success btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Show Details">
-                            <i class="material-icons-outlined">visibility</i>
-                        </a>
-                        <a href="'.$login.'" target="_blank" class="btn m-1 btn-warning text-white btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Login">
+                    $action = '<div class="btn-group" role="group" aria-label="First group">';
+                        if (auth('admin')->user()->can('User-view')) {
+                            $action .= '<a href="'.$show.'" class="btn m-1 btn-success btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Show Details">
+                                <i class="material-icons-outlined">visibility</i>
+                            </a>';
+                        }
+                        if (auth('admin')->user()->can('User-login')) {
+                        $action .= '<a href="'.$login.'" target="_blank" class="btn m-1 btn-warning text-white btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Login">
                             <i class="material-icons-outlined">lock</i>
-                        </a>
-                        <a href="'.$edit.'" class="btn m-1 btn-primary btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Edit">
+                        </a>';
+                        }
+                        if (auth('admin')->user()->can('User-edit')) {
+                        $action .= '<a href="'.$edit.'" class="btn m-1 btn-primary btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Edit">
                             <i class="material-icons-outlined">settings</i>
-                        </a>
-                        <button onclick="deleteUser(\''.$deleteUrl.'\')" class="btn btn-danger btn-circle raised rounded-circle d-flex gap-2 wh-40" title="Delete">
+                        </a>';
+                        }
+                        if (auth('admin')->user()->can('User-delete')) {
+                        $action .= '<button onclick="deleteUser(\''.$deleteUrl.'\')" class="btn btn-danger btn-circle raised rounded-circle d-flex gap-2 wh-40" title="Delete">
                             <i class="material-icons-outlined">delete</i>
-                        </button>
-                    </div>
-                    ';
+                        </button>';
+                        }
+                    $action .= '</div>';
                     return $action;
                 })
                 ->rawColumns(['action', 'name','login','status','email_verified'])
@@ -152,13 +174,31 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        User::create([
+        $name = $request->name;
+        $baseUsername = strtolower(str_replace(' ', '.', $name));
+        $slugname = strtolower(str_replace(' ', '-', $name));
+        $username = $baseUsername . rand(10000, 99999);
+        $slug = $slugname . rand(10000, 99999);
+
+        $user = User::create([
             'name' => $request->name,
+            'username' => $username,
+            'slug' => $slug,
             'email' => $request->email,
             'phone' => $request->phone,
             'status' => $request->status,
             'password' => bcrypt($request->password),
         ]);
+
+        $mailData = \App\Services\MailTemplateService::prepare('Account Created', [
+            'name' => $user->name,
+            'email' => $user->email,
+            'password' => $request->password,
+            'site_name' => setting('site_name'),
+            'login_url' => route('login'),
+        ]);
+
+        Mail::to($user->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
 
         return redirect()->route('admin.user.create')->with('success', 'user created successfully.');
     }

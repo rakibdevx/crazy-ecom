@@ -32,7 +32,9 @@ Mail Templates
                                 <th>Name</th>
                                 <th>Subject</th>
                                 <th>Last Update</th>
-                                <th>Action</th>
+                                @can('MailTemplate-edit')
+                                    <th>Action</th>
+                                @endcan
                             </tr>
                         </thead>
                     <tbody>
@@ -44,13 +46,15 @@ Mail Templates
                                 <td>
                                     {{ format_date($mailtemplate->updated_at) }}
                                 </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a href="{{route('admin.setting.mail.template.edit',$mailtemplate->id)}}" class="btn btn-primary btn-circle raised rounded-circle d-flex gap-2 wh-35">
-                                            <i class="material-icons-outlined">settings</i>
-                                        </a>
-                                    </div>
-                                </td>
+                                @can('MailTemplate-edit')
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="{{route('admin.setting.mail.template.edit',$mailtemplate->id)}}" class="btn btn-primary btn-circle raised rounded-circle d-flex gap-2 wh-35">
+                                                <i class="material-icons-outlined">settings</i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                @endcan
                             </tr>
                         @endforeach
                     </tbody>

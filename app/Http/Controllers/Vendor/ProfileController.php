@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Rules\ValidImage;
-
-
+use Mail;
 
 
 class ProfileController extends Controller
@@ -36,6 +35,7 @@ class ProfileController extends Controller
             ],
             'bio' => 'nullable|string|max:1000',
             'two_factor_enabled' => 'required|boolean',
+            'notification_preferences' => 'required|boolean',
         ]);
         $vendor->update([
             'name' => $request->name,
@@ -43,6 +43,7 @@ class ProfileController extends Controller
             'phone' => $request->phone,
             'bio' => $request->bio,
             'two_factor_enabled' => $request->two_factor_enabled,
+            'notification_preferences' => $request->notification_preferences,
         ]);
         return back()->with('success', 'Profile updated successfully!');
     }
@@ -64,7 +65,19 @@ class ProfileController extends Controller
             'last_password_change' => now(),
         ]);
 
+
+        if($vendor->notification_preferences == 1)
+        {
+            $mailData = \App\Services\MailTemplateService::prepare('Password Changed', [
+                'name' => $vendor->name,
+                'site_name' => setting('site_name'),
+                'support_email' => setting('support_email'),
+            ]);
+
+            Mail::to($vendor->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
+        }
         return back()->with('success', 'Password updated successfully!');
+
     }
 
     public function image(Request $request)

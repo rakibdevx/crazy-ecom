@@ -22,5 +22,7 @@ class UserSeeder extends Seeder
             'phone' => '01730000000',
             'status' => 'active',
         ]);
+
+        $this->command->info('User seeded successfully!');
     }
 }

@@ -15,11 +15,13 @@
                     </ol>
                 </nav>
             </div>
+            @can('Role-create')
             <div class="ms-auto">
                 <div class="btn-group">
                     <a href="{{route('admin.role.create')}}" class="btn btn-primary">Create</a>
                 </div>
             </div>
+            @endcan
         </div>
 
     <!--end breadcrumb-->
@@ -36,7 +38,9 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Created At</th>
-                                    <th scope="col">Action</th>
+                                    @canany(['Role-view', 'Role-edit', 'Role-delete'])
+                                        <th scope="col">Action</th>
+                                    @endcanany
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,15 +51,21 @@
                                        <td>{{ format_date($role->created_at)   }}</td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="First group">
-                                                <a href="{{route('admin.role.show',$role->id)}}" class="btn m-1 btn-success btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Show Details">
-                                                    <i class="material-icons-outlined">visibility</i>
-                                                </a>
-                                                <a href="{{route('admin.role.edit',$role->id)}}" class="btn m-1 btn-primary btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Edit">
-                                                    <i class="material-icons-outlined">settings</i>
-                                                </a>
-                                                <button onclick="deleteVendor('{{ route('admin.role.destroy', $role->id) }}')" class="btn btn-danger btn-circle raised rounded-circle d-flex gap-2 wh-40" title="Delete">
-                                                    <i class="material-icons-outlined">delete</i>
-                                                </button>
+                                                @can('Role-view')
+                                                    <a href="{{route('admin.role.show',$role->id)}}" class="btn m-1 btn-success btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Show Details">
+                                                        <i class="material-icons-outlined">visibility</i>
+                                                    </a>
+                                                @endcan
+                                                @can('Role-edit')
+                                                    <a href="{{route('admin.role.edit',$role->id)}}" class="btn m-1 btn-primary btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Edit">
+                                                        <i class="material-icons-outlined">settings</i>
+                                                    </a>
+                                                @endcan
+                                                 @can('Role-delete')
+                                                    <button onclick="deleteVendor('{{ route('admin.role.destroy', $role->id) }}')" class="btn btn-danger btn-circle raised rounded-circle d-flex gap-2 wh-40" title="Delete">
+                                                        <i class="material-icons-outlined">delete</i>
+                                                    </button>
+                                                @endcan
                                             </div>
                                         </td>
                                     </tr>

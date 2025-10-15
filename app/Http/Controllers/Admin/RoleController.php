@@ -9,6 +9,21 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = auth()->guard('admin')->user();
+            if (!$user->can('Role-view') && !$user->can('Role-edit') && !$user->can('Role-create')) {
+                abort(403);
+            }
+            return $next($request);
+        })->only(['index', 'show']);
+
+        $this->middleware('permission:Role-create')->only(['create', 'store']);
+        $this->middleware('permission:Role-edit')->only(['edit', 'update']);
+        $this->middleware('permission:Role-delete')->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */

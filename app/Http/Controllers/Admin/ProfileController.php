@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Rules\ValidImage;
+use Mail;
 
 class ProfileController extends Controller
 {
@@ -62,6 +63,14 @@ class ProfileController extends Controller
             'password' => Hash::make($request->new_password),
             'last_password_change' => now(),
         ]);
+
+        $mailData = \App\Services\MailTemplateService::prepare('Password Changed', [
+            'name' => $admin->name,
+            'site_name' => setting('site_name'),
+            'support_email' => setting('support_email'),
+        ]);
+
+        Mail::to($admin->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
 
         return back()->with('success', 'Password updated successfully!');
     }

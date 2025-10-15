@@ -14,7 +14,7 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        Admin::create([
+        $admin = Admin::create([
             'name' => 'Super Admin',
             'username' => 'superadmin',
             'email' => 'admin@example.com',
@@ -22,5 +22,9 @@ class AdminSeeder extends Seeder
             'phone' => '01710000000',
             'status' => 'active',
         ]);
+
+        $admin->assignRole('Super Admin');
+        
+        $this->command->info('Admin seeded successfully!');
     }
 }

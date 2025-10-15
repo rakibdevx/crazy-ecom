@@ -37,5 +37,6 @@ class DateTimeFormatSeeder extends Seeder
                 ['example' => Carbon::now()->format($format)]
             );
         }
+        $this->command->info('Date And Time Format seeded successfully!');
     }
 }

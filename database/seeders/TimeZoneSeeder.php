@@ -34,5 +34,7 @@ class TimeZoneSeeder extends Seeder
         ];
 
         DB::table('time_zones')->insert($time_zones);
+
+        $this->command->info('TimeZone seeded successfully!');
     }
 }

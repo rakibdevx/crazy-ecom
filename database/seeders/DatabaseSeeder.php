@@ -16,15 +16,16 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            // TimeZoneSeeder::class,
-            // SettingSeeder::class,
-            // AdminSeeder::class,
-            // VendorSeeder::class,
-            // UserSeeder::class,
-            // MailTemplatesSeeder::class,
+            TimeZoneSeeder::class,
+            SettingSeeder::class,
+            VendorSeeder::class,
+            UserSeeder::class,
+            MailTemplatesSeeder::class,
             DateTimeFormatSeeder::class,
+            PermissionSeeder::class,
+            AdminSeeder::class,
         ]);
-        // User::factory(1000)->create();
-        // Vendor::factory(1000)->create();
+        User::factory(100)->create();
+        Vendor::factory(100)->create();
     }
 }

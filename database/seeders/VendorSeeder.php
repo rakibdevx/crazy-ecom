@@ -24,5 +24,7 @@ class VendorSeeder extends Seeder
             'status' => 'active',
             'verified' => true,
         ]);
+
+        $this->command->info('Vendor seeded successfully!');
     }
 }

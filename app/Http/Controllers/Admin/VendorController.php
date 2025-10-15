@@ -8,10 +8,29 @@ use App\Models\Vendor;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Mail;
 
 
 class VendorController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = auth()->guard('admin')->user();
+            if (!$user->can('Vendor-view') && !$user->can('Vendor-edit') && !$user->can('Vendor-create')) {
+                abort(403);
+            }
+            return $next($request);
+        })->only(['index', 'show']);
+
+        $this->middleware('permission:Vendor-create')->only(['create', 'store']);
+        $this->middleware('permission:Vendor-edit')->only(['edit', 'update']);
+        $this->middleware('permission:Vendor-delete')->only(['destroy']);
+        $this->middleware('permission:Vendor-verify')->only(['verify']);
+        $this->middleware('permission:Vendor-login')->only(['login']);
+    }
+
+
     public function index()
     {
 
@@ -81,12 +100,19 @@ class VendorController extends Controller
                     }
 
                     $url = route('admin.vendor.verify', $vendor->id);
+                    if (auth('admin')->user()->can('User-verify')) {
+                        return '
+                        <button onclick="verifyUser(\''.$url.'\')"
+                                class="btn m-1 btn-danger text-white btn-circle raised rounded-circle d-flex align-items-center justify-content-center wh-35"
+                                title="Verify Now">
+                            <i class="material-icons-outlined">close</i>
+                        </button>';
+                    }
                     return '
-                    <button onclick="verifyVendor(\''.$url.'\')"
-                            class="btn m-1 btn-danger text-white btn-circle raised rounded-circle d-flex align-items-center justify-content-center wh-35"
-                            title="Verify Now">
+                    <span class="btn m-1 btn-warning text-white btn-circle raised rounded-circle d-flex align-items-center justify-content-center wh-35"
+                        title="Not Allowed">
                         <i class="material-icons-outlined">close</i>
-                    </button>';
+                    </span>';
                 })
 
                ->addColumn('action', function($vendor) {
@@ -95,23 +121,28 @@ class VendorController extends Controller
                     $login = route('admin.vendor.login', $vendor->id);
                     $deleteUrl = route('admin.vendor.destroy', $vendor->id);
 
-                    $action = '
-
-                    <div class="btn-group" role="group" aria-label="First group">
-                        <a href="'.$show.'" class="btn m-1 btn-success btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Show Details">
-                            <i class="material-icons-outlined">visibility</i>
-                        </a>
-                        <a href="'.$login.'" target="_blank" class="btn m-1 btn-warning text-white btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Login">
-                            <i class="material-icons-outlined">lock</i>
-                        </a>
-                        <a href="'.$edit.'" class="btn m-1 btn-primary btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Edit">
-                            <i class="material-icons-outlined">settings</i>
-                        </a>
-                        <button onclick="deleteVendor(\''.$deleteUrl.'\')" class="btn btn-danger btn-circle raised rounded-circle d-flex gap-2 wh-40" title="Delete">
-                            <i class="material-icons-outlined">delete</i>
-                        </button>
-                    </div>
-                    ';
+                    $action = '<div class="btn-group" role="group" aria-label="First group">';
+                        if (auth('admin')->user()->can('Vendor-view')) {
+                            $action .= '<a href="'.$show.'" class="btn m-1 btn-success btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Show Details">
+                                <i class="material-icons-outlined">visibility</i>
+                            </a>';
+                        }
+                        if (auth('admin')->user()->can('Vendor-login')) {
+                            $action .= '<a href="'.$login.'" target="_blank" class="btn m-1 btn-warning text-white btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Login">
+                                <i class="material-icons-outlined">lock</i>
+                            </a>';
+                        }
+                        if (auth('admin')->user()->can('Vendor-edit')) {
+                            $action .= '<a href="'.$edit.'" class="btn m-1 btn-primary btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Edit">
+                                <i class="material-icons-outlined">settings</i>
+                            </a>';
+                        }
+                        if (auth('admin')->user()->can('Vendor-delete')) {
+                            $action .= '<button onclick="deleteVendor(\''.$deleteUrl.'\')" class="btn btn-danger btn-circle raised rounded-circle d-flex gap-2 wh-40" title="Delete">
+                                <i class="material-icons-outlined">delete</i>
+                            </button>';
+                        }
+                        $action .= '</div>';
                     return $action;
                 })
                 ->rawColumns(['action', 'name','login','verified','status','email_verified'])
@@ -160,8 +191,16 @@ class VendorController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        Vendor::create([
+        $name = $request->name;
+        $baseUsername = strtolower(str_replace(' ', '.', $name));
+        $slugname = strtolower(str_replace(' ', '-', $name));
+        $username = $baseUsername . rand(10000, 99999);
+        $slug = $slugname . rand(10000, 99999);
+
+        $vendor = Vendor::create([
             'name' => $request->name,
+            'username' => $username,
+            'slug' => $slug,
             'email' => $request->email,
             'phone' => $request->phone,
             'bio' => $request->bio,
@@ -169,6 +208,16 @@ class VendorController extends Controller
             'verified' => $request->verified,
             'password' => bcrypt($request->password),
         ]);
+
+        $mailData = \App\Services\MailTemplateService::prepare('Account Created', [
+            'name' => $vendor->name,
+            'email' => $vendor->email,
+            'password' => $request->password,
+            'site_name' => setting('site_name'),
+            'login_url' => route('vendor.login'),
+        ]);
+
+        Mail::to($vendor->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
 
         return redirect()->route('admin.vendor.create')->with('success', 'Vendor created successfully.');
     }

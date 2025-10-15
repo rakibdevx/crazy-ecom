@@ -8,6 +8,20 @@ use App\Models\MailTemplate;
 
 class MailTemplateController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = auth()->guard('admin')->user();
+            if (!$user->can('MailTemplate-view') && !$user->can('MailTemplate-edit')) {
+                abort(403);
+            }
+            return $next($request);
+        })->only(['index', 'show']);
+
+        $this->middleware('permission:MailTemplate-edit')->only(['edit', 'update']);
+    }
+
     public function index()
     {
         $mailtemplates = MailTemplate::get();
