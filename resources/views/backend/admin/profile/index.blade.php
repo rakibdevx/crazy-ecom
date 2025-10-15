@@ -130,7 +130,7 @@
                             <div class="card-body">
                                 <ul>
                                     @if(auth()->guard('admin')->user()->last_login_at)
-                                        <li>Last login Time : {{ \Carbon\Carbon::parse(auth()->guard('admin')->user()->last_login_at)->format(setting('date_format')) }}</li>
+                                        <li>Last login Time : {{ format_date(auth()->guard('admin')->user()->last_login_at) }} ({{ format_time(auth()->guard('admin')->user()->last_login_at) }}) </li>
                                     @endif
                                     @if(auth()->guard('admin')->user()->last_login_ip)
                                         <li>Last login Ip : {{auth()->guard('admin')->user()->last_login_ip}}</li>

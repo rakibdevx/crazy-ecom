@@ -42,7 +42,7 @@ Mail Templates
                                 <td>{{$mailtemplate->name}}</td>
                                 <td>{{$mailtemplate->subject}}</td>
                                 <td>
-                                    {{ \Carbon\Carbon::parse($mailtemplate->updated_at)->format(setting('date_format')) }}
+                                    {{ format_date($mailtemplate->updated_at) }}
                                 </td>
                                 <td>
                                     <div class="btn-group">

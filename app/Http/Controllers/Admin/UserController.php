@@ -50,7 +50,7 @@ class UserController extends Controller
                     $login = '-';
                     if($user->last_login_at)
                     {
-                        $login =  Carbon::parse($user->last_login_at)->format(setting('date_format'));
+                        $login = format_date($user->last_login_at);
                     }
                     return $login;
                 })
@@ -70,7 +70,7 @@ class UserController extends Controller
                     if ($user->email_verified_at) {
                         return '
                         <span class="btn m-1 btn-success text-white btn-circle raised rounded-circle d-flex align-items-center justify-content-center wh-35"
-                            title="'.\Carbon\Carbon::parse($user->email_verified_at)->format('d M Y').'">
+                            title="'.format_date($user->email_verified_at) .'">
                             <i class="material-icons-outlined">check</i>
                         </span>';
                     }

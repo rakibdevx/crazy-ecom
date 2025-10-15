@@ -44,7 +44,7 @@
                                     <tr>
                                         <th scope="row">{{$loop->iteration}}</th>
                                         <td>{{$role->name}}</td>
-                                       <td>{{ \Carbon\Carbon::parse($role->created_at)->format(setting('date_format')) }}</td>
+                                       <td>{{ format_date($role->created_at)   }}</td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="First group">
                                                 <a href="{{route('admin.role.show',$role->id)}}" class="btn m-1 btn-success btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Show Details">

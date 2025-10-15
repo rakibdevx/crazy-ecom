@@ -45,7 +45,7 @@
                                         <th scope="row">{{$loop->iteration}}</th>
                                         <td>{{$permission->name}}</td>
                                        <td>
-                                            {{ \Carbon\Carbon::parse($permission->created_at)->format(setting('date_format')) }}
+                                            {{format_date($permission->created_at)}}
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="First group">

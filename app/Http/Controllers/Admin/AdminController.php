@@ -50,7 +50,7 @@ class AdminController extends Controller
                     $login = '-';
                     if($admin->last_login_at)
                     {
-                        $login = Carbon::parse($admin->last_login_at)->format(setting('date_format'));
+                        $login = format_date($admin->last_login_at);
                     }
                     return $login;
                 })

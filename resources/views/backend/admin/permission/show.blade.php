@@ -34,10 +34,10 @@
                         <ul>
                             <li>Name : {{ $permission->name }}</li>
                             <li>
-                                Last Update : {{ \Carbon\Carbon::parse($permission->updated_at)->format(setting('date_format')) }}
+                                Last Update : {{ format_date($permission->updated_at) }} ({{ format_time($permission->updated_at) }})
                             </li>
                             <li>
-                                Created At : {{ \Carbon\Carbon::parse($permission->created_at)->format(setting('date_format')) }}
+                                Created At : {{ format_date($permission->created_at) }} ({{ format_time($permission->created_at) }})
                             </li>
                         </ul>
                     </div>

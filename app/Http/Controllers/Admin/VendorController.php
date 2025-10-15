@@ -49,7 +49,7 @@ class VendorController extends Controller
                     $login = '-';
                     if($vendor->last_login_at)
                     {
-                        $login = Carbon::parse($vendor->last_login_at)->format(setting('date_format'));
+                        $login = format_date($vendor->last_login_at);
                     }
                     return $login;
                 })
@@ -75,7 +75,7 @@ class VendorController extends Controller
                     if ($vendor->email_verified_at) {
                         return '
                         <span class="btn m-1 btn-success text-white btn-circle raised rounded-circle d-flex align-items-center justify-content-center wh-35"
-                            title="'. Carbon::parse($vendor->email_verified_at)->format(setting('date_format')).'">
+                            title="'. format_date($vendor->email_verified_at) .'">
                             <i class="material-icons-outlined">check</i>
                         </span>';
                     }
