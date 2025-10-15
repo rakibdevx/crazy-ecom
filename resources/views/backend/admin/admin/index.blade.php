@@ -33,11 +33,13 @@
                     <span class="material-icons-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
                 </div>
             </div>
-            <div class="col-auto">
-                <div class="d-flex align-items-center gap-2 justify-content-lg-end">
-                    <a href="{{route('admin.admin.create')}}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-2"></i>Add Admin</a>
+            @can('Admin-create')
+                <div class="col-auto">
+                    <div class="d-flex align-items-center gap-2 justify-content-lg-end">
+                        <a href="{{route('admin.admin.create')}}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-2"></i>Add Admin</a>
+                    </div>
                 </div>
-            </div>
+            @endcan
         </div><!--end row-->
 
         <div class="card mt-4">

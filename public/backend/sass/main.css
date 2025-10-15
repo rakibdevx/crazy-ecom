@@ -1068,3 +1068,17 @@ form select.error:focus {
 .form-check-label-highlighter .form-check-input:checked[type=checkbox] ~ .form-check-label, .form-check-label-highlighter .form-check-input:checked[type=radio] ~ .form-check-label {
   border-color: #377dff;
 }/*# sourceMappingURL=main.css.map */
+
+
+.dataTables_processing {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 9999 !important;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 15px 25px;
+    border-radius: 6px;
+    font-weight: 500;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+}

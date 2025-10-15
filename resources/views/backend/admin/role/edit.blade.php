@@ -53,6 +53,7 @@
                                         </label>
                                     </div>
                                 </div>
+                                @error('permission')<div class="text-danger pt-2"> {{ $message }} </div> @enderror
                                 <hr>
                                 @php
                                     $assignedPermissions = $role->permissions->pluck('name')->toArray();

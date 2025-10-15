@@ -37,6 +37,11 @@ class MailTemplatesSeeder extends Seeder
                 'body' => "Hi {{name}},\n\nThis is a confirmation that your password for {{site_name}} has been successfully changed.\n\nIf you did not make this change, please contact our support immediately: {{support_email}}\n\nThanks,\nThe {{site_name}} Team"
             ],
             [
+                'name' => 'Account Created',
+                'subject' => 'Your Account Has Been Created',
+                'body' => "Hi {{name}},\n\nYour admin account has been successfully created for {{site_name}}.\n\nLogin Details:\nEmail: {{email}}\nPassword: {{password}}\n\nYou can login here: {{login_url}}\n\nPlease make sure to change your password after logging in.\n\nBest regards,\nThe {{site_name}} Team"
+            ],
+            [
                 'name' => 'Order Confirmation',
                 'subject' => 'Your Order {{order_id}} is Confirmed',
                 'body' => "Hi {{name}},\n\nThank you for your order #{{order_id}} at {{site_name}}. Your order has been successfully received and is being processed.\n\nOrder Details: {{order_details_link}}\n\nThanks for shopping with us,\nThe {{site_name}} Team"
@@ -92,5 +97,7 @@ class MailTemplatesSeeder extends Seeder
                 ]
             );
         }
+
+        $this->command->info('Permissions seeded successfully!');
     }
 }

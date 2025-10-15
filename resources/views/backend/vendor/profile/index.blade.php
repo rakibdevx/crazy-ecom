@@ -75,6 +75,15 @@
                                         </select>
                                         <div class="invalid-feedback">@error('two_factor_enabled') {{ $message }} @enderror</div>
                                     </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Notification Preferences:</label>
+                                        <select name="notification_preferences"
+                                            class="form-control @error('notification_preferences') is-invalid @enderror" required>
+                                            <option value="0" {{ old('notification_preferences', auth()->guard('vendor')->user()->notification_preferences) == 0 ? 'selected' : '' }}>Disabled</option>
+                                            <option value="1" {{ old('notification_preferences', auth()->guard('vendor')->user()->notification_preferences) == 1 ? 'selected' : '' }}>Enabled</option>
+                                        </select>
+                                        <div class="invalid-feedback">@error('notification_preferences') {{ $message }} @enderror</div>
+                                    </div>
 
                                     <div class="col">
                                         <button type="submit" class="btn btn-success px-5 raised">Update</button>

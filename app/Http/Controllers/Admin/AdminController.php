@@ -10,9 +10,27 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Mail;
 
 class AdminController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = auth()->guard('admin')->user();
+            if (!$user->can('Admin-view') && !$user->can('Admin-edit') && !$user->can('Admin-create')) {
+                abort(403);
+            }
+            return $next($request);
+        })->only(['index', 'show']);
+
+        $this->middleware('permission:Admin-create')->only(['create', 'store']);
+        $this->middleware('permission:Admin-edit')->only(['edit', 'update']);
+        $this->middleware('permission:Admin-delete')->only(['destroy']);
+        $this->middleware('permission:Admin-login')->only(['login']);
+    }
+
+
     public function index()
     {
 
@@ -77,31 +95,52 @@ class AdminController extends Controller
                             return '<span class="badge bg-secondary">'.$admin->status.'</span>';
                     }
                 })
-               ->addColumn('action', function($admin) {
+                ->addColumn('action', function($admin) {
+
                     $show = route('admin.admin.show', $admin->id);
                     $edit = route('admin.admin.edit', $admin->id);
                     $login = route('admin.admin.login', $admin->id);
                     $deleteUrl = route('admin.admin.destroy', $admin->id);
 
-                    $action = '
+                    $action = '<div class="btn-group" role="group" aria-label="First group">';
 
-                    <div class="btn-group" role="group" aria-label="First group">
-                        <a href="'.$show.'" class="btn m-1 btn-success btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Show Details">
-                            <i class="material-icons-outlined">visibility</i>
-                        </a>
-                        <a href="'.$login.'" target="_blank" class="btn m-1 btn-warning text-white btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Login">
-                            <i class="material-icons-outlined">lock</i>
-                        </a>
-                        <a href="'.$edit.'" class="btn m-1 btn-primary btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Edit">
-                            <i class="material-icons-outlined">settings</i>
-                        </a>
-                        <button onclick="deleteadmin(\''.$deleteUrl.'\')" class="btn btn-danger btn-circle raised rounded-circle d-flex gap-2 wh-40" title="Delete">
-                            <i class="material-icons-outlined">delete</i>
-                        </button>
-                    </div>
-                    ';
+                    if (auth('admin')->user()->can('Admin-view')) {
+                        $action .= '
+                            <a href="'.$show.'" class="btn m-1 btn-success btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Show Details">
+                                <i class="material-icons-outlined">visibility</i>
+                            </a>
+                        ';
+                    }
+
+                    if (auth('admin')->user()->can('Admin-login')) {
+                        $action .= '
+                            <a href="'.$login.'" target="_blank" class="btn m-1 btn-warning text-white btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Login">
+                                <i class="material-icons-outlined">lock</i>
+                            </a>
+                        ';
+                    }
+
+                    if (auth('admin')->user()->can('Admin-edit')) {
+                        $action .= '
+                            <a href="'.$edit.'" class="btn m-1 btn-primary btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Edit">
+                                <i class="material-icons-outlined">settings</i>
+                            </a>
+                        ';
+                    }
+
+                    if (auth('admin')->user()->can('Admin-delete')) {
+                        $action .= '
+                            <button onclick="deleteadmin(\''.$deleteUrl.'\')" class="btn btn-danger btn-circle raised rounded-circle d-flex gap-2 wh-40" title="Delete">
+                                <i class="material-icons-outlined">delete</i>
+                            </button>
+                        ';
+                    }
+
+                    $action .= '</div>';
+
                     return $action;
                 })
+
                 ->rawColumns(['action', 'name','login','verified','status','roles'])
                 ->make(true);
         }
@@ -147,8 +186,17 @@ class AdminController extends Controller
             'role.*' => 'exists:roles,name',
         ]);
 
+
+        $name = $request->name;
+        $baseUsername = strtolower(str_replace(' ', '.', $name));
+        $slugname = strtolower(str_replace(' ', '-', $name));
+        $username = $baseUsername . rand(10000, 99999);
+        $slug = $slugname . rand(10000, 99999);
+
         $admin = Admin::create([
             'name' => $request->name,
+            'username' => $username,
+            'slug' => $slug,
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
@@ -157,8 +205,18 @@ class AdminController extends Controller
         // Assign Role(s)
         $admin->assignRole($request->role);
 
+        $mailData = \App\Services\MailTemplateService::prepare('Account Created', [
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'password' => $request->password,
+            'site_name' => setting('site_name'),
+            'login_url' => route('admin.login'),
+        ]);
+
+        Mail::to($admin->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
+
         return redirect()->route('admin.admin.index')
-                        ->with('success', 'User created successfully!');
+                        ->with('success', 'Admin created successfully!');
     }
 
 

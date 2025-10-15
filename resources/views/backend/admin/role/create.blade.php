@@ -53,6 +53,7 @@
                                         </label>
                                     </div>
                                 </div>
+                                @error('permission')<div class="text-danger pt-2"> {{ $message }} </div> @enderror
                                 <hr>
                                 @foreach ($permissions as $permission)
                                     <div class="col-md-3">

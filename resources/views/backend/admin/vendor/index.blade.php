@@ -34,11 +34,13 @@
                     <span class="material-icons-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
                 </div>
             </div>
-            <div class="col-auto">
-                <div class="d-flex align-items-center gap-2 justify-content-lg-end">
-                    <a href="{{route('admin.vendor.create')}}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-2"></i>Add Vendor</a>
+            @can('Vendor-create')
+                <div class="col-auto">
+                    <div class="d-flex align-items-center gap-2 justify-content-lg-end">
+                        <a href="{{route('admin.vendor.create')}}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-2"></i>Add Vendor</a>
+                    </div>
                 </div>
-            </div>
+            @endcan
         </div><!--end row-->
 
         <div class="card mt-4">
@@ -70,7 +72,6 @@
 @push('plugins')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
-
 @endpush
 
 @push('js')

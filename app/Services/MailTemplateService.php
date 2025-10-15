@@ -21,7 +21,8 @@ class MailTemplateService
             '{{name}}','{{email}}','{{site_name}}','{{order_id}}','{{reset_link}}',
             '{{verification_link}}','{{subscription_end_date}}','{{support_email}}','{{tracking_link}}',
             '{{order_details_link}}','{{maintenance_date}}','{{start_time}}','{{end_time}}',
-            '{{support_ticket}}','{{login_link}}','{{custom_variable}}','{{verification_code}}','{{time}}'
+            '{{support_ticket}}','{{login_link}}','{{custom_variable}}','{{verification_code}}','{{time}}',
+            '{{login_url}}','{{password}}'
         ];
 
 
@@ -44,6 +45,8 @@ class MailTemplateService
             $data['custom_variable'] ?? '',
             $data['verification_code'] ?? '',
             $data['time'] ?? 10,
+            $data['login_url'] ?? '',
+            $data['password'] ?? '',
         ];
 
         return [
