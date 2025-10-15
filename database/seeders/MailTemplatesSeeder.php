@@ -21,6 +21,12 @@ class MailTemplatesSeeder extends Seeder
                 'body' => "Hi {{name}},\n\nThank you for registering at {{site_name}}! Please verify your email address by clicking the link below:\n\nVerify Email: {{verification_link}}\n\nIf you did not create an account, please ignore this email.\n\nThanks,\nThe {{site_name}} Team"
             ],
             [
+                'name' => 'Two Step Verification',
+                'subject' => '🔐 Your {{site_name}} Verification Code',
+                'body' => "Hi {{name}},\n\nWe’ve received a request to verify your identity for your {{site_name}} account.\n\nPlease use the verification code below to complete your two-step verification:\n\nYour Code: {{verification_code}}\n\nThis code will expire in {{time}} minutes for your security. If you didn’t request this verification, you can safely ignore this message.\n\nStay secure,\nThe {{site_name}} Team"
+            ],
+
+            [
                 'name' => 'Password Reset',
                 'subject' => 'Reset Your Password',
                 'body' => "Hi {{name}},\n\nYou have requested to reset your password for {{site_name}}. Click the link below to reset your password:\n\nReset Password: {{reset_link}}\n\nIf you did not request this, please ignore this email.\n\nThanks,\nThe {{site_name}} Team"

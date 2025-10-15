@@ -81,6 +81,7 @@ class SettingSeeder extends Seeder
             // 🔹 Security
             ['key' => 'max_login_attempts', 'value' => '5'],
             ['key' => 'lockout_time', 'value' => '10'],
+            ['key' => 'two_factor_expires_time', 'value' => '10'],
             ['key' => 'recaptcha_enabled', 'value' => '0'],
             ['key' => 'recaptcha_site_key', 'value' => 'recaptcha_site_key'],
             ['key' => 'recaptcha_secret_key', 'value' => 'recaptcha_secret_key'],

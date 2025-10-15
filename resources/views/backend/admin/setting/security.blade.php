@@ -43,6 +43,12 @@
                             <div class="invalid-feedback">@error('lockout_time') {{ $message }} @enderror</div>
                         </div>
 
+                        <div class="mb-3">
+                            <label class="form-label">Two Step Code Expires Time (minutes):</label>
+                            <input type="number" name="two_factor_expires_time" value="{{ old('two_factor_expires_time', setting('two_factor_expires_time')) }}" class="form-control @error('two_factor_expires_time') is-invalid @enderror" placeholder="e.g. 15" @error('two_factor_expires_time') required @enderror>
+                            <div class="invalid-feedback">@error('two_factor_expires_time') {{ $message }} @enderror</div>
+                        </div>
+
                         <!-- reCAPTCHA Enabled -->
                         <div class="mb-3">
                             <label class="form-label">reCAPTCHA Enabled:</label>

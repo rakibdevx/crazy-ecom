@@ -36,7 +36,7 @@
 
                             @csrf
                             <div class="mb-3">
-                                <label class="form-label">System  Name:</label>
+                                <label class="form-label">System  Name:<small class="text-danger">If you update the name, then your software will be rebooted</small></label>
                                 <input type="text" name="site_name" value="{{ old('site_name', setting('site_name')) }}" class="form-control @error('site_name') is-invalid @enderror" placeholder="System Name"  @error('site_name') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('site_name')

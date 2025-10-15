@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Vendor;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 
 class VendorController extends Controller
@@ -24,7 +25,6 @@ class VendorController extends Controller
                 ->orWhere('status', 'like', '%'.$search.'%');
             });
         }
-
 
         if (request()->ajax()) {
             return DataTables::of($query)
@@ -49,7 +49,7 @@ class VendorController extends Controller
                     $login = '-';
                     if($vendor->last_login_at)
                     {
-                        $login =  \Carbon\Carbon::parse($vendor->last_login_at)->format('d M Y');
+                        $login = Carbon::parse($vendor->last_login_at)->format(setting('date_format'));
                     }
                     return $login;
                 })
@@ -75,7 +75,7 @@ class VendorController extends Controller
                     if ($vendor->email_verified_at) {
                         return '
                         <span class="btn m-1 btn-success text-white btn-circle raised rounded-circle d-flex align-items-center justify-content-center wh-35"
-                            title="'.\Carbon\Carbon::parse($vendor->email_verified_at)->format('d M Y').'">
+                            title="'. Carbon::parse($vendor->email_verified_at)->format(setting('date_format')).'">
                             <i class="material-icons-outlined">check</i>
                         </span>';
                     }
@@ -107,15 +107,13 @@ class VendorController extends Controller
                         <a href="'.$edit.'" class="btn m-1 btn-primary btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Edit">
                             <i class="material-icons-outlined">settings</i>
                         </a>
-                        <button onclick="deleteVendor(\''.$deleteUrl.'\')" class="btn btn-danger btn-circle raised rounded-circle d-flex gap-2 wh-48" title="Delete">
+                        <button onclick="deleteVendor(\''.$deleteUrl.'\')" class="btn btn-danger btn-circle raised rounded-circle d-flex gap-2 wh-40" title="Delete">
                             <i class="material-icons-outlined">delete</i>
                         </button>
                     </div>
                     ';
                     return $action;
                 })
-                ->rawColumns(['action', 'name', 'status'])
-
                 ->rawColumns(['action', 'name','login','verified','status','email_verified'])
                 ->make(true);
         }

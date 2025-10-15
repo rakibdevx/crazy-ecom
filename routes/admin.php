@@ -8,6 +8,9 @@ use App\Http\Controllers\Admin\MailTemplateController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\AdminController;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
@@ -19,7 +22,11 @@ Route::prefix('admin')->name('admin.')->middleware(['web','guest:admin'])->group
     Route::post('login', [AuthController::class, 'login'])->name('login.submit');
 });
 
-
+Route::prefix('admin')->name('admin.')->middleware('web')->group(function () {
+    Route::get('otp/{email}', [AuthController::class, 'otp'])->name('otp');
+    Route::post('otp', [AuthController::class, 'verifyOtp'])->name('otp.verify');
+    Route::get('resend-otp/{email}', [AuthController::class, 'resendOtp'])->name('resendOtp');
+});
 
 Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.admin'])->group(function () {
     // dashboard route
@@ -34,10 +41,21 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.adm
     });
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
+    // role and permissions
+    Route::resource('permission', PermissionController::class);
+    Route::resource('role', RoleController::class);
+
+    // Admin Routes
+    Route::resource('admin', AdminController::class);
+    Route::get('/admin/login/{id}', [AdminController::class, 'login'])->name('admin.login');
+
+    // vendor routess
     Route::resource('vendor', VendorController::class);
     Route::get('/vendor/login/{id}', [VendorController::class, 'login'])->name('vendor.login');
     Route::get('/vendor/verify/{id}', [VendorController::class, 'verify'])->name('vendor.verify');
 
+
+    // Customer Routes
     Route::resource('user', UserController::class);
     Route::get('/user/login/{id}', [UserController::class, 'login'])->name('user.login');
     Route::get('/user/verify/{id}', [UserController::class, 'verify'])->name('user.verify');
@@ -76,5 +94,4 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.adm
         Route::get('/mail-template/edit/{id}', [MailTemplateController::class, 'edit'])->name('mail.template.edit');
         Route::post('/mail-template/edit/{id}', [MailTemplateController::class, 'update'])->name('mail.template.update');
     });
-
 });

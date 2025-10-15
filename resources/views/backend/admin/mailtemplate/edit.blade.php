@@ -1,4 +1,3 @@
-edit.blade.php
 @extends('backend.layout.index')
 @push('title')
 Edit {{$mailtemplate->name}}
@@ -17,12 +16,17 @@ Edit {{$mailtemplate->name}}
                 </ol>
             </nav>
         </div>
+        <div class="ms-auto">
+            <div class="btn-group">
+                <a href="{{route('admin.setting.mail.template.index')}}" class="btn btn-primary px-4"><i class="bx bx-left-arrow-circle"></i>Back</a>
+            </div>
+        </div>
     </div>
     <!--end breadcrumb-->
 
     <div class="row">
         <div class="col-md-6">
-            <div class="card mt-4">
+            <div class="card">
                 <div class="card-header">
                     <h5>Edit Mail Templates</h5>
                 </div>
@@ -50,7 +54,7 @@ Edit {{$mailtemplate->name}}
             </div>
         </div>
         <div class="col-md-6">
-            <div class="card mt-4">
+            <div class="card">
                 <div class="card-header">
                     <h5>Available Variables</h5>
                 </div>
@@ -60,6 +64,8 @@ Edit {{$mailtemplate->name}}
                         <li><code>@{{name}}</code> – User's full name (all templates)</li>
                         <li><code>@{{email}}</code> – User's email (all templates)</li>
                         <li><code>@{{site_name}}</code> – Website / Platform name (all templates)</li>
+                        <li><code>@{{verification_code}}</code> – Verification Code (Two Step Verification)</li>
+                        <li><code>@{{time}}</code> – Verification Code Expire Time (Two Step Verification , Order Delevary Confirmation)</li>
                         <li><code>@{{order_id}}</code> – Order number (Order Confirmation, Shipping Notification, Invoice Email, Payment Failed, Payment Successful)</li>
                         <li><code>@{{reset_link}}</code> – Password reset link (Password Reset only)</li>
                         <li><code>@{{verification_link}}</code> – Email verification link (Email Verification only)</li>

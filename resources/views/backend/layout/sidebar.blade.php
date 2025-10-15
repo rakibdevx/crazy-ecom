@@ -38,6 +38,24 @@
                     <div class="menu-title">Vendors</div>
                 </a>
             </li>
+            <li>
+                <a href="javascript:;" class="has-arrow">
+                    <div class="parent-icon"><i class="material-icons-outlined">lock</i></div>
+                    <div class="menu-title">Role Management</div>
+                </a>
+                <ul>
+                    <li class="{{ request()->routeIs('admin.permission.*') ? 'mm-active' : '' }}">
+                        <a href="{{route('admin.permission.index')}}"><i class="material-icons-outlined">arrow_right</i>Permissions</a>
+                    </li>
+                    <li class="{{ request()->routeIs('admin.role.*') ? 'mm-active' : '' }}">
+                        <a href="{{route('admin.role.index')}}"><i class="material-icons-outlined">arrow_right</i>Role</a>
+                    </li>
+                    <li class="{{ request()->routeIs('admin.admin.*') ? 'mm-active' : '' }}">
+                        <a href="{{route('admin.admin.index')}}"><i class="material-icons-outlined">arrow_right</i>Users</a>
+                    </li>
+                </ul>
+            </li>
+
 
             <li class="{{ request()->routeIs('admin.setting.*') ? 'mm-active' : '' }}">
                 <a href="javascript:;" class="has-arrow">
@@ -75,13 +93,18 @@
                 </ul>
             </li>
 
-            <li>
+            <li class="{{ request()->routeIs('admin.profile.index.*') ? 'mm-active' : '' }}">
                 <a href="{{route('admin.profile.index')}}">
                     <div class="parent-icon"><i class="material-icons-outlined">person_outline</i></div>
                     <div class="menu-title">Profile</div>
                 </a>
             </li>
             @endif
+
+
+
+
+            {{---------------------------------------------- Vendor Routes-------------------------------------------- --}}
             @if(request()->is('vendor/*'))
             <li class="{{ request()->routeIs('vendor.dashboard') ? 'mm-active' : '' }}">
                 <a href="{{route('vendor.dashboard')}}">
@@ -89,19 +112,11 @@
                     <div class="menu-title">Dashboard</div>
                 </a>
             </li>
-            <li>
-                <a href="javascript:;" class="has-arrow">
-                    <div class="parent-icon"><i class="material-icons-outlined">home</i></div>
-                    <div class="menu-title">Dashboard</div>
+            <li class="{{ request()->routeIs('vendor.profile.index.*') ? 'mm-active' : '' }}"">
+                <a href="{{route('vendor.profile.index')}}">
+                    <div class="parent-icon"><i class="material-icons-outlined">person_outline</i></div>
+                    <div class="menu-title">Profile</div>
                 </a>
-                <ul>
-                    <li>
-                        <a href="index.html"><i class="material-icons-outlined">arrow_right</i>eCommerce</a>
-                    </li>
-                    <li>
-                        <a href="index2.html"><i class="material-icons-outlined">arrow_right</i>Alternate</a>
-                    </li>
-                </ul>
             </li>
             @endif
         </ul>

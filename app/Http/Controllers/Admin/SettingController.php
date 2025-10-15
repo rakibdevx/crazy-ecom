@@ -35,7 +35,10 @@ class SettingController extends Controller
         ]);
 
         Setting::updateOrCreate(['key' => 'site_name'],['value' => $request->site_name]);
-        $this->env_update('APP_NAME', '"' . addslashes($request->site_name) . '"');
+        if($request->site_name != setting('site_name'))
+        {
+            $this->env_update('APP_NAME', '"' . addslashes($request->site_name) . '"');
+        }
         Setting::updateOrCreate(['key' => 'address'],['value' => $request->address]);
         Setting::updateOrCreate(['key' => 'timezone'],['value' => $request->timezone]);
         Setting::updateOrCreate(['key' => 'site_description'],['value' => $request->site_description]);
@@ -233,15 +236,15 @@ class SettingController extends Controller
         $request->validate([
             'max_login_attempts' => 'required|integer|min:1|max:20',
             'lockout_time' => 'required|integer|min:1|max:1440',
+            'two_factor_expires_time' => 'required|integer|min:1|max:1440',
             'recaptcha_enabled' => 'required|boolean',
             'recaptcha_site_key' => 'nullable|string|max:255',
             'recaptcha_secret_key' => 'nullable|string|max:255',
         ]);
 
-
-
         Setting::updateOrCreate(['key' => 'max_login_attempts'],['value' => $request->max_login_attempts]);
         Setting::updateOrCreate(['key' => 'lockout_time'],['value' => $request->lockout_time]);
+        Setting::updateOrCreate(['key' => 'two_factor_expires_time'],['value' => $request->two_factor_expires_time]);
         Setting::updateOrCreate(['key' => 'recaptcha_enabled'],['value' => $request->recaptcha_enabled]);
         Setting::updateOrCreate(['key' => 'recaptcha_site_key'],['value' => $request->recaptcha_site_key]);
         Setting::updateOrCreate(['key' => 'recaptcha_secret_key'],['value' => $request->recaptcha_secret_key]);

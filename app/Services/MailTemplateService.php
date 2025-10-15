@@ -21,7 +21,7 @@ class MailTemplateService
             '{{name}}','{{email}}','{{site_name}}','{{order_id}}','{{reset_link}}',
             '{{verification_link}}','{{subscription_end_date}}','{{support_email}}','{{tracking_link}}',
             '{{order_details_link}}','{{maintenance_date}}','{{start_time}}','{{end_time}}',
-            '{{support_ticket}}','{{login_link}}','{{custom_variable}}'
+            '{{support_ticket}}','{{login_link}}','{{custom_variable}}','{{verification_code}}','{{time}}'
         ];
 
 
@@ -42,6 +42,8 @@ class MailTemplateService
             $data['support_ticket'] ?? '',
             $data['login_link'] ?? route('login'),
             $data['custom_variable'] ?? '',
+            $data['verification_code'] ?? '',
+            $data['time'] ?? 10,
         ];
 
         return [

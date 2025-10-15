@@ -33,6 +33,7 @@ return new class extends Migration
             $table->timestamp('lockout_time')->nullable();
             $table->boolean('two_factor_enabled')->default(false);
             $table->string('two_factor_secret')->nullable();
+            $table->timestamp('two_factor_expires_at')->nullable();
             $table->timestamp('last_password_change')->nullable();
 
 

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
-
+use Carbon\Carbon;
 
 
 class UserController extends Controller
@@ -50,7 +50,7 @@ class UserController extends Controller
                     $login = '-';
                     if($user->last_login_at)
                     {
-                        $login =  \Carbon\Carbon::parse($user->last_login_at)->format('d M Y');
+                        $login =  Carbon::parse($user->last_login_at)->format(setting('date_format'));
                     }
                     return $login;
                 })
@@ -102,15 +102,13 @@ class UserController extends Controller
                         <a href="'.$edit.'" class="btn m-1 btn-primary btn-circle raised rounded-circle d-flex gap-2 wh-35" title="Edit">
                             <i class="material-icons-outlined">settings</i>
                         </a>
-                        <button onclick="deleteUser(\''.$deleteUrl.'\')" class="btn btn-danger btn-circle raised rounded-circle d-flex gap-2 wh-48" title="Delete">
+                        <button onclick="deleteUser(\''.$deleteUrl.'\')" class="btn btn-danger btn-circle raised rounded-circle d-flex gap-2 wh-40" title="Delete">
                             <i class="material-icons-outlined">delete</i>
                         </button>
                     </div>
                     ';
                     return $action;
                 })
-                ->rawColumns(['action', 'name', 'status'])
-
                 ->rawColumns(['action', 'name','login','status','email_verified'])
                 ->make(true);
         }

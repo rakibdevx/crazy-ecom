@@ -6,12 +6,12 @@
 <div class="main-content">
     <!--breadcrumb-->
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">Dashboard</div>
+            <div class="breadcrumb-title pe-3">Profile</div>
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}"><i class="bx bx-home-alt"></i></a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                        <li class="breadcrumb-item active" aria-current="page">Profile</li>
                     </ol>
                 </nav>
             </div>
@@ -130,7 +130,7 @@
                             <div class="card-body">
                                 <ul>
                                     @if(auth()->guard('admin')->user()->last_login_at)
-                                        <li>Last login Time : {{ \Carbon\Carbon::parse(auth()->guard('admin')->user()->last_login_at)->diffForHumans() }}</li>
+                                        <li>Last login Time : {{ \Carbon\Carbon::parse(auth()->guard('admin')->user()->last_login_at)->format(setting('date_format')) }}</li>
                                     @endif
                                     @if(auth()->guard('admin')->user()->last_login_ip)
                                         <li>Last login Ip : {{auth()->guard('admin')->user()->last_login_ip}}</li>
@@ -172,10 +172,19 @@
                                     <div class="mb-3">
                                         <label class="form-label">Image:</label>
                                         <input type="file" name="image"
-                                            class="form-control @error('image') is-invalid @enderror"required>
+                                            class="form-control @error('image') is-invalid @enderror">
                                         <div class="invalid-feedback">@error('image') {{ $message }} @enderror</div>
                                         @if(auth()->guard('admin')->user()->profile_image)
-                                            <img src="{{asset(auth()->guard('admin')->user()->profile_image)}}" alt="{{auth()->guard('admin')->user()->name}}">
+                                            <img  height="200px" src="{{asset(auth()->guard('admin')->user()->profile_image)}}" alt="{{auth()->guard('admin')->user()->name}}">
+                                        @endif
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Banner Image:</label>
+                                        <input type="file" name="banner_image"
+                                            class="form-control @error('banner_image') is-invalid @enderror">
+                                        <div class="invalid-feedback">@error('banner_image') {{ $message }} @enderror</div>
+                                        @if(auth()->guard('admin')->user()->banner_image)
+                                            <img  height="200px" src="{{asset(auth()->guard('admin')->user()->banner_image)}}" alt="{{auth()->guard('admin')->user()->name}}">
                                         @endif
                                     </div>
                                     <div class="col">

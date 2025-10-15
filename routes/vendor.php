@@ -21,9 +21,19 @@ Route::prefix('vendor')->name('vendor.')->middleware(['web','guest:vendor','vend
     Route::post('reset', [AuthController::class, 'resetPassword'])->name('resetPassword.submit');
 });
 
-// email verify routes
+
+// Otp verify
+Route::prefix('vendor')->name('vendor.')->middleware('web')->group(function () {
+    Route::get('otp/{email}', [AuthController::class, 'otp'])->name('otp');
+    Route::post('otp', [AuthController::class, 'verifyOtp'])->name('otp.verify');
+    Route::get('resend-otp/{email}', [AuthController::class, 'resendOtp'])->name('resendOtp');
+});
+
+
+// Email verify routes
 Route::get('vendor/verify/{id}/{token}', [AuthController::class, 'verify'])->name('vendor.verify');
 
+// Email Verification
 Route::prefix('vendor')->name('vendor.')->middleware('web','auth:vendor')->group(function () {
     Route::get('resend-verification', [AuthController::class, 'resend'])->name('verification.resend');
     Route::get('unverified', [AuthController::class, 'unverified'])->name('unverified');

@@ -41,7 +41,9 @@ Mail Templates
                                 <td>{{$mailtemplate->id}}</td>
                                 <td>{{$mailtemplate->name}}</td>
                                 <td>{{$mailtemplate->subject}}</td>
-                                <td>{{$mailtemplate->updated_at->diffForHumans() }}</td>
+                                <td>
+                                    {{ \Carbon\Carbon::parse($mailtemplate->updated_at)->format(setting('date_format')) }}
+                                </td>
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{route('admin.setting.mail.template.edit',$mailtemplate->id)}}" class="btn btn-primary btn-circle raised rounded-circle d-flex gap-2 wh-35">

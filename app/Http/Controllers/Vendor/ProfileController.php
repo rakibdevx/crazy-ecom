@@ -83,9 +83,9 @@ class ProfileController extends Controller
                 }
             }
             $filename = 'image' . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('backend/images/vedor/profiles'), $filename);
+            $file->move(public_path('backend/images/vendor/profiles'), $filename);
             $vendor->update([
-                'profile_image'=> 'backend/images/vedor/profiles/' . $filename
+                'profile_image'=> 'backend/images/vendor/profiles/' . $filename
             ]);
         }
         if ($request->hasFile('banner_image')) {
@@ -97,9 +97,9 @@ class ProfileController extends Controller
                 }
             }
             $filename = 'banner_image' . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('backend/images/vedor/banners'), $filename);
+            $file->move(public_path('backend/images/vendor/banners'), $filename);
             $vendor->update([
-                'banner_image'=> 'backend/images/vedor/banners/' . $filename
+                'banner_image'=> 'backend/images/vendor/banners/' . $filename
             ]);
         }
         return back()->with('success', 'Image updated successfully!');

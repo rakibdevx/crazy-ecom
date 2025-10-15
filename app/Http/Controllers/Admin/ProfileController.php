@@ -69,9 +69,11 @@ class ProfileController extends Controller
     public function image(Request $request)
     {
         $request->validate([
-            'image'=> ['required', 'file', new ValidImage()],
+            'image'=> ['nullable', 'file', new ValidImage()],
+            'banner_image'=> ['nullable', 'file', new ValidImage()],
         ]);
         $admin = Auth::guard('admin')->user();
+
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             if ($admin->profile_image) {
@@ -81,9 +83,23 @@ class ProfileController extends Controller
                 }
             }
             $filename = 'image' . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('backend/images/profiles'), $filename);
+            $file->move(public_path('backend/images/admin/profiles'), $filename);
             $admin->update([
-                'profile_image'=> 'backend/images/profiles/' . $filename
+                'profile_image'=> 'backend/images/admin/profiles/' . $filename
+            ]);
+        }
+        if ($request->hasFile('banner_image')) {
+            $file = $request->file('banner_image');
+            if ($admin->banner_image) {
+                $oldPath = public_path($admin->banner_image);
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
+            }
+            $filename = 'banner_image' . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('backend/images/admin/banners'), $filename);
+            $admin->update([
+                'banner_image'=> 'backend/images/admin/banners/' . $filename
             ]);
         }
         return back()->with('success', 'Image updated successfully!');

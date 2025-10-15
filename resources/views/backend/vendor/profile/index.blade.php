@@ -217,7 +217,7 @@
                             <div class="card-body">
                                 <ul>
                                     @if(auth()->guard('vendor')->user()->last_login_at)
-                                        <li>Last login Time : {{ \Carbon\Carbon::parse(auth()->guard('vendor')->user()->last_login_at)->diffForHumans() }}</li>
+                                        <li>Last login Time : {{ \Carbon\Carbon::parse(auth()->guard('vendor')->user()->last_login_at)->format(setting('date_format')) }}</li>
                                     @endif
                                     @if(auth()->guard('vendor')->user()->last_login_ip)
                                         <li>Last login Ip : {{auth()->guard('vendor')->user()->last_login_ip}}</li>

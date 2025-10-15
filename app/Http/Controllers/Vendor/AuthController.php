@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Carbon;
 use URL;
 use Mail;
 
@@ -35,7 +37,7 @@ class AuthController extends Controller
             $maxAttempts = (int) setting('max_login_attempts');
             $lockoutMinutes = (int) setting('lockout_time');
 
-            // Check if account is locked
+
             if ($vendor->lockout_time && now()->lessThan($vendor->lockout_time)) {
                 $minutes = now()->diffInMinutes($vendor->lockout_time);
                 return back()->withErrors(['email' => "Account locked. Try again in {$minutes} minutes."]);
@@ -44,7 +46,26 @@ class AuthController extends Controller
             $remember = $request->has('remember');
 
             if (Auth::guard('vendor')->attempt($request->only('email', 'password'), $remember)) {
-                // Successful login
+                if($vendor->two_factor_enabled == 1)
+                {
+                    $code = rand(100000, 999999);
+                    $expires_time = (int) setting('two_factor_expires_time');
+                    $vendor->update([
+                        'two_factor_secret' => $code,
+                        'two_factor_expires_at' => now()->addMinutes($expires_time),
+                    ]);
+                    $mailData = \App\Services\MailTemplateService::prepare('Two Step Verification', [
+                        'time' => $expires_time,
+                        'name' => $vendor->name,
+                        'site_name' => setting('site_name'),
+                        'email' => $vendor->email,
+                        'verification_code' => $code,
+                    ]);
+
+                    Mail::to($vendor->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
+                    Auth::guard('vendor')->logout();
+                    return redirect()->route('vendor.otp', Crypt::encryptString($vendor->email));
+                }
                 $vendor->update([
                     'last_login_at' => now(),
                     'last_login_ip' => $request->ip(),
@@ -328,4 +349,82 @@ class AuthController extends Controller
         }
         return view('backend.vendor.unverified.unverified');
     }
+
+    public function otp($email)
+    {
+        return view('backend.vendor.auth.otp',compact('email'));
+    }
+
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+            'otp' => 'required|digits:6',
+        ]);
+
+        try {
+            $email = Crypt::decryptString($request->email);
+        } catch (\Exception $e) {
+            return back()->withErrors(['email' => 'Invalid or expired verification link.']);
+        }
+
+        $vendor = Vendor::where('email', $email)->first();
+
+        if (!$vendor) {
+            return back()->withErrors(['email' => 'No account found for this email.']);
+        }
+
+        if (!$vendor->two_factor_secret || $vendor->two_factor_secret != $request->otp) {
+            return back()->withErrors(['otp' => 'Invalid verification code.']);
+        }
+
+        if (Carbon::parse($vendor->two_factor_expires_at)->isPast()) {
+            return back()->withErrors(['otp' => 'Your verification code has expired. Please request a new one.']);
+        }
+
+        $vendor->two_factor_secret = null;
+        $vendor->two_factor_expires_at = null;
+        $vendor->last_login_at =  now();
+        $vendor->last_login_ip =  $request->ip();
+        $vendor->failed_login_attempts =  0;
+        $vendor->lockout_time =  null;
+        $vendor->save();
+
+        auth('vendor')->login($vendor);
+
+        return redirect()->route('vendor.dashboard')->with('success', 'Your identity has been verified successfully!');
+    }
+
+    public function resendOtp($email)
+    {
+        try {
+            $decryptedEmail = Crypt::decryptString($email);
+        } catch (\Exception $e) {
+            return redirect()->route('vendor.login')->withErrors(['email' => 'Invalid verification link.']);
+        }
+
+        $vendor = Vendor::where('email', $decryptedEmail)->first();
+        if (!$vendor) {
+            return redirect()->route('vendor.login')->withErrors(['email' => 'Account not found.']);
+        }
+
+        $code = rand(100000, 999999);
+        $expires_time = (int) setting('two_factor_expires_time');
+        $vendor->two_factor_secret = $code;
+        $vendor->two_factor_expires_at = now()->addMinutes(10);
+        $vendor->save();
+
+        $mailData = \App\Services\MailTemplateService::prepare('Two Step Verification', [
+            'time' => $expires_time,
+            'name' => $vendor->name,
+            'site_name' => setting('site_name'),
+            'email' => $vendor->email,
+            'verification_code' => $code,
+        ]);
+
+        Mail::to($vendor->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
+
+        return back()->with('success', 'A new verification code has been sent to your email.');
+    }
+
 }
