@@ -70,6 +70,15 @@
                                         <div class="invalid-feedback">@error('password') {{ $message }} @enderror</div>
                                     </div>
                                     <div class="mb-3">
+                                        <label class="form-label">Status:</label>
+                                        <select name="status" class="form-control @error('status') is-invalid @enderror" required>
+                                            <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                            <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
+                                            <option value="suspend" {{ old('status') == 'suspend' ? 'selected' : '' }}>suspend</option>
+                                        </select>
+                                        <div class="invalid-feedback">@error('status') {{ $message }} @enderror</div>
+                                    </div>
+                                    <div class="mb-3">
                                         <label class="form-label">Assign Role:</label>
                                         <select class="form-select @error('role') is-invalid @enderror"
                                                 name="role[]"

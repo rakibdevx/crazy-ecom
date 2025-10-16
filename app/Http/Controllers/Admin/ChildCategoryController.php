@@ -32,6 +32,20 @@ class ChildCategoryController extends Controller
                 ->orWhere('status', 'like', '%'.$search.'%');
             });
         }
+        if (request()->category != null) {
+            $categoryId = request()->category;
+            $category = Category::with('subcategories')->find($categoryId);
+            $subcategoryIds = $category && $category->subcategories
+                ? $category->subcategories->pluck('id')->toArray()
+                : [];
+            $query->whereIn('sub_categories_id', $subcategoryIds);
+        }
+         if (request()->sub_category != null) {
+            $sub_category = request()->sub_category;
+            $query->where('sub_categories_id', $sub_category);
+        }
+
+
 
         if (request()->ajax()) {
             return DataTables::of($query)
@@ -109,9 +123,10 @@ class ChildCategoryController extends Controller
         $total = (clone $query)->count();
         $active = (clone $query)->where('status', 'active')->count();
         $inactive = (clone $query)->where('status', 'inactive')->count();
-
+        $categories = Category::where('status','active')->latest()->get();
+        $sub_categories = SubCategory::where('status','active')->latest()->get();
         return view('backend.admin.childcategory.index',compact([
-            'total','active','inactive'
+            'total','active','inactive','categories','sub_categories'
         ]));
     }
 
@@ -119,8 +134,8 @@ class ChildCategoryController extends Controller
 
     public function create()
     {
-        $categories = Category::all();
-        return view('backend.admin.childcategory.create',compact('categories'));
+        $categories = Category::where('status','active')->get();
+        return view('backend.admin.childcategory.create',compact('categories',));
     }
 
     public function store(Request $request)
@@ -176,11 +191,11 @@ class ChildCategoryController extends Controller
     public function destroy(ChildCategory $child_category)
     {
 
-         try {
+        try {
             $child_category->delete();
             return response()->json([
                 'status' => 'success',
-                'message' => 'Role deleted successfully.'
+                'message' => 'CHild Category deleted successfully.'
             ]);
         } catch (\Exception $e) {
             return response()->json([

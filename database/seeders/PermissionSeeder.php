@@ -87,6 +87,18 @@ class PermissionSeeder extends Seeder
             'Brand-create',
             'Brand-edit',
             'Brand-delete',
+
+            // Size Management
+            'Size-view',
+            'Size-create',
+            'Size-edit',
+            'Size-delete',
+
+            // Color Management
+            'Color-view',
+            'Color-create',
+            'Color-edit',
+            'Color-delete',
         ];
 
         foreach ($permissions as $permission) {

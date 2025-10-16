@@ -29,7 +29,7 @@
         <div class="row g-3 justify-content-between">
             <div class="col-auto">
                 <div class="position-relative">
-                    <input class="form-control px-5" type="search" id="customSearch" placeholder="Search Customers">
+                    <input class="form-control px-5" type="search" id="customSearch" placeholder="Search Colors">
                     <span class="material-icons-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
                 </div>
             </div>

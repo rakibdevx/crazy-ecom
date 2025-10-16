@@ -237,6 +237,18 @@ class UserController extends Controller
             $user->save();
         }
 
+        if($request->status == 'suspend')
+        {
+            $mailData = \App\Services\MailTemplateService::prepare('Account Suspended', [
+                'name' => $user->name,
+                'site_name' => setting('site_name'),
+                'support_email' => setting('support_email'),
+            ]);
+
+            Mail::to($user->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
+        }
+
+
         return redirect()->back()->with('success', 'user updated successfully.');
     }
 
@@ -274,4 +286,5 @@ class UserController extends Controller
         flash()->success('Email successfully Verified.');
         return redirect()->back();
     }
+    
 }

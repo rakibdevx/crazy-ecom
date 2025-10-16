@@ -181,6 +181,7 @@ class AdminController extends Controller
                 'min:' . setting('phone_digit_min'),
                 'max:' . setting('phone_digit_max'),
             ],
+            'status' => 'required|in:pending,active,suspend',
             'password' => 'required|string|min:8',
             'role' => 'required|array',
             'role.*' => 'exists:roles,name',
@@ -198,6 +199,7 @@ class AdminController extends Controller
             'username' => $username,
             'slug' => $slug,
             'email' => $request->email,
+            'status' => $request->status,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
         ]);
@@ -242,12 +244,14 @@ class AdminController extends Controller
                     'max:' . setting('phone_digit_max'),
                 ],
             'password' => 'nullable|string|min:8|confirmed',
+            'status' => 'required|in:pending,active,suspend',
             'role' => 'required|array',
             'role.*' => 'exists:roles,name',
         ]);
 
         $admin = Admin::findOrFail($id);
         $admin->name = $request->name;
+        $admin->status = $request->status;
         $admin->email = $request->email;
         $admin->phone = $request->phone;
 
@@ -258,6 +262,17 @@ class AdminController extends Controller
         $admin->save();
 
         $admin->syncRoles($request->role);
+
+        if($request->status == 'suspend')
+        {
+            $mailData = \App\Services\MailTemplateService::prepare('Account Suspended', [
+                'name' => $admin->name,
+                'site_name' => setting('site_name'),
+                'support_email' => setting('support_email'),
+            ]);
+
+            Mail::to($admin->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
+        }
 
         return redirect()->route('admin.admin.index')->with('success', 'Admin updated successfully!');
     }

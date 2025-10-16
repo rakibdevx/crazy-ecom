@@ -260,6 +260,18 @@ class VendorController extends Controller
             $vendor->save();
         }
 
+        if($request->status == 'suspend')
+        {
+            $mailData = \App\Services\MailTemplateService::prepare('Account Suspended', [
+                'name' => $vendor->name,
+                'site_name' => setting('site_name'),
+                'support_email' => setting('support_email'),
+            ]);
+
+            Mail::to($vendor->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
+        }
+
+
         return redirect()->back()->with('success', 'Vendor updated successfully.');
     }
 

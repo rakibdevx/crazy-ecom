@@ -32,6 +32,12 @@ class SubCategoryController extends Controller
                 ->orWhere('status', 'like', '%'.$search.'%');
             });
         }
+        if (request()->has('category')) {
+            $category = request()->category;
+            $query->where(function($q) use ($category) {
+                $q->where('category_id', 'like', '%'.$category.'%');
+            });
+        }
 
         if (request()->ajax()) {
             return DataTables::of($query)
@@ -103,9 +109,10 @@ class SubCategoryController extends Controller
         $total = (clone $query)->count();
         $active = (clone $query)->where('status', 'active')->count();
         $inactive = (clone $query)->where('status', 'inactive')->count();
+        $categories = Category::where('status','active')->latest()->get();
 
         return view('backend.admin.subcategory.index',compact([
-            'total','active','inactive'
+            'total','active','inactive','categories'
         ]));
     }
 

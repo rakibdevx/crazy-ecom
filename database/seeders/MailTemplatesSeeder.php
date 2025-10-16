@@ -72,11 +72,6 @@ class MailTemplatesSeeder extends Seeder
                 'body' => "Hi {{name}},\n\nYour payment for order #{{order_id}} at {{site_name}} has been successfully processed.\n\nThank you for your purchase!\n\nThe {{site_name}} Team"
             ],
             [
-                'name' => 'Account Termination',
-                'subject' => 'Your Account Has Been Terminated',
-                'body' => "Hi {{name}},\n\nWe regret to inform you that your account at {{site_name}} has been terminated due to policy violations.\n\nFor more details, contact support: {{support_email}}\n\nThe {{site_name}} Team"
-            ],
-            [
                 'name' => 'Account Suspended',
                 'subject' => 'Your Account Has Been Suspended',
                 'body' => "Hi {{name}},\n\nYour account at {{site_name}} has been temporarily suspended.\n\nPlease contact support to resolve the issue: {{support_email}}\n\nThe {{site_name}} Team"

@@ -27,8 +27,32 @@
         <div class="row g-3 justify-content-between">
             <div class="col-auto">
                 <div class="position-relative">
-                    <input class="form-control px-5" type="search" id="customSearch" placeholder="Search Customers">
+                    <input class="form-control px-5" type="search" id="customSearch" placeholder="Search Child Categories">
                     <span class="material-icons-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="btn-group position-static">
+                    <div class="btn-group position-static">
+                        <select name="category_id" id="category" class="form-control">
+                            <option value="">-- Select Category --</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto flex-grow-1 overflow-auto">
+                <div class="btn-group position-static">
+                    <div class="btn-group position-static">
+                        <select name="sub_category" id="sub_category" class="form-control">
+                            <option value="">-- Select Sub Category --</option>
+                            @foreach ($sub_categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
             @can('Child-category-create')
@@ -66,12 +90,15 @@
 @push('plugins')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css">
 @endpush
 
 @push('js')
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
@@ -90,6 +117,8 @@
                 url: '{{ route('admin.child_category.index') }}',
                 data: function (d) {
                     d.search = $('#customSearch').val();
+                    d.category = $('#category').val();
+                    d.sub_category = $('#sub_category').val();
                 }
             },
             columns: [
@@ -121,6 +150,12 @@
         });
 
         $('#customSearch').on('keyup', function () {
+            table.ajax.reload();
+        });
+        $('#category').on('change', function () {
+            table.ajax.reload();
+        });
+        $('#sub_category').on('change', function () {
             table.ajax.reload();
         });
 
@@ -157,6 +192,22 @@
                 }
             });
         }
+    </script>
+    <script>
+        $(function() {
+        "use strict";
+            $( '#category' ).select2( {
+                theme: "bootstrap-5",
+                placeholder: $( this ).data( 'placeholder' ),
+            } );
+        })
+        $(function() {
+        "use strict";
+            $( '#sub_category' ).select2( {
+                theme: "bootstrap-5",
+                placeholder: $( this ).data( 'placeholder' ),
+            } );
+        })
     </script>
 
 @endpush

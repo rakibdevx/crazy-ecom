@@ -1,6 +1,6 @@
 @extends('backend.layout.index')
 @push('title')
-    Sub Categories
+    Sizes
 @endpush
 @section('body')
 <div class="main-content">
@@ -12,7 +12,7 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Sub Category</li>
+                        <li class="breadcrumb-item active" aria-current="page">Size</li>
                     </ol>
                 </nav>
             </div>
@@ -20,33 +20,19 @@
     <!--end breadcrumb-->
         <div class="product-count d-flex align-items-center gap-3 gap-lg-4 mb-4 fw-bold flex-wrap font-text1">
             <a href="javascript:;"><span class="me-1">Total</span><span class="text-secondary">({{$total}})</span></a>
-            <a href="javascript:;"><span class="me-1">Active</span><span class="text-secondary">({{$active}})</span></a>
-            <a href="javascript:;"><span class="me-1">In Active</span><span class="text-secondary">({{$inactive}})</span></a>
         </div>
 
         <div class="row g-3 justify-content-between">
             <div class="col-auto">
                 <div class="position-relative">
-                    <input class="form-control px-5" type="search" id="customSearch" placeholder="Search Sub Category">
+                    <input class="form-control px-5" type="search" id="customSearch" placeholder="Search Size">
                     <span class="material-icons-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
                 </div>
             </div>
-            <div class="col-auto flex-grow-1 overflow-auto">
-                <div class="btn-group position-static">
-                    <div class="btn-group position-static">
-                        <select name="category_id" id="category" class="form-control">
-                            <option value="">-- Select Category --</option>
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div>
-            @can('Sub-category-create')
+            @can('Size-create')
                 <div class="col-auto">
                     <div class="d-flex align-items-center gap-2 justify-content-lg-end">
-                        <a href="{{route('admin.sub_category.create')}}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-2"></i>Add Sub Category</a>
+                        <a href="{{route('admin.size.create')}}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-2"></i>Add Size</a>
                     </div>
                 </div>
             @endcan
@@ -61,8 +47,6 @@
                                 <tr>
                                     <th>Sl</th>
                                     <th>Name</th>
-                                    <th>Category</th>
-                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -77,15 +61,12 @@
 @push('plugins')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css">
 @endpush
 
 @push('js')
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
@@ -101,17 +82,14 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: '{{ route('admin.sub_category.index') }}',
+                url: '{{ route('admin.size.index') }}',
                 data: function (d) {
                     d.search = $('#customSearch').val();
-                    d.category = $('#category').val();
                 }
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 { data: 'name', name: 'name' },
-                { data: 'category', name: 'category' },
-                { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ],
             dom: 'Blfrtip',
@@ -137,11 +115,8 @@
         $('#customSearch').on('keyup', function () {
             table.ajax.reload();
         });
-        $('#category').on('change', function () {
-            table.ajax.reload();
-        });
 
-        function deleteSubCategory(url) {
+        function SizeDelete(url) {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -175,15 +150,5 @@
             });
         }
     </script>
-    <script>
-        $(function() {
-        "use strict";
-            $( '#category' ).select2( {
-                theme: "bootstrap-5",
-                placeholder: $( this ).data( 'placeholder' ),
-            } );
-        })
-    </script>
 
 @endpush
-

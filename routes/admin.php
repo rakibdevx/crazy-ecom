@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\ChildCategoryController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\SizeController;
+use App\Http\Controllers\Admin\ColorController;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
@@ -74,9 +76,14 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.adm
     Route::resource('child_category', ChildCategoryController::class)->except('show');
     Route::get('/get-subcategories', [ChildCategoryController::class, 'getByCategory'])->name('getSubCategories');
 
-
     // Brand
     Route::resource('brand', BrandController::class)->except('show');
+
+    // Size Route
+    Route::resource('size', SizeController::class)->except('show');
+
+    // Color Route
+    Route::resource('color', ColorController::class)->except('show');
 
 
     // setting routes

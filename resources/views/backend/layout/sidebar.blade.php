@@ -38,7 +38,7 @@
                             @canany(['Category-view', 'Category-edit','Category-delete','Category-create'])
                                 <li class="{{ request()->routeIs('admin.category.*') ? 'mm-active' : '' }}">
                                     <a href="{{route('admin.category.index')}}">
-                                        <div class="parent-icon"><i class="material-icons-outlined">category</i></div>
+                                        <div class="parent-icon"><i class="material-icons-outlined">arrow_right</i></div>
                                         <div class="menu-title">Category</div>
                                     </a>
                                 </li>
@@ -46,7 +46,7 @@
                             @canany(['Sub-category-view', 'Sub-category-edit','Sub-category-delete','Sub-category-create'])
                                 <li class="{{ request()->routeIs('admin.sub_category.*') ? 'mm-active' : '' }}">
                                     <a href="{{route('admin.sub_category.index')}}">
-                                        <div class="parent-icon"><i class="material-icons-outlined">folder_open</i></div>
+                                        <div class="parent-icon"><i class="material-icons-outlined">arrow_right</i></div>
                                         <div class="menu-title">Sub Category</div>
                                     </a>
                                 </li>
@@ -54,7 +54,7 @@
                             @canany(['Child-category-view', 'Child-category-edit','Child-category-delete','Child-category-create'])
                                 <li class="{{ request()->routeIs('admin.child_category.*') ? 'mm-active' : '' }}">
                                     <a href="{{route('admin.child_category.index')}}">
-                                        <div class="parent-icon"><i class="material-icons-outlined">label</i></div>
+                                        <div class="parent-icon"><i class="material-icons-outlined">arrow_right</i></div>
                                         <div class="menu-title">Child Category</div>
                                     </a>
                                 </li>
@@ -63,8 +63,24 @@
                             @canany(['Brand-view', 'Brand-edit','Brand-delete','Brand-create'])
                                 <li class="{{ request()->routeIs('admin.brand.*') ? 'mm-active' : '' }}">
                                     <a href="{{route('admin.brand.index')}}">
-                                        <div class="parent-icon"><i class="material-icons-outlined">branding_watermark</i></div>
+                                        <div class="parent-icon"><i class="material-icons-outlined">arrow_right</i></div>
                                         <div class="menu-title">Brand</div>
+                                    </a>
+                                </li>
+                            @endcanany
+                            @canany(['Size-view', 'Size-edit','Size-delete','Size-create'])
+                                <li class="{{ request()->routeIs('admin.size.*') ? 'mm-active' : '' }}">
+                                    <a href="{{route('admin.size.index')}}">
+                                        <div class="parent-icon"><i class="material-icons-outlined">arrow_right</i></div>
+                                        <div class="menu-title">Size</div>
+                                    </a>
+                                </li>
+                            @endcanany
+                            @canany(['Color-view', 'Color-edit','Color-delete','Color-create'])
+                                <li class="{{ request()->routeIs('admin.color.*') ? 'mm-active' : '' }}">
+                                    <a href="{{route('admin.color.index')}}">
+                                        <div class="parent-icon"><i class="material-icons-outlined">arrow_right</i></div>
+                                        <div class="menu-title">Color</div>
                                     </a>
                                 </li>
                             @endcanany
