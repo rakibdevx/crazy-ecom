@@ -26,14 +26,42 @@
                     </li>
                 </ul>
             </li>
-            @canany(['User-view', 'User-edit','User-delete','User-create'])
-                <li class="{{ request()->routeIs('admin.user.*') ? 'mm-active' : '' }}">
-                    <a href="{{route('admin.user.index')}}">
-                        <div class="parent-icon"><i class="material-icons-outlined">person_outline</i></div>
-                        <div class="menu-title">Users</div>
+            @canany(['Category-view', 'Category-edit','Category-delete','Category-create'])
+                <li class="{{ request()->routeIs('admin.category.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('admin.category.index')}}">
+                        <div class="parent-icon"><i class="material-icons-outlined">category</i></div>
+                        <div class="menu-title">Category</div>
                     </a>
                 </li>
             @endcanany
+            @canany(['Sub-category-view', 'Sub-category-edit','Sub-category-delete','Sub-category-create'])
+                <li class="{{ request()->routeIs('admin.sub_category.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('admin.sub_category.index')}}">
+                        <div class="parent-icon"><i class="material-icons-outlined">folder_open</i></div>
+                        <div class="menu-title">Sub Category</div>
+                    </a>
+                </li>
+            @endcanany
+
+            @canany(['Child-category-view', 'Child-category-edit','Child-category-delete','Child-category-create'])
+                <li class="{{ request()->routeIs('admin.child_category.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('admin.child_category.index')}}">
+                        <div class="parent-icon"><i class="material-icons-outlined">label</i></div>
+                        <div class="menu-title">Child Category</div>
+                    </a>
+                </li>
+            @endcanany
+
+            @canany(['Brand-view', 'Brand-edit','Brand-delete','Brand-create'])
+                <li class="{{ request()->routeIs('admin.brand.*') ? 'mm-active' : '' }}">
+                    <a href="{{route('admin.brand.index')}}">
+                        <div class="parent-icon"><i class="material-icons-outlined">branding_watermark</i></div>
+                        <div class="menu-title">Brand</div>
+                    </a>
+                </li>
+            @endcanany
+
+
             @canany(['Vendor-view', 'Vendor-edit','Vendor-delete','Vendor-create'])
                 <li class="{{ request()->routeIs('admin.vendor.*') ? 'mm-active' : '' }}">
                     <a href="{{route('admin.vendor.index')}}">

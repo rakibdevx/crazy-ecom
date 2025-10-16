@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\ChildCategory;
+use App\Models\Brand;
 use Illuminate\Http\Request;
 
-class ChildCategoryController extends Controller
+class BrandController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,7 +35,7 @@ class ChildCategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ChildCategory $childCategory)
+    public function show(Brand $brand)
     {
         //
     }
@@ -43,7 +43,7 @@ class ChildCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ChildCategory $childCategory)
+    public function edit(Brand $brand)
     {
         //
     }
@@ -51,7 +51,7 @@ class ChildCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ChildCategory $childCategory)
+    public function update(Request $request, Brand $brand)
     {
         //
     }
@@ -59,7 +59,7 @@ class ChildCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ChildCategory $childCategory)
+    public function destroy(Brand $brand)
     {
         //
     }

@@ -12,9 +12,9 @@ class SettingSeeder extends Seeder
         $settings = [
             ['key' => 'site_name', 'value' => 'Rakib Dev X Academy'],
             ['key' => 'site_description', 'value' => 'A complete online learning platform for everyone.'],
-            ['key' => 'site_logo', 'value' => 'backend/images/logo-icon.png'],
-            ['key' => 'site_logo_dark', 'value' => 'backend/images/logo-icon.png'],
-            ['key' => 'site_favicon', 'value' => 'backend/images/favicon-32x32.png'],
+            ['key' => 'site_logo', 'value' => 'backend/images/images/logo.png'],
+            ['key' => 'site_logo_dark', 'value' => 'backend/images/images/logo_2.png'],
+            ['key' => 'site_favicon', 'value' => 'backend/images/images/favicon.png'],
             ['key' => 'address', 'value' => 'House 123, Road 4, Dhanmondi, Dhaka'],
             ['key' => 'timezone', 'value' => 'Asia/Dhaka'],
             ['key' => 'default_language', 'value' => 'en'],
@@ -26,7 +26,7 @@ class SettingSeeder extends Seeder
             ['key' => 'meta_keywords', 'value' => 'courses, online learning, education, Rakib Dev X academy'],
             ['key' => 'og_title', 'value' => 'Rakib Dev X Academy'],
             ['key' => 'og_description', 'value' => 'Join Rakib Dev X Academy to learn anything, anytime!'],
-            ['key' => 'og_image', 'value' => 'backend/images/og.png'],
+            ['key' => 'og_image', 'value' => 'backend/images/images/logo.png'],
             ['key' => 'twitter_card', 'value' => 'summary_large_image'],
 
             // 🔹 Contact & Support
@@ -88,13 +88,13 @@ class SettingSeeder extends Seeder
 
             // 🔹 Theme / UI
             ['key' => 'theme_color', 'value' => '#3b82f6'],
-            ['key' => 'login_background', 'value' => 'backend/images/login-bg.jpg'],
-            ['key' => 'registration_background', 'value' => 'backend/images/login-bg.jpg'],
-            ['key' => 'forgot_background', 'value' => 'backend/images/login-bg.jpg'],
-            ['key' => 'reset_background', 'value' => 'backend/images/login-bg.jpg'],
-            ['key' => 'default_profile_image', 'value' => 'backend/images/login-bg.jpg'],
-            ['key' => 'default_profile_banner', 'value' => 'backend/images/login-bg.jpg'],
-            ['key' => 'default_product_image', 'value' => 'backend/images/login-bg.jpg'],
+            ['key' => 'login_background', 'value' => 'backend/images/images/login_background.png'],
+            ['key' => 'registration_background', 'value' => 'backend/images/images/registration_background.png'],
+            ['key' => 'forgot_background', 'value' => 'backend/images/images/forgot_backgrounda.png'],
+            ['key' => 'reset_background', 'value' => 'backend/images/images/reset_background.png'],
+            ['key' => 'default_profile_image', 'value' => 'backend/images/images/default_profile.png'],
+            ['key' => 'default_profile_banner', 'value' => 'backend/images/images/default_profile_banner.png'],
+            ['key' => 'default_product_image', 'value' => 'backend/images/images/dafault_product_image.png'],
 
            // Image Upload Config
             ['key' => 'support_image_type', 'value' => 'png,jpg,jpeg,gif'],

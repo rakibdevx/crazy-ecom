@@ -11,6 +11,10 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\ChildController;
+use App\Http\Controllers\Admin\BrandController;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
@@ -59,6 +63,19 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.adm
     Route::resource('user', UserController::class);
     Route::get('/user/login/{id}', [UserController::class, 'login'])->name('user.login');
     Route::get('/user/verify/{id}', [UserController::class, 'verify'])->name('user.verify');
+
+    // Category Route
+    Route::resource('category', CategoryController::class);
+
+    // Sub Category Route
+    Route::resource('sub_category', SubCategoryController::class);
+
+    // Child Category
+    Route::resource('child_category', ChildCategoryController::class);
+    
+    // Brand
+    Route::resource('brand', BrandController::class);
+
 
 
     // setting routes

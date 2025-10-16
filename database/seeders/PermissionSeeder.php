@@ -63,6 +63,30 @@ class PermissionSeeder extends Seeder
             'Permission-create',
             'Permission-edit',
             'Permission-delete',
+
+            // Category Management
+            'Category-view',
+            'Category-create',
+            'Category-edit',
+            'Category-delete',
+
+            //Sub Category Management
+            'Sub-category-view',
+            'Sub-category-create',
+            'Sub-category-edit',
+            'Sub-category-delete',
+
+            //Child Category Management
+            'Child-category-view',
+            'Child-category-create',
+            'Child-category-edit',
+            'Child-category-delete',
+
+            // Category Management
+            'Brand-view',
+            'Brand-create',
+            'Brand-edit',
+            'Brand-delete',
         ];
 
         foreach ($permissions as $permission) {
