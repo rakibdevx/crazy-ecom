@@ -26,7 +26,6 @@ class CategorySeeder extends Seeder
             DB::table('categories')->insert([
                 'name' => $category,
                 'slug' => Str::slug($category),
-                'image' => 'images/categories/' . Str::slug($category) . '.jpg',
                 'status' => 'active',
                 'created_at' => now(),
                 'updated_at' => now(),

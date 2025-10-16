@@ -1,6 +1,6 @@
 @extends('backend.layout.index')
 @push('title')
-    Categories
+    Brands
 @endpush
 @section('body')
 <div class="main-content">
@@ -12,7 +12,7 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Category</li>
+                        <li class="breadcrumb-item active" aria-current="page">Brand</li>
                     </ol>
                 </nav>
             </div>
@@ -31,10 +31,10 @@
                     <span class="material-icons-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
                 </div>
             </div>
-            @can('Category-create')
+            @can('Brand-create')
                 <div class="col-auto">
                     <div class="d-flex align-items-center gap-2 justify-content-lg-end">
-                        <a href="{{route('admin.category.create')}}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-2"></i>Add Category</a>
+                        <a href="{{route('admin.brand.create')}}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-2"></i>Add Brand</a>
                     </div>
                 </div>
             @endcan
@@ -85,7 +85,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: '{{ route('admin.category.index') }}',
+                url: '{{ route('admin.brand.index') }}',
                 data: function (d) {
                     d.search = $('#customSearch').val();
                 }
@@ -120,7 +120,7 @@
             table.ajax.reload();
         });
 
-        function deleteCategory(url) {
+        function deleteBrand(url) {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",

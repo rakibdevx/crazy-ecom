@@ -308,9 +308,14 @@ class SettingController extends Controller
             'default_profile_image'=> ['nullable', 'file', new ValidImage()],
             'default_product_image'=> ['nullable', 'file', new ValidImage()],
             'default_profile_banner'=> ['nullable', 'file', new ValidImage()],
+            'default_category_image'=> ['nullable', 'file', new ValidImage()],
+            'default_sub_category_image'=> ['nullable', 'file', new ValidImage()],
+            'default_brand_image'=> ['nullable', 'file', new ValidImage()],
         ]);
 
-        $imageSettings = ['login_background', 'registration_background', 'forgot_background','reset_background','default_profile_image','default_product_image','default_profile_banner'];
+        $imageSettings = ['login_background', 'registration_background', 'forgot_background','reset_background',
+                        'default_profile_image','default_product_image','default_profile_banner','default_category_image',
+                        'default_sub_category_image','default_brand_image'];
         foreach ($imageSettings as $key) {
             if ($request->hasFile($key)) {
                 $file = $request->file($key);

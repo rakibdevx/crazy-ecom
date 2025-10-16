@@ -90,11 +90,14 @@ class SettingSeeder extends Seeder
             ['key' => 'theme_color', 'value' => '#3b82f6'],
             ['key' => 'login_background', 'value' => 'backend/images/images/login_background.png'],
             ['key' => 'registration_background', 'value' => 'backend/images/images/registration_background.png'],
-            ['key' => 'forgot_background', 'value' => 'backend/images/images/forgot_backgrounda.png'],
+            ['key' => 'forgot_background', 'value' => 'backend/images/images/forgot_background.png'],
             ['key' => 'reset_background', 'value' => 'backend/images/images/reset_background.png'],
             ['key' => 'default_profile_image', 'value' => 'backend/images/images/default_profile.png'],
             ['key' => 'default_profile_banner', 'value' => 'backend/images/images/default_profile_banner.png'],
             ['key' => 'default_product_image', 'value' => 'backend/images/images/dafault_product_image.png'],
+            ['key' => 'default_category_image', 'value' => 'backend/images/images/default_category_image.png'],
+            ['key' => 'default_sub_category_image', 'value' => 'backend/images/images/default_sub_category_image.png'],
+            ['key' => 'default_brand_image', 'value' => 'backend/images/images/default_brand_image.png'],
 
            // Image Upload Config
             ['key' => 'support_image_type', 'value' => 'png,jpg,jpeg,gif'],

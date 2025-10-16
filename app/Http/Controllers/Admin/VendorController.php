@@ -34,7 +34,7 @@ class VendorController extends Controller
     public function index()
     {
 
-        $query = Vendor::select('id', 'name', 'email', 'phone', 'created_at','profile_image','last_login_at','status','verified','email_verified_at');
+        $query = Vendor::select('id', 'name', 'email', 'phone', 'created_at','profile_image','last_login_at','status','verified','email_verified_at')->latest();
         if (request()->has('search')) {
             $search = request()->search;
             $query->where(function($q) use ($search) {
@@ -77,7 +77,7 @@ class VendorController extends Controller
                         case 'active':
                             return '<span class="badge bg-success">Active</span>';
                         case 'suspend':
-                            return '<span class="badge bg-danger">Suspend</span>';
+                            return '<span class="badge bg-danger text-white">Suspend</span>';
                         case 'pending':
                             return '<span class="badge bg-warning text-dark">Pending</span>';
                         default:
@@ -88,7 +88,7 @@ class VendorController extends Controller
                     if ($vendor->verified) {
                         return '<span class="badge bg-success">Verified</span>';
                     }
-                    return '<span class="badge bg-danger">Not Verified</span>';
+                    return '<span class="badge bg-danger text-white">Not Verified</span>';
                 })
                 ->addColumn('email_verified', function($vendor) {
                     if ($vendor->email_verified_at) {
@@ -102,7 +102,7 @@ class VendorController extends Controller
                     $url = route('admin.vendor.verify', $vendor->id);
                     if (auth('admin')->user()->can('User-verify')) {
                         return '
-                        <button onclick="verifyUser(\''.$url.'\')"
+                        <button onclick="verifyVendor(\''.$url.'\')"
                                 class="btn m-1 btn-danger text-white btn-circle raised rounded-circle d-flex align-items-center justify-content-center wh-35"
                                 title="Verify Now">
                             <i class="material-icons-outlined">close</i>

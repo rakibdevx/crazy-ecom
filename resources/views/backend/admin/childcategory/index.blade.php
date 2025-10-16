@@ -1,6 +1,6 @@
 @extends('backend.layout.index')
 @push('title')
-    Categories
+    Child Categories
 @endpush
 @section('body')
 <div class="main-content">
@@ -12,7 +12,7 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Category</li>
+                        <li class="breadcrumb-item active" aria-current="page">Child Category</li>
                     </ol>
                 </nav>
             </div>
@@ -31,10 +31,10 @@
                     <span class="material-icons-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
                 </div>
             </div>
-            @can('Category-create')
+            @can('Child-category-create')
                 <div class="col-auto">
                     <div class="d-flex align-items-center gap-2 justify-content-lg-end">
-                        <a href="{{route('admin.category.create')}}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-2"></i>Add Category</a>
+                        <a href="{{route('admin.child_category.create')}}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-2"></i>Add Child Category</a>
                     </div>
                 </div>
             @endcan
@@ -49,6 +49,8 @@
                                 <tr>
                                     <th>Sl</th>
                                     <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Sub Category</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -85,7 +87,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: '{{ route('admin.category.index') }}',
+                url: '{{ route('admin.child_category.index') }}',
                 data: function (d) {
                     d.search = $('#customSearch').val();
                 }
@@ -93,6 +95,8 @@
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 { data: 'name', name: 'name' },
+                { data: 'category', name: 'category' },
+                { data: 'subcategory', name: 'subcategory' },
                 { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ],
@@ -120,7 +124,7 @@
             table.ajax.reload();
         });
 
-        function deleteCategory(url) {
+        function deleteChildCategory(url) {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",

@@ -25,7 +25,6 @@ class BrandSeeder extends Seeder
             DB::table('brands')->insert([
                 'name' => $brand,
                 'slug' => Str::slug($brand),
-                'image_path' => 'images/brands/' . Str::slug($brand) . '.jpg',
                 'status' => 'active',
                 'created_at' => now(),
                 'updated_at' => now(),

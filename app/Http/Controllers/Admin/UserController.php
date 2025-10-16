@@ -26,7 +26,7 @@ class UserController extends Controller
     public function index()
     {
 
-        $query = User::select('id', 'name', 'email', 'phone', 'created_at','profile_image','last_login_at','status','email_verified_at');
+        $query = User::select('id', 'name', 'email', 'phone', 'created_at','profile_image','last_login_at','status','email_verified_at')->latest();
         if (request()->has('search')) {
             $search = request()->search;
             $query->where(function($q) use ($search) {
@@ -70,9 +70,9 @@ class UserController extends Controller
                         case 'active':
                             return '<span class="badge bg-success">Active</span>';
                         case 'suspend':
-                            return '<span class="badge bg-danger">Suspend</span>';
+                            return '<span class="badge bg-danger text-white">Suspend</span>';
                         case 'pending':
-                            return '<span class="badge bg-warning text-dark">Pending</span>';
+                            return '<span class="badge bg-warning text-white">Pending</span>';
                         default:
                             return '<span class="badge bg-secondary">'.$user->status.'</span>';
                     }

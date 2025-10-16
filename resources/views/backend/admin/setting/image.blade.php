@@ -120,6 +120,42 @@
                                     <img src="{{asset(setting('default_product_image'))}}" height="100px" width="auto" alt="{{setting('site_name')}}">
                                 @endif
                             </div>
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Default Category Image</label>
+                                <input class="form-control  @error('default_category_image') is-invalid @enderror" type="file" name="default_category_image" id="formFile" @error('default_category_image') required @enderror>
+                                <div class="invalid-feedback">
+                                    @error('default_category_image')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                                @if (!empty(setting('default_category_image')))
+                                    <img src="{{asset(setting('default_category_image'))}}" height="100px" width="auto" alt="{{setting('site_name')}}">
+                                @endif
+                            </div>
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Default Sub Category Image</label>
+                                <input class="form-control  @error('default_sub_category_image') is-invalid @enderror" type="file" name="default_sub_category_image" id="formFile" @error('default_sub_category_image') required @enderror>
+                                <div class="invalid-feedback">
+                                    @error('default_sub_category_image')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                                @if (!empty(setting('default_sub_category_image')))
+                                    <img src="{{asset(setting('default_sub_category_image'))}}" height="100px" width="auto" alt="{{setting('site_name')}}">
+                                @endif
+                            </div>
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Default Brand Image</label>
+                                <input class="form-control  @error('default_brand_image') is-invalid @enderror" type="file" name="default_brand_image" id="formFile" @error('default_brand_image') required @enderror>
+                                <div class="invalid-feedback">
+                                    @error('default_brand_image')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                                @if (!empty(setting('default_brand_image')))
+                                    <img src="{{asset(setting('default_brand_image'))}}" height="100px" width="auto" alt="{{setting('site_name')}}">
+                                @endif
+                            </div>
                             <div class="col">
                                 <button type="submit" class="btn btn-success px-5 raised">Update</button>
                                 <a href="{{route('admin.dashboard')}}" class="btn btn-primary px-5 raised">back</a>

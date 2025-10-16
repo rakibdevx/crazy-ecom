@@ -1,25 +1,25 @@
 
 @extends('backend.layout.index')
 @push('title')
-    Category
+    Brand
 @endpush
 @section('body')
 <div class="main-content">
     <!--breadcrumb-->
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">Category</div>
+            <div class="breadcrumb-title pe-3">Brand</div>
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}"><i class="bx bx-home-alt"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{{route('admin.category.index')}}">Category</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.brand.index')}}">Brand</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Create</li>
                     </ol>
                 </nav>
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                    <a href="{{route('admin.category.index')}}" class="btn btn-primary px-4"><i class="bx bx-left-arrow-circle"></i>Back</a>
+                    <a href="{{route('admin.brand.index')}}" class="btn btn-primary px-4"><i class="bx bx-left-arrow-circle"></i>Back</a>
                 </div>
             </div>
         </div>
@@ -30,10 +30,10 @@
                     <div class="col-md-12">
                         <div class="card w-100 rounded-4">
                             <div class="card-header">
-                                <h5>Create New Category</h5>
+                                <h5>Create New Brand</h5>
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('admin.category.store') }}" method="POST" enctype="multipart/form-data"
+                                <form action="{{ route('admin.brand.store') }}" method="POST" enctype="multipart/form-data"
                                     class="row g-3 needs-validation">
                                     @csrf
 
@@ -66,7 +66,7 @@
 
                                     <div class="col">
                                         <button type="submit" class="btn btn-success px-5 raised">Create</button>
-                                        <a href="{{ route('admin.category.index') }}" class="btn btn-primary px-5 raised">Back</a>
+                                        <a href="{{ route('admin.brand.index') }}" class="btn btn-primary px-5 raised">Back</a>
                                     </div>
                                 </form>
                             </div>

@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
+use App\Rules\ValidImage;
+use Str;
+
 
 class CategoryController extends Controller
 {
@@ -17,10 +21,9 @@ class CategoryController extends Controller
         $this->middleware('permission:Category-delete')->only(['destroy']);
     }
 
-
     public function index()
     {
-        $query = Category::select('id', 'name','image','status','slug');
+        $query = Category::select('id', 'name','image','status')->latest();
         if (request()->has('search')) {
             $search = request()->search;
             $query->where(function($q) use ($search) {
@@ -34,8 +37,7 @@ class CategoryController extends Controller
                 ->addIndexColumn()
                 ->addColumn('name', function($category) {
                     $name = "-";
-                    $image = $category->image? asset($category->image): asset(setting('default_product_image'));
-
+                    $image = $category->image? asset($category->image): asset(setting('default_category_image'));
                     if ($category->name) {
                         $name = '
                             <a class="d-flex align-items-center gap-3" href="javascript:;">
@@ -52,10 +54,8 @@ class CategoryController extends Controller
                     switch ($category->status) {
                         case 'active':
                             return '<span class="badge bg-success">Active</span>';
-                        case 'suspend':
-                            return '<span class="badge bg-danger">Suspend</span>';
-                        case 'pending':
-                            return '<span class="badge bg-warning text-dark">Pending</span>';
+                        case 'inactive':
+                            return '<span class="badge bg-danger text-white">In Active</span>';
                         default:
                             return '<span class="badge bg-secondary">'.$category->status.'</span>';
                     }
@@ -118,7 +118,7 @@ class CategoryController extends Controller
         $imagePath = '';
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $filename = $key . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $filename = 'category' . '_' . time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('backend/images/category'), $filename);
             $imagePath = 'backend/images/category/' . $filename;
         }
@@ -148,6 +148,7 @@ class CategoryController extends Controller
     // 6️⃣ Update category
     public function update(Request $request, Category $category)
     {
+
         $request->validate([
             'name' => 'required|unique:categories,name,' . $category->id,
             'status' => 'required|in:active,inactive',
@@ -164,7 +165,7 @@ class CategoryController extends Controller
                     @unlink($oldPath);
                 }
             }
-            $filename = $key . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $filename = 'category' . '_' . time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('backend/images/category'), $filename);
             $imagePath = 'backend/images/category/' . $filename;
         }

@@ -1,6 +1,6 @@
 @extends('backend.layout.index')
 @push('title')
-    Acrate
+    Admin Crate
 @endpush
 @section('body')
 <div class="main-content">

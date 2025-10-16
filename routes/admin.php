@@ -13,7 +13,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SubCategoryController;
-use App\Http\Controllers\Admin\ChildController;
+use App\Http\Controllers\Admin\ChildCategoryController;
 use App\Http\Controllers\Admin\BrandController;
 
 use Illuminate\Support\Facades\Artisan;
@@ -65,17 +65,18 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.adm
     Route::get('/user/verify/{id}', [UserController::class, 'verify'])->name('user.verify');
 
     // Category Route
-    Route::resource('category', CategoryController::class);
+    Route::resource('category', CategoryController::class)->except('show');
 
     // Sub Category Route
-    Route::resource('sub_category', SubCategoryController::class);
+    Route::resource('sub_category', SubCategoryController::class)->except('show');
 
     // Child Category
-    Route::resource('child_category', ChildCategoryController::class);
-    
-    // Brand
-    Route::resource('brand', BrandController::class);
+    Route::resource('child_category', ChildCategoryController::class)->except('show');
+    Route::get('/get-subcategories', [ChildCategoryController::class, 'getByCategory'])->name('getSubCategories');
 
+
+    // Brand
+    Route::resource('brand', BrandController::class)->except('show');
 
 
     // setting routes

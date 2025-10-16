@@ -1,6 +1,6 @@
 @extends('backend.layout.index')
 @push('title')
-    Categories
+    Sub Categories
 @endpush
 @section('body')
 <div class="main-content">
@@ -12,7 +12,7 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Category</li>
+                        <li class="breadcrumb-item active" aria-current="page">Sub Category</li>
                     </ol>
                 </nav>
             </div>
@@ -31,10 +31,10 @@
                     <span class="material-icons-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
                 </div>
             </div>
-            @can('Category-create')
+            @can('Sub-category-create')
                 <div class="col-auto">
                     <div class="d-flex align-items-center gap-2 justify-content-lg-end">
-                        <a href="{{route('admin.category.create')}}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-2"></i>Add Category</a>
+                        <a href="{{route('admin.sub_category.create')}}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-2"></i>Add Sub Category</a>
                     </div>
                 </div>
             @endcan
@@ -49,6 +49,7 @@
                                 <tr>
                                     <th>Sl</th>
                                     <th>Name</th>
+                                    <th>Category</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -85,7 +86,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: '{{ route('admin.category.index') }}',
+                url: '{{ route('admin.sub_category.index') }}',
                 data: function (d) {
                     d.search = $('#customSearch').val();
                 }
@@ -93,6 +94,7 @@
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 { data: 'name', name: 'name' },
+                { data: 'category', name: 'category' },
                 { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ],
@@ -120,7 +122,7 @@
             table.ajax.reload();
         });
 
-        function deleteCategory(url) {
+        function deleteSubCategory(url) {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",

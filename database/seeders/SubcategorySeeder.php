@@ -42,7 +42,6 @@ class SubcategorySeeder extends Seeder
                 'category_id' => $sub['category_id'],
                 'name' => $sub['name'],
                 'slug' => Str::slug($sub['name']),
-                'image' => 'images/subcategories/' . Str::slug($sub['name']) . '.jpg',
                 'status' => 'active',
                 'created_at' => now(),
                 'updated_at' => now(),
