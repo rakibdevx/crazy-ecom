@@ -16,24 +16,25 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            // TimeZoneSeeder::class,
-            // SettingSeeder::class,
-            // VendorSeeder::class,
-            // UserSeeder::class,
-            // MailTemplatesSeeder::class,
-            // DateTimeFormatSeeder::class,
-            // PermissionSeeder::class,
-            // AdminSeeder::class,
-            // CategorySeeder::class,
-            // SubcategorySeeder::class,
-            // ChildCategorySeeder::class,
-            // BrandSeeder::class,
-            // SizesTableSeeder::class,
-            // ColorsTableSeeder::class,
+            TimeZoneSeeder::class,
+            SettingSeeder::class,
+            VendorSeeder::class,
+            UserSeeder::class,
+            MailTemplatesSeeder::class,
+            DateTimeFormatSeeder::class,
+            PermissionSeeder::class,
+            AdminSeeder::class,
+            CategorySeeder::class,
+            SubcategorySeeder::class,
+            ChildCategorySeeder::class,
+            BrandSeeder::class,
+            SizesTableSeeder::class,
+            ColorsTableSeeder::class,
+            CommissionSeeder::class,
         ]);
 
-        // User::factory(100)->create();
-        // Vendor::factory(100)->create();
+        User::factory(100)->create();
+        Vendor::factory(100)->create();
     }
 }
 

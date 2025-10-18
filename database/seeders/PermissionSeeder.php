@@ -99,6 +99,18 @@ class PermissionSeeder extends Seeder
             'Color-create',
             'Color-edit',
             'Color-delete',
+
+            // Commission management
+            'Commission-view',
+            'Commission-create',
+            'Commission-edit',
+            'Commission-delete',
+
+            // Commission ruls management
+            'Commission-rule-view',
+            'Commission-rule-create',
+            'Commission-rule-edit',
+            'Commission-rule-delete',
         ];
 
         foreach ($permissions as $permission) {
