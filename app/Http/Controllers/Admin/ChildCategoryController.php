@@ -150,7 +150,7 @@ class ChildCategoryController extends Controller
         ChildCategory::Create([
             'sub_categories_id'=>$request->sub_category_id,
             'name'=>$request->name,
-            'slug'=>\Str::slug($request->name),
+            'slug'=>Str::slug($request->name),
             'status'=>$request->status
         ]);
 

@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('type')->default('global');
             $table->decimal('rate', 5, 2)->default(0);
             $table->enum('rate_type', ['percentage', 'flat'])->default('percentage');
-            $table->boolean('is_active')->default(true);
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            $table->enum('status',['active','inactive'])->default('active');
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
             $table->timestamps();
         });
     }

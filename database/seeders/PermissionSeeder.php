@@ -111,6 +111,22 @@ class PermissionSeeder extends Seeder
             'Commission-rule-create',
             'Commission-rule-edit',
             'Commission-rule-delete',
+
+            // Shiping Zone management
+            'Shiping-zone-view',
+            'Shiping-zone-create',
+            'Shiping-zone-edit',
+            'Shiping-zone-delete',
+
+            // Shiping  management
+            'Shipping-rate',
+            'Default-shiping',
+
+            // Product management
+            'Product-view',
+            'Product-create',
+            'Product-edit',
+            'Product-delete',
         ];
 
         foreach ($permissions as $permission) {

@@ -31,7 +31,7 @@
                 ])
                     <li>
                         <a href="javascript:;" class="has-arrow">
-                            <div class="parent-icon"><i class="material-icons-outlined">home</i></div>
+                            <div class="parent-icon"><i class="material-icons-outlined">shopping_bag</i></div>
                             <div class="menu-title">Product</div>
                         </a>
                         <ul>
@@ -84,6 +84,14 @@
                                     </a>
                                 </li>
                             @endcanany
+                            @canany(['Product-view', 'Product-edit','Product-delete','Product-create'])
+                                <li class="{{ request()->routeIs('admin.product.*') ? 'mm-active' : '' }}">
+                                    <a href="{{route('admin.product.index')}}">
+                                        <div class="parent-icon"><i class="material-icons-outlined">arrow_right</i></div>
+                                        <div class="menu-title">Product</div>
+                                    </a>
+                                </li>
+                            @endcanany
                         </ul>
                     </li>
                 @endcanany
@@ -102,6 +110,47 @@
                             <div class="parent-icon"><i class="material-icons-outlined">person_outline</i></div>
                             <div class="menu-title">Vendors</div>
                         </a>
+                    </li>
+                @endcanany
+                @canany(['Commission-view', 'Commission-edit','Commission-create','Commission-delete','Commission-rule-view','Commission-rule-create', 'Commission-rule-edit','Commission-rule-delete'])
+                    <li>
+                        <a href="javascript:;" class="has-arrow">
+                            <div class="parent-icon"><i class="material-icons-outlined">{{setting('currency_symbol')}}</i></div>
+                            <div class="menu-title">Commission</div>
+                        </a>
+                        <ul>
+                            @canany(['Commission-view', 'Commission-edit','Commission-delete','Commission-create',])
+                            <li class="{{ request()->routeIs('admin.commission.*') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.commission.index')}}"><i class="material-icons-outlined">arrow_right</i>Commission</a>
+                            </li>
+                            @endcanany
+                            @canany(['Commission-rule-view', 'Commission-rule-edit','Commission-rule-delete','Commission-rule-create'])
+                                <li class="{{ request()->routeIs('admin.commission-rule.*') ? 'mm-active' : '' }}">
+                                    <a href="{{route('admin.commission-rule.index')}}"><i class="material-icons-outlined">arrow_right</i>Commission Rules</a>
+                                </li>
+                            @endcanany
+                        </ul>
+                    </li>
+                @endcanany
+
+                @canany(['Shipping-zone-view', 'Shipping-zone-edit','Shipping-zone-create','Shipping-zone-delete'])
+                    <li>
+                        <a href="javascript:;" class="has-arrow">
+                            <div class="parent-icon"><i class="material-icons-outlined">person_outline</i></div>
+                            <div class="menu-title">Shipping Zone</div>
+                        </a>
+                        <ul>
+                            @canany(['Shipping-zone-view', 'Shipping-zone-edit','Shipping-zone-delete','Shipping-zone-create',])
+                            <li class="{{ request()->routeIs('admin.shipping_zone.*') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.shipping_zone.index')}}"><i class="material-icons-outlined">arrow_right</i>Shipping Zone</a>
+                            </li>
+                            @endcanany
+                            @canany(['Shipping-rate', 'Default-shipping'])
+                                <li class="{{ request()->routeIs('admin.commission-rule.*') ? 'mm-active' : '' }}">
+                                    <a href="{{route('admin.shipping.index')}}"><i class="material-icons-outlined">arrow_right</i>Shiping Rate</a>
+                                </li>
+                            @endcanany
+                        </ul>
                     </li>
                 @endcanany
 

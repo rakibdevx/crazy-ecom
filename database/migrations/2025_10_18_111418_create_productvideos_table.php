@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('colors', function (Blueprint $table) {
+        Schema::create('productvideos', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->id();
-            $table->string('name');
-            $table->string('slug');
-            $table->string('code');
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
+            $table->string('provider')->nullable();
+            $table->string('url');
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('colors');
+        Schema::dropIfExists('productvideos');
     }
 };

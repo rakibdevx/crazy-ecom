@@ -33,8 +33,8 @@ class CommissionRule extends Model
         return match ($this->applies_to) {
             'category' => $this->belongsTo(Category::class, 'applies_id'),
             'subcategory' => $this->belongsTo(SubCategory::class, 'applies_id'),
-            'seller' => $this->belongsTo(Seller::class, 'applies_id'),
-            'product' => $this->belongsTo(Product::class, 'applies_id'),
+            'vendor' => $this->belongsTo(Vendor::class, 'applies_id'),
+            // 'product' => $this->belongsTo(Product::class, 'applies_id'),
             default => null,
         };
     }

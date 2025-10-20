@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        User::factory(100)->create();
+        Vendor::factory(100)->create();
         $this->call([
             TimeZoneSeeder::class,
             SettingSeeder::class,
@@ -31,10 +33,9 @@ class DatabaseSeeder extends Seeder
             SizesTableSeeder::class,
             ColorsTableSeeder::class,
             CommissionSeeder::class,
+            ShippingRateSeeder::class,
+            ShippingZoneSeeder::class,
         ]);
-
-        User::factory(100)->create();
-        Vendor::factory(100)->create();
     }
 }
 

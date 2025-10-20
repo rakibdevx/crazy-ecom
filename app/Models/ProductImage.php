@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Commission extends Model
+class ProductImage extends Model
 {
-    protected $guarded = [];
+    //
 }

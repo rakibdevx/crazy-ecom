@@ -15,7 +15,7 @@ class CommissionSeeder extends Seeder
             'type' => 'global',
             'rate' => 8,
             'rate_type' => 'percentage',
-            'is_active' => true,
+            'status' => 'active',
             'start_date' => null,
             'end_date' => null,
         ]);
@@ -36,7 +36,7 @@ class CommissionSeeder extends Seeder
             'type' => 'category',
             'rate' => 10,
             'rate_type' => 'percentage',
-            'is_active' => true,
+            'status' => 'active',
             'start_date' => now()->format('Y-m-d'),
             'end_date' => now()->addMonths(1)->format('Y-m-d'),
         ]);
@@ -51,22 +51,22 @@ class CommissionSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        // Example Seller-specific commission
-        $sellerCommission = Commission::create([
-            'name' => 'Special Seller Commission',
-            'type' => 'seller',
+        // Example vendor-specific commission
+        $vendorCommission = Commission::create([
+            'name' => 'Special vendor Commission',
+            'type' => 'vendor',
             'rate' => 12,
             'rate_type' => 'percentage',
-            'is_active' => true,
+            'status' => 'active',
             'start_date' => now()->format('Y-m-d'),
             'end_date' => now()->addWeeks(2)->format('Y-m-d'),
         ]);
 
         CommissionRule::create([
-            'commission_id' => $sellerCommission->id,
-            'applies_to' => 'seller',
+            'commission_id' => $vendorCommission->id,
+            'applies_to' => 'vendor',
             'applies_id' => 5,
-            'condition' => json_encode(['seller' => 'VIP']),
+            'condition' => json_encode(['vendor' => 'VIP']),
             'priority' => 1,
             'created_at' => now(),
             'updated_at' => now(),
@@ -78,7 +78,7 @@ class CommissionSeeder extends Seeder
             'type' => 'product',
             'rate' => 12,
             'rate_type' => 'percentage',
-            'is_active' => true,
+            'status' => 'active',
             'start_date' => now()->format('Y-m-d'),
             'end_date' => now()->addWeeks(2)->format('Y-m-d'),
         ]);

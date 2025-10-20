@@ -17,9 +17,12 @@ use App\Http\Controllers\Admin\ChildCategoryController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\CommissionController;
+use App\Http\Controllers\Admin\CommissionRulsController;
+use App\Http\Controllers\Admin\ShippingZoneController;
+use App\Http\Controllers\Admin\ShipingRateController;
+use App\Http\Controllers\Admin\ProductController;
 
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Cache;
 
 
 // login route
@@ -84,6 +87,24 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.adm
 
     // Color Route
     Route::resource('color', ColorController::class)->except('show');
+
+    // commission routes
+    Route::resource('commission', CommissionController::class)->except('show');
+
+    // commission ruls Routes
+    Route::resource('commission-rule', CommissionRulsController::class)->except('show');
+
+    // Siping Zone Routes
+    Route::resource('shipping_zone', ShippingZoneController::class)->except('show');
+
+    // Siping Zone Routes
+    Route::resource('shipping', ShipingRateController::class)->except('show','create','update','edit','destroy');
+    Route::get('/shipping/default', [ShipingRateController::class, 'default'])->name('shipping.default');
+
+    // Product Routes
+    Route::resource('product', ProductController::class)->except('show');
+    Route::get('product/get-subcategories', [ProductController::class, 'getSubCategories'])->name('product.getSubCategories');
+    Route::get('product/get-childcategories', [ProductController::class, 'getChildCategories'])->name('product.getChildCategories');
 
 
     // setting routes

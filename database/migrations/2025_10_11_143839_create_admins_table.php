@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('admins', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
 
             // Basic Info
@@ -37,7 +38,6 @@ return new class extends Migration
             $table->string('two_factor_secret')->nullable();
             $table->timestamp('two_factor_expires_at')->nullable();
             $table->timestamp('last_password_change')->nullable();
-
 
             $table->timestamps();
             $table->softDeletes();

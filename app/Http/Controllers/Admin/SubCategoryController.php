@@ -35,7 +35,7 @@ class SubCategoryController extends Controller
         if (request()->has('category')) {
             $category = request()->category;
             $query->where(function($q) use ($category) {
-                $q->where('category_id', 'like', '%'.$category.'%');
+                $q->where('category_id',$category);
             });
         }
 

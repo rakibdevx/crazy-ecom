@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('vendors', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
             // Basic Info
             $table->string('name');
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->string('banner_image')->nullable();
             $table->string('slug')->unique()->nullable();
             $table->text('bio')->nullable();
+            $table->double('default_shiping',8,2)->default(0);
 
             // Business Info
             $table->string('company_name')->nullable();
