@@ -102,9 +102,9 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.adm
     Route::get('/shipping/default', [ShipingRateController::class, 'default'])->name('shipping.default');
 
     // Product Routes
-    Route::resource('product', ProductController::class)->except('show');
-    Route::get('product/get-subcategories', [ProductController::class, 'getSubCategories'])->name('product.getSubCategories');
-    Route::get('product/get-childcategories', [ProductController::class, 'getChildCategories'])->name('product.getChildCategories');
+    Route::resource('product', ProductController::class);
+    Route::get('products/get-subcategories', [ProductController::class, 'getSubCategories'])->name('product.getSubCategories');
+    Route::get('products/get-childcategories', [ProductController::class, 'getChildCategories'])->name('product.getChildCategories');
 
 
     // setting routes

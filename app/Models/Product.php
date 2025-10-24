@@ -9,8 +9,8 @@ class Product extends Model
 
     protected $guarded = [];
 
-    
-     public function category() {
+    // Category
+    public function category() {
         return $this->belongsTo(Category::class);
     }
 
@@ -29,18 +29,30 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    // Colors (Many to Many)
-    public function colors() {
-        return $this->belongsToMany(Color::class, 'product_colors', 'product_id', 'color_id');
-    }
-
-    // Sizes (Many to Many)
-    public function sizes() {
-        return $this->belongsToMany(Size::class, 'product_sizes', 'product_id', 'size_id');
-    }
 
     // Variants (One to Many)
     public function variants() {
         return $this->hasMany(ProductVariant::class);
     }
+
+    public function productColors()
+    {
+        return $this->hasMany(ProductColor::class);
+    }
+
+    public function productSizes()
+    {
+        return $this->hasMany(ProductSize::class);
+    }
+
+    public function gallery()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
+     public function video()
+    {
+        return $this->hasMany(ProductVideo::class);
+    }
+
 }

@@ -48,14 +48,15 @@ return new class extends Migration
                 $table->decimal('width_cm', 8, 2)->nullable();
                 $table->decimal('height_cm', 8, 2)->nullable();
                 $table->decimal('shipping_cost', 10, 2)->nullable();
+                $table->enum('shipping_type',['flat','zone','product'])->default('flat');
 
                 // Product Type & Status
                 $table->enum('product_type', ['simple', 'variable', 'digital', 'bundle'])->default('simple');
                 $table->enum('status',['active','inactive','suspend'])->default('active');
-                $table->enum('featured',['yes','no'])->default('yes');
-                $table->enum('new',['yes','no'])->default('yes');
-                $table->enum('trending',['yes','no'])->default('yes');
-                $table->enum('best_seller',['yes','num'])->default('yes');
+                $table->enum('featured',['yes','no'])->default('no');
+                $table->enum('new',['yes','no'])->default('no');
+                $table->enum('trending',['yes','no'])->default('no');
+                $table->enum('best_seller',['yes','no'])->default('no');
 
                 // Content
                 $table->text('short_description')->nullable();

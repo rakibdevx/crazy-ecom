@@ -23,6 +23,16 @@
         <div class="row">
             <!-- Left -->
             <div class="col-12 col-lg-8">
+                @if ($errors->any())
+                    <div class="card">
+                        <div class="card-body">
+                            @foreach ($errors->all() as $error)
+                                <span class="text-danger">{{ $error }}</span>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
                 <div class="card">
                     <div class="card-body">
 
@@ -54,18 +64,24 @@
                 </div>
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="mb-3">Product Images</h5>
+                        <h6 class="mb-3">Product Images</h6>
                     </div>
                     <div class="card-body">
                          <div class="mb-4">
-                            <label for="thumbnail">Thumbnail Image</label>
+                            <h6 class="mb-3">Thumbnail Image</h6>
                             <input id="thumbnail" type="file" name="thumbnail" accept="image/*">
                         </div>
 
                         <div class="mb-4">
-                            <label for="images">Gallery Images</label>
+                            <h6 class="mb-3">Gallery Images</h6>
                             <input id="images" type="file" name="images[]" multiple accept="image/*">
                         </div>
+
+                        <div class="mb-4">
+                            <h6 class="mb-3">Videos</h6>
+                            <input id="videos" type="file" name="videos[]" multiple accept="video/*">
+                        </div>
+
                     </div>
                 </div>
                 <div class="card">
@@ -195,19 +211,16 @@
 
                                                     <div class="row g-3 mt-3">
                                                         <div class="col-md-6">
-                                                            <h6>Sale Starts</h6>
-                                                            <input type="date" name="sale_starts_at" value="{{old('sale_starts_at')}}" class="form-control">
+                                                            <h6>Old Quantity</h6>
+                                                            <input class="form-control" name="old_price" value="{{old('old_price')}}" type="number" placeholder="Old Price">
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <h6>Sale Ends</h6>
-                                                            <input type="date" name="sale_ends_at" value="{{old('sale_ends_at')}}" class="form-control">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row g-3 mt-3">
-                                                        <div class="col-md-12">
                                                             <h6>Stock Quantity</h6>
                                                             <input class="form-control" name="stock_quantity" value="{{old('stock_quantity')}}" type="number" placeholder="Quantity">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <h6>Low Stock Threshold</h6>
+                                                            <input class="form-control" name="low_stock_threshold" value="{{old('low_stock_threshold')}}" type="number" placeholder="Low Stock Threshold">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -316,6 +329,22 @@
                                                         <input class="form-control" value="{{old('width_cm')}}" type="number" step="0.01" name="width_cm" placeholder="W">
                                                         <input class="form-control" value="{{old('height_cm')}}" type="number" step="0.01" name="height_cm" placeholder="H">
                                                     </div>
+                                                </div>
+
+                                                <div class="row g-3 mt-3">
+                                                    <div class="col-md-6">
+                                                        <h6>Sale Starts</h6>
+                                                        <input type="date" name="sale_starts_at" value="{{old('sale_starts_at')}}" class="form-control">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <h6>Sale Ends</h6>
+                                                        <input type="date" name="sale_ends_at" value="{{old('sale_ends_at')}}" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input id="pre_order" class="form-check-input" type="checkbox" name="pre_order" value="1"
+                                                        {{ old('pre_order') ? 'checked' : '' }}>
+                                                    <label for="pre_order">Pre Order</label>
                                                 </div>
                                             </div>
                                         </div>
