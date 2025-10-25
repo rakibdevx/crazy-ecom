@@ -183,8 +183,7 @@ class ChildCategoryController extends Controller
         $child_category->status = $request->status;
         $child_category->save();
 
-        return back()->with('success', 'Child Category updated successfully.');
-
+        return redirect()->route('admin.child_category.index')->with('success', 'Child Category updated successfully.');
     }
 
     // 7️⃣ Delete category

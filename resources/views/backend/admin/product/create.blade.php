@@ -263,7 +263,7 @@
                                                     @endif
                                                     @if ($Zone_rate ?? false)
                                                     <div class="form-check mb-3">
-                                                        <input class="form-check-input" type="radio" name="shipping_type" id="zone_rate" value="zone_rate" {{ old('shipping_type') == 'zone_rate' ? 'checked' : '' }}>
+                                                        <input class="form-check-input" type="radio" name="shipping_type" id="zone_rate" value="zone" {{ old('shipping_type') == 'zone' ? 'checked' : '' }}>
                                                         <label class="form-check-label fw-bold" for="zone_rate">
                                                             By Zone Shipping
                                                         </label>
@@ -299,9 +299,9 @@
                                                 </div>
 
                                                 <div class="col-md-3">
-                                                    <input id="best_seller" class="form-check-input" type="checkbox" name="best_seller" value="1"
-                                                        {{ old('best_seller') ? 'checked' : '' }}>
-                                                    <label for="best_seller">Best Seller</label>
+                                                    <input id="best_sell" class="form-check-input" type="checkbox" name="best_sell" value="1"
+                                                        {{ old('best_sell') ? 'checked' : '' }}>
+                                                    <label for="best_sell">Best Seller</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -362,8 +362,15 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center gap-3">
-                            <button type="reset" class="btn btn-outline-danger flex-fill"><i class="bi bi-x-circle me-2"></i>Discard</button>
-                            <button type="submit" class="btn btn-outline-primary flex-fill"><i class="bi bi-send me-2"></i>Publish</button>
+                            <a href="{{ route('admin.product.index') }}" class="btn btn-outline-danger flex-fill">
+                                <i class="bi bi-x-circle me-2"></i>Discard
+                            </a>
+                            <button type="submit" name="status" value="draft" class="btn btn-outline-primary flex-fill">
+                                <i class="bi bi-cloud-download me-2"></i>Draft
+                            </button>
+                            <button type="submit" name="status" value="active" class="btn btn-outline-success flex-fill">
+                                <i class="bi bi-send me-2"></i>Publish
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -567,7 +574,7 @@
                 <div class="variant-row row g-3 align-items-end mb-2 border p-3 rounded bg-light position-relative">
                     <div class="col-md-3">
                         <label class="form-label">Color</label>
-                        <select name="variant_color_id[]" class="form-select color-select" required>
+                        <select name="variant_color_id[]" class="form-select color-select" >
                             <option value="">-- Select Color --</option>
                             @foreach($colors as $color)
                                 <option value="{{ $color->id }}">{{ $color->name }}</option>
@@ -576,7 +583,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Size</label>
-                        <select name="variant_size_id[]" class="form-select size-select" required>
+                        <select name="variant_size_id[]" class="form-select size-select" >
                             <option value="">-- Select Size --</option>
                             @foreach($sizes as $size)
                                 <option value="{{ $size->id }}">{{ $size->name }}</option>
@@ -585,11 +592,11 @@
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">Stock</label>
-                        <input type="number" name="variant_stock[]" class="form-control" placeholder="Stock" required>
+                        <input type="number" name="variant_stock[]" class="form-control" placeholder="Stock" >
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Price</label>
-                        <input type="number" name="variant_price[]" class="form-control" placeholder="Price" required>
+                        <input type="number" name="variant_price[]" class="form-control" placeholder="Price" >
                     </div>
                     <div class="col-md-1">
                         <button type="button" class="btn btn-danger btn removeVariantBtn">

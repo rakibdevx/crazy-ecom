@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             CommissionSeeder::class,
             ShippingRateSeeder::class,
             ShippingZoneSeeder::class,
-            ProductSeeder::class
+            // ProductSeeder::class
         ]);
     }
 }

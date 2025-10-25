@@ -18,8 +18,9 @@
     </div>
     <!--end breadcrumb-->
 
-    <form action="{{ route('admin.product.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.product.update',$product->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('put')
         <div class="row">
             <!-- Left -->
             <div class="col-12 col-lg-8">
@@ -70,18 +71,47 @@
                          <div class="mb-4">
                             <h6 class="mb-3">Thumbnail Image</h6>
                             <input id="thumbnail" type="file" name="thumbnail" accept="image/*">
-                        </div>
 
+                            @if ($product->thumbnail)
+                               <div class="pt-3">
+                                 <img height="100px" src="{{asset($product->thumbnail)}}" alt="{{$product->name}}">
+                               </div>
+                            @endif
+                        </div>
+                        <hr>
                         <div class="mb-4">
                             <h6 class="mb-3">Gallery Images</h6>
                             <input id="images" type="file" name="images[]" multiple accept="image/*">
+                            <div class="row pt-3" id="galleryContainer">
+                                @foreach($product->gallery as $image)
+                                    <div class="col-md-3 mb-2 gallery-item" data-id="{{ $image->id }}">
+                                        <div class="position-relative">
+                                            <img height="100px" src="{{ asset($image->url) }}" class="img-fluid rounded">
+                                            <input type="checkbox" class="select-media position-absolute top-0 start-0 m-1" value="{{ $image->id }}">
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <button type="button" id="deleteSelectedGallery" class="btn btn-danger mt-2">Delete Selected Images</button>
                         </div>
-
+                        <hr>
                         <div class="mb-4">
                             <h6 class="mb-3">Videos</h6>
                             <input id="videos" type="file" name="videos[]" multiple accept="video/*">
+                                <div class="row pt-3" id="videoContainer">
+                                    @foreach($product->video as $video)
+                                        <div class="col-md-3 mb-2 video-item" data-id="{{ $video->id }}">
+                                            <div class="position-relative">
+                                                <video width="100%" controls>
+                                                    <source src="{{ asset($video->url) }}" type="video/mp4">
+                                                </video>
+                                                <input type="checkbox" class="select-media position-absolute top-0 start-0 m-1" value="{{ $video->id }}">
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            <button type="button" id="deleteSelectedVideos" class="btn btn-danger mt-2">Delete Selected Videos</button>
                         </div>
-
                     </div>
                 </div>
                 <div class="card">
@@ -121,19 +151,22 @@
                                             {{-- VARIANTS --}}
                                             <div id="variantSection" class="card mt-3 d-none">
                                                 <div class="card-body">
-                                                        <div id="variantContainer">
-                                                            @php
-                                                                $oldColors = $product->variant_color_id ?? [];
-                                                                $oldSizes = $product->variant_size_id ?? [];
-                                                                $oldStocks = $product->variant_stock ?? [];
-                                                                $oldPrices = $product->variant_price ?? [];
-                                                                $count = count($oldColors);
-                                                            @endphp
+                                                    <div id="variantContainer">
+                                                        @php
+                                                            $variants = $product->variants ?? collect();
+                                                            $oldColors = $variants->pluck('color_id')->toArray();
+                                                            $oldSizes = $variants->pluck('size_id')->toArray();
+                                                            $oldStocks = $variants->pluck('stock_quantity')->toArray();
+                                                            $oldPrices = $variants->pluck('price')->toArray();
+                                                            $count = count($variants);
+                                                        @endphp
+
+                                                        @if($count > 0)
                                                             @for($i = 0; $i < $count; $i++)
                                                                 <div class="variant-row row g-3 align-items-end mb-2 border p-3 rounded bg-light position-relative">
                                                                     <div class="col-md-3">
                                                                         <label class="form-label">Color</label>
-                                                                        <select name="variant_color_id[]" class="form-select color-select" required>
+                                                                        <select name="variant_color_id[]" class="form-select color-select">
                                                                             <option value="">-- Select Color --</option>
                                                                             @foreach($colors as $color)
                                                                                 <option value="{{ $color->id }}" {{ $oldColors[$i] == $color->id ? 'selected' : '' }}>
@@ -142,9 +175,10 @@
                                                                             @endforeach
                                                                         </select>
                                                                     </div>
+
                                                                     <div class="col-md-3">
                                                                         <label class="form-label">Size</label>
-                                                                        <select name="variant_size_id[]" class="form-select size-select" required>
+                                                                        <select name="variant_size_id[]" class="form-select size-select">
                                                                             <option value="">-- Select Size --</option>
                                                                             @foreach($sizes as $size)
                                                                                 <option value="{{ $size->id }}" {{ $oldSizes[$i] == $size->id ? 'selected' : '' }}>
@@ -153,22 +187,66 @@
                                                                             @endforeach
                                                                         </select>
                                                                     </div>
+
                                                                     <div class="col-md-2">
                                                                         <label class="form-label">Stock</label>
-                                                                        <input type="number" name="variant_stock[]" class="form-control" placeholder="Stock" value="{{ $oldStocks[$i] ?? '' }}" required>
+                                                                        <input type="number" name="variant_stock[]" class="form-control" placeholder="Stock"
+                                                                            value="{{ $oldStocks[$i] ?? '' }}" >
                                                                     </div>
+
                                                                     <div class="col-md-3">
                                                                         <label class="form-label">Price</label>
-                                                                        <input type="number" name="variant_price[]" class="form-control" placeholder="Price" value="{{ $oldPrices[$i] ?? '' }}" required>
+                                                                        <input type="number" name="variant_price[]" class="form-control" placeholder="Price"
+                                                                            value="{{ $oldPrices[$i] ?? '' }}">
                                                                     </div>
+
                                                                     <div class="col-md-1">
-                                                                        <button type="button" class="btn btn-danger btn removeVariantBtn">
+                                                                        <button type="button" class="btn btn-danger removeVariantBtn">
                                                                             <i class="bi bi-x-circle"></i>
                                                                         </button>
                                                                     </div>
                                                                 </div>
                                                             @endfor
-                                                        </div>
+                                                        @else
+                                                            <div class="variant-row row g-3 align-items-end mb-2 border p-3 rounded bg-light position-relative">
+                                                                <div class="col-md-3">
+                                                                    <label class="form-label">Color</label>
+                                                                    <select name="variant_color_id[]" class="form-select color-select">
+                                                                        <option value="">-- Select Color --</option>
+                                                                        @foreach($colors as $color)
+                                                                            <option value="{{ $color->id }}">{{ $color->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-3">
+                                                                    <label class="form-label">Size</label>
+                                                                    <select name="variant_size_id[]" class="form-select size-select">
+                                                                        <option value="">-- Select Size --</option>
+                                                                        @foreach($sizes as $size)
+                                                                            <option value="{{ $size->id }}">{{ $size->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2">
+                                                                    <label class="form-label">Stock</label>
+                                                                    <input type="number" name="variant_stock[]" class="form-control" placeholder="Stock">
+                                                                </div>
+
+                                                                <div class="col-md-3">
+                                                                    <label class="form-label">Price</label>
+                                                                    <input type="number" name="variant_price[]" class="form-control" placeholder="Price">
+                                                                </div>
+
+                                                                <div class="col-md-1">
+                                                                    <button type="button" class="btn btn-danger removeVariantBtn">
+                                                                        <i class="bi bi-x-circle"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                    </div>
                                                     <button type="button" id="addVariantRow" class="btn btn-sm btn-primary mt-3"><i class="bi bi-plus-circle"></i> Add Variant</button>
                                                 </div>
                                             </div>
@@ -279,26 +357,26 @@
                                             <div class="row g-3">
                                                 <div class="col-md-3">
                                                     <input id="featured" class="form-check-input" type="checkbox" name="featured" value="1"
-                                                        {{ $product->featured ? 'checked' : '' }}>
+                                                        {{ $product->featured == 'yes' ? 'checked' : '' }}>
                                                     <label for="featured">Featured</label>
                                                 </div>
 
                                                 <div class="col-md-3">
                                                     <input id="new" class="form-check-input" type="checkbox" name="new" value="1"
-                                                        {{ $product->new ? 'checked' : '' }}>
+                                                        {{ $product->new == 'yes' ? 'checked' : '' }}>
                                                     <label for="new">New</label>
                                                 </div>
 
                                                 <div class="col-md-3">
                                                     <input id="trending" class="form-check-input" type="checkbox" name="trending" value="1"
-                                                        {{ $product->trending ? 'checked' : '' }}>
+                                                        {{ $product->trending == 'yes' ? 'checked' : '' }}>
                                                     <label for="trending">Trending</label>
                                                 </div>
 
                                                 <div class="col-md-3">
-                                                    <input id="best_seller" class="form-check-input" type="checkbox" name="best_seller" value="1"
-                                                        {{ $product->best_seller ? 'checked' : '' }}>
-                                                    <label for="best_seller">Best Seller</label>
+                                                    <input id="best_sell" class="form-check-input" type="checkbox" name="best_sell" value="1"
+                                                        {{ $product->best_sell == 'yes' ? 'checked' : '' }}>
+                                                    <label for="best_sell">Best Seller</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -331,11 +409,11 @@
                                                 <div class="row g-3 mt-3">
                                                     <div class="col-md-6">
                                                         <h6>Sale Starts</h6>
-                                                        <input type="date" name="sale_starts_at" value="{{$product->sale_starts_at}}" class="form-control">
+                                                        <input type="date" name="sale_starts_at" value="{{ $product->sale_starts_at ? \Carbon\Carbon::parse($product->sale_starts_at)->format('Y-m-d') : '' }}" class="form-control">
                                                     </div>
                                                     <div class="col-md-6">
                                                         <h6>Sale Ends</h6>
-                                                        <input type="date" name="sale_ends_at" value="{{$product->sale_ends_at}}" class="form-control">
+                                                         <input type="date" name="sale_ends_at" value="{{ $product->sale_ends_at ? \Carbon\Carbon::parse($product->sale_ends_at)->format('Y-m-d') : '' }}" class="form-control">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
@@ -359,8 +437,15 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center gap-3">
-                            <button type="reset" class="btn btn-outline-danger flex-fill"><i class="bi bi-x-circle me-2"></i>Discard</button>
-                            <button type="submit" class="btn btn-outline-primary flex-fill"><i class="bi bi-send me-2"></i>Publish</button>
+                            <a href="{{ route('admin.product.index') }}" class="btn btn-outline-danger flex-fill">
+                                <i class="bi bi-x-circle me-2"></i>Discard
+                            </a>
+                            <button type="submit" name="status" value="draft" class="btn btn-outline-primary flex-fill">
+                                <i class="bi bi-cloud-download me-2"></i>Draft
+                            </button>
+                            <button type="submit" name="status" value="active" class="btn btn-outline-success flex-fill">
+                                <i class="bi bi-send me-2"></i>Publish
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -399,7 +484,7 @@
                                         <option value="{{$brand->id}}">{{$brand->name}}</option>
                                     @endforeach
                                 </select>
-                            </div> 
+                            </div>
                             <div class="col-12">
                                 <label class="form-label">Tags</label>
                                 @php
@@ -444,6 +529,7 @@
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         if (document.getElementById('quill-editor-area')) {
@@ -554,9 +640,8 @@
             $('#brand').val(oldbrand).trigger('change');
         }
 
-        let oldColors = @json($product->colors ?? []);
-        let oldSizes = @json($product->sizes?? []);
-
+        let oldColors = @json($product->productColors->pluck('color_id')->map(fn($id) => (string)$id) ?? []);
+        let oldSizes = @json($product->productSizes->pluck('size_id')->map(fn($id) => (string)$id) ?? []);
 
         if (oldColors.length > 0) {
             $('#colors').val(oldColors).trigger('change');
@@ -571,7 +656,7 @@
                 <div class="variant-row row g-3 align-items-end mb-2 border p-3 rounded bg-light position-relative">
                     <div class="col-md-3">
                         <label class="form-label">Color</label>
-                        <select name="variant_color_id[]" class="form-select color-select" required>
+                        <select name="variant_color_id[]" class="form-select color-select" >
                             <option value="">-- Select Color --</option>
                             @foreach($colors as $color)
                                 <option value="{{ $color->id }}">{{ $color->name }}</option>
@@ -580,7 +665,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Size</label>
-                        <select name="variant_size_id[]" class="form-select size-select" required>
+                        <select name="variant_size_id[]" class="form-select size-select" >
                             <option value="">-- Select Size --</option>
                             @foreach($sizes as $size)
                                 <option value="{{ $size->id }}">{{ $size->name }}</option>
@@ -589,11 +674,11 @@
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">Stock</label>
-                        <input type="number" name="variant_stock[]" class="form-control" placeholder="Stock" required>
+                        <input type="number" name="variant_stock[]" class="form-control" placeholder="Stock" >
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Price</label>
-                        <input type="number" name="variant_price[]" class="form-control" placeholder="Price" required>
+                        <input type="number" name="variant_price[]" class="form-control" placeholder="Price" >
                     </div>
                     <div class="col-md-1">
                         <button type="button" class="btn btn-danger btn removeVariantBtn">
@@ -622,7 +707,6 @@
         if (oldHasVariants == 1) {
             $('#variantSection').removeClass('d-none').show();
             $('#simpleOptionSection').addClass('d-none');
-            addVariantRow();
         } else {
             $('#simpleOptionSection').removeClass('d-none').show();
             $('#variantSection').addClass('d-none');
@@ -669,6 +753,67 @@
             $('#productShippingCostInput').removeClass('d-none');
         }
     });
+
+
+    $('#deleteSelectedGallery').on('click', function() {
+        let ids = [];
+        $('#galleryContainer .select-media:checked').each(function() {
+            ids.push($(this).val());
+        });
+
+        if(ids.length === 0){
+            Swal.fire('Error!', 'Select at least one image', 'error');
+            return;
+        }
+
+        $.ajax({
+            url: "{{ route('admin.product.deleteMedia') }}",
+            type: 'POST',
+            data: {
+                type: 'gallery',
+                ids: ids,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(res) {
+                Swal.fire('Succcess!', res.message , 'success');
+                ids.forEach(function(id){
+                    $('#galleryContainer .gallery-item[data-id="'+id+'"]').remove();
+                });
+            }
+        });
+    });
+
+    // Delete selected videos
+    $('#deleteSelectedVideos').on('click', function() {
+        let ids = [];
+        $('#videoContainer .select-media:checked').each(function() {
+            ids.push($(this).val());
+        });
+
+        if(ids.length === 0){
+            Swal.fire('Error!', 'Select at least one video.', 'error');
+            return;
+        }
+
+        $.ajax({
+            url: "{{ route('admin.product.deleteMedia') }}",
+            type: 'POST',
+            data: {
+                type: 'video',
+                ids: ids,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(res) {
+                Swal.fire('Succcess!', res.message , 'succcess');
+                ids.forEach(function(id){
+                    $('#videoContainer .video-item[data-id="'+id+'"]').remove();
+                });
+            }
+        });
+    });
+
+
+
 </script>
 
 

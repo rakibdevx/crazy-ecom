@@ -69,7 +69,7 @@
                                     </div>
 
                                     <div class="col">
-                                        <button type="submit" class="btn btn-success px-5 raised">Create</button>
+                                        <button type="submit" class="btn btn-success px-5 raised">Update</button>
                                         <a href="{{ route('admin.category.index') }}" class="btn btn-primary px-5 raised">Back</a>
                                     </div>
                                 </form>

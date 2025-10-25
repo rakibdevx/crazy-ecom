@@ -140,7 +140,7 @@ class ColorController extends Controller
         $color->code = $request->code;
         $color->save();
 
-        return back()->with('success', 'Color Updated successfully!');
+        return redirect()->route('admin.color.index')->with('success', 'Color Updated successfully!');
     }
 
     /**

@@ -52,11 +52,12 @@ return new class extends Migration
 
                 // Product Type & Status
                 $table->enum('product_type', ['simple', 'variable', 'digital', 'bundle'])->default('simple');
-                $table->enum('status',['active','inactive','suspend'])->default('active');
+                $table->enum('status',['active','inactive','draft'])->default('active');
                 $table->enum('featured',['yes','no'])->default('no');
                 $table->enum('new',['yes','no'])->default('no');
                 $table->enum('trending',['yes','no'])->default('no');
-                $table->enum('best_seller',['yes','no'])->default('no');
+                $table->enum('best_sell',['yes','no'])->default('no');
+                $table->enum('hot_deals',['yes','no'])->default('no');
 
                 // Content
                 $table->text('short_description')->nullable();

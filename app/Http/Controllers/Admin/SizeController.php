@@ -132,7 +132,7 @@ class SizeController extends Controller
         $size->slug = Str::slug($request->name);
         $size->save();
 
-        return back()->with('success', 'Size Updated successfully!');
+        return redirect()->route('admin.size.index')->with('success', 'Size Updated successfully!');
     }
 
     /**

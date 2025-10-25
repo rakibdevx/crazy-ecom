@@ -83,6 +83,106 @@
             </div>
         </div>
     </div><!--end row-->
+    <div class="row g-3 mt-3">
+        <div class="col-auto">
+           <style>
+    #bulkActionGroup {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .bulk-toggle-group {
+        display: flex;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .bulk-toggle-label {
+        background: #f8f9fa;
+        padding: 6px 10px;
+        font-weight: 600;
+        border-right: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+    }
+
+    .bulk-action-btn {
+        border: none;
+        padding: 6px 12px;
+        font-weight: 500;
+        transition: 0.2s;
+    }
+
+    .bulk-action-btn:hover {
+        opacity: 0.8;
+    }
+
+    .yes-btn {
+        background-color: #198754;
+        color: #fff;
+    }
+
+    .no-btn {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    /* status group style */
+    .status-btn {
+        border-radius: 6px;
+        color: #fff;
+        font-weight: 600;
+    }
+</style>
+
+<div class="btn-group mb-2" id="bulkActionGroup" style="display:none; transition: all 0.3s ease;">
+    <!-- Status buttons -->
+    <button type="button" class="btn btn-success status-btn bulk-action-btn" data-field="status" data-value="active">Active</button>
+    <button type="button" class="btn btn-secondary status-btn bulk-action-btn" data-field="status" data-value="inactive">Inactive</button>
+    <button type="button" class="btn btn-warning status-btn bulk-action-btn" data-field="status" data-value="draft">Draft</button>
+
+    <!-- Hot Deals -->
+    <div class="bulk-toggle-group">
+        <div class="bulk-toggle-label">Hot Deals</div>
+        <button type="button" class="bulk-action-btn yes-btn" data-field="hot_deals" data-value="yes">Yes</button>
+        <button type="button" class="bulk-action-btn no-btn" data-field="hot_deals" data-value="no">No</button>
+    </div>
+
+    <!-- Featured -->
+    <div class="bulk-toggle-group">
+        <div class="bulk-toggle-label">Featured</div>
+        <button type="button" class="bulk-action-btn yes-btn" data-field="featured" data-value="yes">Yes</button>
+        <button type="button" class="bulk-action-btn no-btn" data-field="featured" data-value="no">No</button>
+    </div>
+
+    <!-- New -->
+    <div class="bulk-toggle-group">
+        <div class="bulk-toggle-label">New</div>
+        <button type="button" class="bulk-action-btn yes-btn" data-field="new" data-value="yes">Yes</button>
+        <button type="button" class="bulk-action-btn no-btn" data-field="new" data-value="no">No</button>
+    </div>
+
+    <!-- Trending -->
+    <div class="bulk-toggle-group">
+        <div class="bulk-toggle-label">Trending</div>
+        <button type="button" class="bulk-action-btn yes-btn" data-field="trending" data-value="yes">Yes</button>
+        <button type="button" class="bulk-action-btn no-btn" data-field="trending" data-value="no">No</button>
+    </div>
+
+    <!-- Best Seller -->
+    <div class="bulk-toggle-group">
+        <div class="bulk-toggle-label">Best Seller</div>
+        <button type="button" class="bulk-action-btn yes-btn" data-field="best_sell" data-value="yes">Yes</button>
+        <button type="button" class="bulk-action-btn no-btn" data-field="best_sell" data-value="no">No</button>
+    </div>
+</div>
+
+
+        </div>
+    </div><!--end row-->
     <div class="card mt-4">
         <div class="card-body">
             <div class="product-table">
@@ -91,8 +191,9 @@
                         <thead class="table-light">
                             <tr>
                                 <th>
-                                <input class="form-check-input" type="checkbox">
+                                <input type="checkbox" id="selectAll" class="form-check-input">
                                 </th>
+                                <th>Id</th>
                                 <th>Product Name</th>
                                 <th>Price</th>
                                 <th>Sku</th>
@@ -100,6 +201,11 @@
                                 <th>Total Sell</th>
                                 <th>Brand</th>
                                 <th>Status</th>
+                                <th>Featured</th>
+                                <th>Hot Deals</th>
+                                <th>New</th>
+                                <th>Trending</th>
+                                <th>Best Sell</th>
                                 <th>Date</th>
                                 <th>Action</th>
                             </tr>
@@ -149,16 +255,22 @@
                 }
             },
             columns: [
+                { data: 'checkbox', name: 'checkbox', orderable: false, searchable: false },
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                { data: 'name', name: 'name' },
-                { data: 'sale_price', name: 'sale_price' },
-                { data: 'sku', name: 'sku' },
-                { data: 'stock', name: 'stock' },
-                { data: 'sold_count', name: 'sold_count' },
-                { data: 'brand', name: 'brand' },
-                { data: 'status', name: 'status' },
-                { data: 'created_at', name: 'created_at' },
-                { data: 'action', name: 'action' },
+                { data: 'name', name: 'name' , orderable: false, searchable: false},
+                { data: 'sale_price', name: 'sale_price' , orderable: false, searchable: false},
+                { data: 'sku', name: 'sku' , orderable: false, searchable: false},
+                { data: 'stock', name: 'stock' , orderable: false, searchable: false},
+                { data: 'sold_count', name: 'sold_count' , orderable: false, searchable: false},
+                { data: 'brand', name: 'brand' , orderable: false, searchable: false},
+                { data: 'status', name: 'status' , orderable: false, searchable: false},
+                { data: 'featured', name: 'featured' , orderable: false, searchable: false},
+                { data: 'hot_deals', name: 'hot_deals' , orderable: false, searchable: false},
+                { data: 'new', name: 'new' , orderable: false, searchable: false},
+                { data: 'trending', name: 'trending' , orderable: false, searchable: false},
+                { data: 'best_sell', name: 'best_sell' , orderable: false, searchable: false},
+                { data: 'created_at', name: 'created_at' , orderable: false, searchable: false},
+                { data: 'action', name: 'action' , orderable: false, searchable: false},
             ],
             dom: 'Blfrtip',
             buttons: [
@@ -241,6 +353,102 @@
         });
 
 
+        $('.bulk-action-btn').on('click', function() {
+            let ids = [];
+            $('#data .dt-checkbox:checked').each(function(){
+                ids.push($(this).val());
+            });
+
+            if(ids.length === 0){
+                Swal.fire('Error!', 'Select at least one product.', 'error');
+                return;
+            }
+
+            let field = $(this).data('field');
+            let value = $(this).data('value');
+            Swal.fire({
+                title: 'Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, Update it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                     $.ajax({
+                        url: "{{ route('admin.product.bulkUpdate') }}",
+                        type: 'POST',
+                        data: {
+                            ids: ids,
+                            field: field,
+                            value: value,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(res){
+                            Swal.fire('Succcess!',res.message, 'success');
+                            $('#data').DataTable().ajax.reload(null, false);
+                            $('#data').on('draw.dt', function(){
+                                $('#selectAll').prop('checked', false);
+                            });
+                        }
+                    });
+                }
+            });
+
+        });
+
+        $('#selectAll').on('click', function() {
+            let checked = $(this).is(':checked');
+            $('#data .dt-checkbox').prop('checked', checked);
+        });
+
+        $('#data').on('click', '.dt-checkbox', function() {
+            if(!$(this).is(':checked')){
+                $('#selectAll').prop('checked', false);
+            } else {
+                let allChecked = $('#data .dt-checkbox').length === $('#data .dt-checkbox:checked').length;
+                $('#selectAll').prop('checked', allChecked);
+            }
+        });
+
+
+        let bulkGroupVisible = false;
+        function toggleBulkActionGroup() {
+            let anyChecked = $('#data .dt-checkbox:checked').length > 0;
+
+            if(anyChecked && !bulkGroupVisible){
+                $('#bulkActionGroup').fadeIn(200);
+                bulkGroupVisible = true;
+            } else if(!anyChecked && bulkGroupVisible){
+                $('#bulkActionGroup').fadeOut(200);
+                bulkGroupVisible = false;
+            }
+        }
+
+        // Master checkbox
+        $('#selectAll').on('click', function() {
+            let checked = $(this).is(':checked');
+            $('#data .dt-checkbox').prop('checked', checked);
+            toggleBulkActionGroup();
+        });
+
+        // Individual checkbox
+        $('#data').on('click', '.dt-checkbox', function() {
+            toggleBulkActionGroup();
+
+            // Optional: Master checkbox update
+            let allChecked = $('#data .dt-checkbox').length === $('#data .dt-checkbox:checked').length;
+            $('#selectAll').prop('checked', allChecked);
+        });
+
+        // Reset on table redraw
+        $('#data').on('draw.dt', function(){
+            toggleBulkActionGroup();
+        });
+
+        
     </script>
+
+
 
 @endpush

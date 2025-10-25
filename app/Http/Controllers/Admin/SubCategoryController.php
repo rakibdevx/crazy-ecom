@@ -32,7 +32,8 @@ class SubCategoryController extends Controller
                 ->orWhere('status', 'like', '%'.$search.'%');
             });
         }
-        if (request()->has('category')) {
+
+        if (request()->category != null) {
             $category = request()->category;
             $query->where(function($q) use ($category) {
                 $q->where('category_id',$category);
@@ -192,6 +193,7 @@ class SubCategoryController extends Controller
         }
 
         $sub_category->update([
+            'category_id' => $request->category_id,
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'status' => $request->status,

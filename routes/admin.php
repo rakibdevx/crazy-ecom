@@ -103,6 +103,8 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.adm
 
     // Product Routes
     Route::resource('product', ProductController::class);
+    Route::post('product/delete-media', [ProductController::class, 'deleteMedia'])->name('product.deleteMedia');
+    Route::post('product/bulkUpdate', [ProductController::class, 'bulkUpdate'])->name('product.bulkUpdate');
     Route::get('products/get-subcategories', [ProductController::class, 'getSubCategories'])->name('product.getSubCategories');
     Route::get('products/get-childcategories', [ProductController::class, 'getChildCategories'])->name('product.getChildCategories');
 
