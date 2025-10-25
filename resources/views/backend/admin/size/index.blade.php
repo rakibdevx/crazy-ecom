@@ -41,17 +41,15 @@
         <div class="card mt-4">
             <div class="card-body">
                 <div class="customer-table">
-                    <div class="table-responsive white-space-nowrap">
-                        <table class="table align-middle" id="data">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Sl</th>
-                                    <th>Name</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
+                    <table class="table align-middle nowrap w-100" id="data">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Sl</th>
+                                <th>Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>
@@ -61,11 +59,13 @@
 @push('plugins')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 @endpush
 
 @push('js')
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
@@ -81,6 +81,7 @@
         var table = $('#data').DataTable({
             processing: true,
             serverSide: true,
+            responsive: true,
             ajax: {
                 url: '{{ route('admin.size.index') }}',
                 data: function (d) {
@@ -96,6 +97,34 @@
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ],
+            buttons: [
+                {
+                    extend: 'copy',
+                    text: '<i class="bx bx-copy me-2"></i> Copy',
+                    className: 'btn btn-sm btn-primary rounded-pill shadow-sm px-3 py-1'
+                },
+                {
+                    extend: 'csv',
+                    text: '<i class="bx bx-file me-2"></i> CSV',
+                    className: 'btn btn-sm btn-info rounded-pill shadow-sm px-3 py-1'
+                },
+                {
+                    extend: 'excel',
+                    text: '<i class="bx bx-spreadsheet me-2"></i> Excel',
+                    className: 'btn btn-sm btn-success rounded-pill shadow-sm px-3 py-1'
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="bx bx-file me-2"></i> PDF',
+                    className: 'btn btn-sm btn-danger rounded-pill shadow-sm px-3 py-1'
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="bx bx-printer me-2"></i> Print',
+                    className: 'btn btn-sm btn-secondary rounded-pill shadow-sm px-3 py-1'
+                }
+            ],
+            dom: '<"d-flex justify-content-between align-items-center mb-2"Bf>rt<"d-flex justify-content-between mt-3"lip>',
             pageLength: {{ setting('default_pagination') }},
             lengthMenu: [
                 [10, 15, 25, 50, 100, {{ setting('default_pagination') }}],
