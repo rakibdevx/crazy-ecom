@@ -22,6 +22,8 @@ use App\Http\Controllers\Admin\CommissionRulsController;
 use App\Http\Controllers\Admin\ShippingZoneController;
 use App\Http\Controllers\Admin\ShipingRateController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\CommentController;
 
 
 
@@ -107,6 +109,12 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.adm
     Route::post('product/bulkUpdate', [ProductController::class, 'bulkUpdate'])->name('product.bulkUpdate');
     Route::get('products/get-subcategories', [ProductController::class, 'getSubCategories'])->name('product.getSubCategories');
     Route::get('products/get-childcategories', [ProductController::class, 'getChildCategories'])->name('product.getChildCategories');
+
+    Route::resource('coupon', CouponController::class);
+    Route::get('coupon/subcategories-by-category/{id}', [CouponController::class, 'getSubcategories'])->name('coupon.getSubcategories');
+    Route::get('coupon/childcategories-by-subcategory/{id}', [CouponController::class, 'getChildCategories'])->name('coupon.getChildCategories');
+
+    Route::resource('comment', CommentController::class)->except('create','store','edit','update');
 
 
     // setting routes

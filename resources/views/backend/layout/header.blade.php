@@ -5,6 +5,13 @@
         </div>
         <div class="search-bar flex-grow-1"></div>
         <ul class="navbar-nav gap-1 nav-right-links align-items-center">
+            <li>
+                <div class="">
+                    <a href="{{route('index')}}" class="" title="Web Site"  target="__blank">
+                        <i class="material-icons-outlined">public</i>
+                    </a>
+                </div>
+            </li>
             @if(request()->is('admin/*'))
                 <li>
                     <div class="">

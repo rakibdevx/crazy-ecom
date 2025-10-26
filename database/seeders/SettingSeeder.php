@@ -36,6 +36,11 @@ class SettingSeeder extends Seeder
             ['key' => 'live_chat_enabled', 'value' => '1'],
             ['key' => 'working_hours', 'value' => '9:00 AM - 6:00 PM'],
             ['key' => 'map_embed', 'value' => 'https://maps.google.com/...'],
+            ['key'=>'facebook_link','value'=>"www.facebook_link.com"],
+            ['key'=>'twitter_link','value'=>"www.twitter_link.com"],
+            ['key'=>'instagram_link','value'=>"www.instagram_link.com"],
+            ['key'=>'youtube_link','value'=>"www.youtube_link.com"],
+            ['key'=>'pinterest_link','value'=>"www.pinterest_link.com"],
 
             // 🔹 Mail Settings
             ['key' => 'mail_mailer', 'value' => 'smtp'],

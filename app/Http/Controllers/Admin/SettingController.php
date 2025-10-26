@@ -147,6 +147,11 @@ class SettingController extends Controller
                 'url',
                 'regex:/^(https?:\/\/)?(www\.)?google\.com\/maps/i'
             ],
+            'facebook_link'=>'nullable|url',
+            'twitter_link'=>'nullable|url',
+            'instagram_link'=>'nullable|url',
+            'youtube_link'=>'nullable|url',
+            'pinterest_link'=>'nullable|url',
         ]);
 
 
@@ -156,6 +161,11 @@ class SettingController extends Controller
         Setting::updateOrCreate(['key' => 'live_chat_enabled'],['value' => $request->live_chat_enabled]);
         Setting::updateOrCreate(['key' => 'working_hours'],['value' => $request->working_hours]);
         Setting::updateOrCreate(['key' => 'map_embed'],['value' => $request->map_embed]);
+        Setting::updateOrCreate(['key' => 'facebook_link'],['value' => $request->facebook_link]);
+        Setting::updateOrCreate(['key' => 'twitter_link'],['value' => $request->twitter_link]);
+        Setting::updateOrCreate(['key' => 'instagram_link'],['value' => $request->instagram_link]);
+        Setting::updateOrCreate(['key' => 'youtube_link'],['value' => $request->youtube_link]);
+        Setting::updateOrCreate(['key' => 'pinterest_link'],['value' => $request->pinterest_link]);
 
         clearSettingCache();
         return redirect()->back()->with('success', 'Contact updated successfully!');

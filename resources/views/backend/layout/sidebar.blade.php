@@ -92,6 +92,23 @@
                                     </a>
                                 </li>
                             @endcanany
+                            @canany(['Coupon-view', 'Coupon-edit','Coupon-delete','Coupon-create'])
+                                <li class="{{ request()->routeIs('admin.coupon.*') ? 'mm-active' : '' }}">
+                                    <a href="{{route('admin.coupon.index')}}">
+                                        <div class="parent-icon"><i class="material-icons-outlined">arrow_right</i></div>
+                                        <div class="menu-title">Coupon</div>
+                                    </a>
+                                </li>
+                            @endcanany
+
+                            @canany(['Comment-view','Comment-delete',])
+                                <li class="{{ request()->routeIs('admin.comment.*') ? 'mm-active' : '' }}">
+                                    <a href="{{route('admin.comment.index')}}">
+                                        <div class="parent-icon"><i class="material-icons-outlined">arrow_right</i></div>
+                                        <div class="menu-title">Comment</div>
+                                    </a>
+                                </li>
+                            @endcanany
                         </ul>
                     </li>
                 @endcanany

@@ -97,6 +97,57 @@
                             </div>
                         </div>
 
+                        <div class="mb-3">
+                            <label class="form-label">Facebook Link</label>
+                            <input type="url" name="facebook_link" value="{{ old('facebook_link', setting('facebook_link')) }}" class="form-control @error('facebook_link') is-invalid @enderror" placeholder="Enter Facebook page or profile URL" @error('facebook_link') required @enderror>
+                            <div class="invalid-feedback">
+                                @error('facebook_link')
+                                    {{ $message }}
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Twitter Link</label>
+                            <input type="url" name="twitter_link" value="{{ old('twitter_link', setting('twitter_link')) }}" class="form-control @error('twitter_link') is-invalid @enderror" placeholder="Enter Twitter profile URL" @error('twitter_link') required @enderror>
+                            <div class="invalid-feedback">
+                                @error('twitter_link')
+                                    {{ $message }}
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Instagram Link</label>
+                            <input type="url" name="instagram_link" value="{{ old('instagram_link', setting('instagram_link')) }}" class="form-control @error('instagram_link') is-invalid @enderror" placeholder="Enter Instagram profile URL" @error('instagram_link') required @enderror>
+                            <div class="invalid-feedback">
+                                @error('instagram_link')
+                                    {{ $message }}
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">YouTube Link</label>
+                            <input type="url" name="youtube_link" value="{{ old('youtube_link', setting('youtube_link')) }}" class="form-control @error('youtube_link') is-invalid @enderror" placeholder="Enter YouTube channel or video URL" @error('youtube_link') required @enderror>
+                            <div class="invalid-feedback">
+                                @error('youtube_link')
+                                    {{ $message }}
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Pinterest Link</label>
+                            <input type="url" name="pinterest_link" value="{{ old('pinterest_link', setting('pinterest_link')) }}" class="form-control @error('pinterest_link') is-invalid @enderror" placeholder="Enter Pinterest profile or page URL" @error('pinterest_link') required @enderror>
+                            <div class="invalid-feedback">
+                                @error('pinterest_link')
+                                    {{ $message }}
+                                @enderror
+                            </div>
+                        </div>
+
+
                         <div class="col">
                             <button type="submit" class="btn btn-success px-5 raised">Update</button>
                             <a href="{{route('admin.dashboard')}}" class="btn btn-primary px-5 raised">back</a>

@@ -127,6 +127,17 @@ class PermissionSeeder extends Seeder
             'Product-create',
             'Product-edit',
             'Product-delete',
+
+
+            // Coupon management
+            'Coupon-view',
+            'Coupon-create',
+            'Coupon-edit',
+            'Coupon-delete',
+
+            // Coupon management
+            'Comment-view',
+            'Comment-delete',
         ];
 
         foreach ($permissions as $permission) {

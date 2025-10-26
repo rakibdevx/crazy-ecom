@@ -20,7 +20,7 @@ class ProductSeeder extends Seeder
 
         for ($i = 1; $i <= 100; $i++) {
 
-            $name = $faker->words(3, true);
+            $name = 'product '. $i;
             $slug = Str::slug($name);
             $sku  = Str::upper(Str::random(8));
 
@@ -65,7 +65,7 @@ class ProductSeeder extends Seeder
                 'trending'    => $faker->boolean(10) ? 'yes' : 'no',
                 'featured'    => $faker->boolean(20) ? 'yes' : 'no',
                 'new'         => $faker->boolean(30) ? 'yes' : 'no',
-                'best_seller' => $faker->boolean(15) ? 'yes' : 'no',
+                'best_sell' => $faker->boolean(15) ? 'yes' : 'no',
                 'shipping_type' => 'product',
                 'shipping_cost' => $faker->randomFloat(2, 5, 20),
                 'weight_kg' => $faker->randomFloat(2, 0.5, 5),

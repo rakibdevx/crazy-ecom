@@ -45,7 +45,6 @@
         <div class="card mt-4">
             <div class="card-body">
                 <div class="customer-table">
-                    <div class="table-responsive white-space-nowrap">
                         <table class="table align-middle nowrap w-100" id="data">
                             <thead class="table-light">
                                 <tr>
@@ -61,7 +60,6 @@
                             </thead>
                         </table>
                     </div>
-                </div>
             </div>
         </div>
     </div>
