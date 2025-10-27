@@ -79,7 +79,7 @@
 
                                 {{-- Image --}}
                                 <div class="mb-3">
-                                    <label for="formFile" class="form-label">Image</label>
+                                    <label for="formFile" class="form-label">Image  (<small class="text-danger">Dimensions must be 150 x 150 pixels</small>)</label>
                                     <input class="form-control @error('image') is-invalid @enderror" type="file" name="image" id="formFile">
                                     <div class="invalid-feedback">@error('image') {{ $message }} @enderror</div>
                                 </div>

@@ -1,3 +1,36 @@
+        <div class="subscribe-area  pt-115 pb-115">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5 col-md-5">
+                        <div class="section-title">
+                            <h2>keep connected</h2>
+                            <p>Get updates by subscribe our weekly newsletter</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-7">
+                        <div class="subscribe-form">
+                            <form action="{{ route('newsletters') }}" method="POST" class="subscribe-form-style">
+                                @csrf
+                                <div class="mc-form">
+                                    <input type="email" name="email" placeholder="Enter your email address" required value="{{ old('email')}}">
+                                    <div class="clear">
+                                        <input id="mc-embedded-subscribe" type="submit" class="button" value="Subscribe">
+                                    </div>
+                                </div>
+                                @error('email')
+                                        <p class="text-danger mt-1">{{ $message }}</p>
+                                    @enderror
+
+                                @if(session('success'))
+                                    <p class="text-success mt-2">{{ session('success') }}</p>
+                                @endif
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 <footer class="footer-area">
     <div class="footer-top border-bottom-4 pb-55">
         <div class="container">
@@ -117,7 +150,7 @@
             <div class="row flex-row-reverse">
                 <div class="col-lg-6 col-md-6">
                     <div class="payment-img payment-img-right">
-                        <a href="{{route('index')}}"><img src="{{asset(setting('site_logo'))}}" alt="{{asset('site_name')}}"></a>
+                        <a href="{{route('index')}}"><img src="{{asset(setting('footer_payment_image'))}}" alt="{{asset('site_name')}}"></a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">

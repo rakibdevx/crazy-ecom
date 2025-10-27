@@ -252,6 +252,14 @@
                         </ul>
                     </li>
                 @endcanany
+                @canany(['Newsletter-view', 'Newsletter-delete'])
+                    <li class="{{ request()->routeIs('admin.newsletter.*') ? 'mm-active' : '' }}">
+                        <a href="{{route('admin.newsletter.index')}}">
+                            <div class="parent-icon"><i class="material-icons-outlined">email</i></div>
+                            <div class="menu-title">Subscribers</div>
+                        </a>
+                    </li>
+                @endcan
 
                 <li class="{{ request()->routeIs('admin.profile.index.*') ? 'mm-active' : '' }}">
                     <a href="{{route('admin.profile.index')}}">

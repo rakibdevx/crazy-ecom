@@ -134,13 +134,7 @@ class SubCategoryController extends Controller
             'image'=> ['nullable', 'file', new ValidImage()],
         ]);
 
-        $imagePath = '';
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = 'category' . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('backend/images/sub_category'), $filename);
-            $imagePath = 'backend/images/sub_category/' . $filename;
-        }
+        $imagePath = image_save('sub_category', 'sub_category', $request->file('image'), '150x150');
 
         SubCategory::create([
             'category_id' => $request->category_id,
@@ -172,25 +166,12 @@ class SubCategoryController extends Controller
 
         $request->validate([
             'category_id' => 'required|exists:categories,id',
-            'name' => 'required|unique:categories,name,' . $sub_category->id,
+            'name' => 'required|unique:sub_categories,name,' . $sub_category->id,
             'status' => 'required|in:active,inactive',
             'image'=> ['nullable', 'file', new ValidImage()],
         ]);
 
-        $imagePath = $sub_category->image;
-
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            if ($imagePath) {
-                $oldPath = public_path($imagePath);
-                if (file_exists($oldPath)) {
-                    @unlink($oldPath);
-                }
-            }
-            $filename = 'sub_category' . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('backend/images/sub_category'), $filename);
-            $imagePath = 'backend/images/sub_category/' . $filename;
-        }
+       $imagePath = image_update('sub_category', 'sub_category', $request->file('image'), $sub_category->image, '150x150');
 
         $sub_category->update([
             'category_id' => $request->category_id,

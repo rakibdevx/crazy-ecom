@@ -85,7 +85,7 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Logo</label>
+                                <label for="formFile" class="form-label">Logo  (<small class="text-danger">Dimensions must be 250 x 100 pixels</small>)</label>
                                 <input class="form-control @error('site_logo') is-invalid @enderror" type="file" name="site_logo" id="formFile"  @error('site_logo') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('site_logo')
@@ -97,7 +97,7 @@
                                 @endif
                             </div>
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Dark Logo</label>
+                                <label for="formFile" class="form-label">Dark Logo (<small class="text-danger">Dimensions must be 250 x 100 pixels</small>)</label>
                                 <input class="form-control @error('site_logo_dark') is-invalid @enderror" type="file" name="site_logo_dark" id="formFile"  @error('site_logo_dark') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('site_logo_dark')
@@ -109,7 +109,7 @@
                                 @endif
                             </div>
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Fav Icon</label>
+                                <label for="formFile" class="form-label">Fav Icon (<small class="text-danger">Dimensions must be 32 x 32 pixels</small>)</label>
                                 <input class="form-control  @error('site_favicon') is-invalid @enderror" type="file" name="site_favicon" id="formFile" @error('site_favicon') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('site_favicon')

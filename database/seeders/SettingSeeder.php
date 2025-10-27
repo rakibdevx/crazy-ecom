@@ -103,6 +103,7 @@ class SettingSeeder extends Seeder
             ['key' => 'default_category_image', 'value' => 'backend/images/images/default_category_image.png'],
             ['key' => 'default_sub_category_image', 'value' => 'backend/images/images/default_sub_category_image.png'],
             ['key' => 'default_brand_image', 'value' => 'backend/images/images/default_brand_image.png'],
+            ['key' => 'footer_payment_image', 'value' => 'backend/images/images/footer_payment_image.png'],
 
            // Image Upload Config
             ['key' => 'support_image_type', 'value' => 'png,jpg,jpeg,gif'],

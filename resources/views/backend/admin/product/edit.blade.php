@@ -69,7 +69,7 @@
                     </div>
                     <div class="card-body">
                          <div class="mb-4">
-                            <h6 class="mb-3">Thumbnail Image</h6>
+                            <h6 class="mb-3">Thumbnail Image (<small class="text-danger">Dimensions must be 800 x 650 pixels</small>)</h6>
                             <input id="thumbnail" type="file" name="thumbnail" accept="image/*">
 
                             @if ($product->thumbnail)
@@ -80,7 +80,7 @@
                         </div>
                         <hr>
                         <div class="mb-4">
-                            <h6 class="mb-3">Gallery Images</h6>
+                            <h6 class="mb-3">Gallery Images (<small class="text-danger">Dimensions must be 800 x 650 pixels</small>)</h6>
                             <input id="images" type="file" name="images[]" multiple accept="image/*">
                             <div class="row pt-3" id="galleryContainer">
                                 @foreach($product->gallery as $image)

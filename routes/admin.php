@@ -24,8 +24,7 @@ use App\Http\Controllers\Admin\ShipingRateController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\CommentController;
-
-
+use App\Http\Controllers\Admin\NewsletterController;
 
 // login route
 Route::prefix('admin')->name('admin.')->middleware(['web','guest:admin'])->group(function () {
@@ -114,7 +113,11 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.adm
     Route::get('coupon/subcategories-by-category/{id}', [CouponController::class, 'getSubcategories'])->name('coupon.getSubcategories');
     Route::get('coupon/childcategories-by-subcategory/{id}', [CouponController::class, 'getChildCategories'])->name('coupon.getChildCategories');
 
+    // Comment Routes
     Route::resource('comment', CommentController::class)->except('create','store','edit','update');
+
+    // newsletter Routes
+    Route::resource('newsletter', NewsletterController::class)->except('show','create','store','edit','update');
 
 
     // setting routes

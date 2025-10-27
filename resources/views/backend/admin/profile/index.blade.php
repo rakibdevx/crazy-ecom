@@ -170,7 +170,7 @@
                                     @csrf
 
                                     <div class="mb-3">
-                                        <label class="form-label">Image:</label>
+                                        <label class="form-label">Image:  (<small class="text-danger">Dimensions must be 250 x 250 pixels</small>)</label>
                                         <input type="file" name="image"
                                             class="form-control @error('image') is-invalid @enderror">
                                         <div class="invalid-feedback">@error('image') {{ $message }} @enderror</div>
@@ -179,7 +179,7 @@
                                         @endif
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Banner Image:</label>
+                                        <label class="form-label">Banner Image:  (<small class="text-danger">Dimensions must be 600 x 1100 pixels</small>)</label>
                                         <input type="file" name="banner_image"
                                             class="form-control @error('banner_image') is-invalid @enderror">
                                         <div class="invalid-feedback">@error('banner_image') {{ $message }} @enderror</div>

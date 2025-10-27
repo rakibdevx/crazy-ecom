@@ -176,7 +176,7 @@ ul {
   padding: 0;
 }
 
-/*-- 
+/*--
     - Common Classes
 -----------------------------------------*/
 .fix {
@@ -1472,7 +1472,7 @@ ul {
 }
 
 /***************************
-    Page section padding 
+    Page section padding
 ****************************/
 .ptb-0 {
   padding: 0;
@@ -1587,7 +1587,7 @@ ul {
 }
 
 /***************************
-    Page section margin 
+    Page section margin
 ****************************/
 .mtb-0 {
   margin: 0;
@@ -1661,7 +1661,7 @@ ul {
   margin: 290px 0;
 }
 
-/*-- 
+/*--
     - Input Placeholder
 -----------------------------------------*/
 input:-moz-placeholder,
@@ -1823,8 +1823,8 @@ textarea:focus {
   }
 }
 
-/*-- 
-    Scroll Up 
+/*--
+    Scroll Up
 -----------------------------------------*/
 #scrollUp {
   width: 40px;
@@ -4133,7 +4133,6 @@ textarea:focus {
   border: 1px solid #e1e1e1;
   width: 270px;
   position: absolute;
-  top: 220%;
   left: 0;
   z-index: 5;
   background-color: #fff;
@@ -7610,6 +7609,10 @@ textarea:focus {
 }
 .single-product-wrap .product-img a img {
   width: 100%;
+}
+.single-product-wrap .cat-image {
+    height: 150px;
+    width: 150px;
 }
 .single-product-wrap .product-img span.pro-badge {
   position: absolute;
@@ -17653,4 +17656,13 @@ h3.cart-page-title {
 }
 .order-tracking-content .order-tracking-form .order-track-btn a:hover {
   background-color: #ff2f2f;
+}
+
+.max-height-100
+{
+ max-height: 100px;
+}
+.max-width-250
+{
+ max-width: 250px;
 }

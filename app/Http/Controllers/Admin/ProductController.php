@@ -347,15 +347,8 @@ class ProductController extends Controller
             }
 
             // ----------------- Thumbnail -----------------
-            $imagePath = null;
-            if ($request->hasFile('thumbnail')) {
-                $file = $request->file('thumbnail');
-                $filename = 'thumbnail_' . time() . '.' . $file->getClientOriginalExtension();
-                $destination = public_path('backend/images/product/thumbnail');
-                if (!file_exists($destination)) mkdir($destination, 0777, true);
-                $file->move($destination, $filename);
-                $imagePath = 'backend/images/product/thumbnail/' . $filename;
-            }
+
+            $imagePath = image_save('product/thumbnail', 'thumbnail', $request->file('thumbnail'), '800x650');
 
             // ----------------- Product Data -----------------
 
@@ -424,15 +417,15 @@ class ProductController extends Controller
             // ----------------- Gallery Images -----------------
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $index => $imageFile) {
-                    $filename = 'gallery_' . time() . '_' . $index . '.' . $imageFile->getClientOriginalExtension();
-                    $destination = public_path('backend/images/product/gallery');
-                    if (!file_exists($destination)) mkdir($destination, 0777, true);
-                    $imageFile->move($destination, $filename);
-                    $product->gallery()->create([
-                        'url' => 'backend/images/product/gallery/' . $filename,
-                    ]);
+                    $imagePath = image_save('product/gallery', 'gallery_' . $index, $imageFile,'800x650');
+                    if ($imagePath) {
+                        $product->gallery()->create([
+                            'url' => $imagePath,
+                        ]);
+                    }
                 }
             }
+
 
             if ($request->hasFile('videos')) {
                 foreach ($request->file('videos') as $index => $imageFile) {
@@ -553,18 +546,8 @@ class ProductController extends Controller
             }
 
             // ----------------- Thumbnail -----------------
-            if ($request->hasFile('thumbnail')) {
-                if ($product->thumbnail && file_exists(public_path($product->thumbnail))) {
-                    unlink(public_path($product->thumbnail));
-                }
+            $product->thumbnail = image_update( 'product/thumbnail', 'thumbnail', $request->file('thumbnail'), $product->thumbnail, '800x650');
 
-                $file = $request->file('thumbnail');
-                $filename = 'thumbnail_' . time() . '.' . $file->getClientOriginalExtension();
-                $destination = public_path('backend/images/product/thumbnail');
-                if (!file_exists($destination)) mkdir($destination, 0777, true);
-                $file->move($destination, $filename);
-                $product->thumbnail = 'backend/images/product/thumbnail/' . $filename;
-            }
 
             // ----------------- Product Data -----------------
             $product->fill($request->only([
@@ -643,13 +626,12 @@ class ProductController extends Controller
             // ----------------- Gallery Images -----------------
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $index => $imageFile) {
-                    $filename = 'gallery_' . time() . '_' . $index . '.' . $imageFile->getClientOriginalExtension();
-                    $destination = public_path('backend/images/product/gallery');
-                    if (!file_exists($destination)) mkdir($destination, 0777, true);
-                    $imageFile->move($destination, $filename);
-                    $product->gallery()->create([
-                        'url' => 'backend/images/product/gallery/' . $filename,
-                    ]);
+                    $imagePath = image_save('product/gallery', 'gallery_' . $index, $imageFile, '800x650');
+                    if ($imagePath) {
+                        $product->gallery()->create([
+                            'url' => $imagePath,
+                        ]);
+                    }
                 }
             }
 

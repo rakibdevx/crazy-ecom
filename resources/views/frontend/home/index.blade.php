@@ -2194,174 +2194,20 @@ Home
             <h2>popular categories</h2>
         </div>
         <div class="product-categories-slider-3 nav-style-3">
-            <div class="product-plr-1">
-                <div class="single-product-wrap mb-50">
-                    <div class="product-img product-img-border border-blue mb-20">
-                        <a href="shop.html">
-                            <img src="{{asset('/')}}frontend/images/product/product-50.png" alt="">
-                        </a>
-                    </div>
-                    <div class="product-content-categories-2 product-content-blue text-center">
-                        <h5><a href="shop.html">Fashion</a></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="product-plr-1">
-                <div class="single-product-wrap mb-50">
-                    <div class="product-img product-img-border border-blue mb-20">
-                        <a href="shop.html">
-                            <img src="{{asset('/')}}frontend/images/product/product-89.png" alt="">
-                        </a>
-                    </div>
-                    <div class="product-content-categories-2 product-content-blue text-center">
-                        <h5><a href="shop.html">pet supplies</a></h5>
+            @foreach ($categories as $category)
+                <div class="product-plr-1">
+                    <div class="single-product-wrap mb-50">
+                        <div class="product-img product-img-border border-blue mb-20">
+                            <a href="shop.html">
+                                <img class="cat-image" src="{{$category->image?asset($category->image):setting('default_category_image')}}" alt="{{$category->name}}">
+                            </a>
+                        </div>
+                        <div class="product-content-categories-2 product-content-blue text-center">
+                            <h5><a href="shop.html">{{$category->name}}</a></h5>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="product-plr-1">
-                <div class="single-product-wrap mb-50">
-                    <div class="product-img product-img-border border-blue mb-20">
-                        <a href="shop.html">
-                            <img src="{{asset('/')}}frontend/images/product/product-51.png" alt="">
-                        </a>
-                    </div>
-                    <div class="product-content-categories-2 product-content-blue text-center">
-                        <h5><a href="shop.html">Electronic</a></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="product-plr-1">
-                <div class="single-product-wrap mb-50">
-                    <div class="product-img product-img-border border-blue mb-20">
-                        <a href="shop.html">
-                            <img src="{{asset('/')}}frontend/images/product/product-90.png" alt="">
-                        </a>
-                    </div>
-                    <div class="product-content-categories-2 product-content-blue text-center">
-                        <h5><a href="shop.html">kid clothes</a></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="product-plr-1">
-                <div class="single-product-wrap mb-50">
-                    <div class="product-img product-img-border border-blue mb-20">
-                        <a href="shop.html">
-                            <img src="{{asset('/')}}frontend/images/product/product-52.png" alt="">
-                        </a>
-                    </div>
-                    <div class="product-content-categories-2 product-content-blue text-center">
-                        <h5><a href="shop.html">computer</a></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="product-plr-1">
-                <div class="single-product-wrap mb-50">
-                    <div class="product-img product-img-border border-blue mb-20">
-                        <a href="shop.html">
-                            <img src="{{asset('/')}}frontend/images/product/product-91.png" alt="">
-                        </a>
-                    </div>
-                    <div class="product-content-categories-2 product-content-blue text-center">
-                        <h5><a href="shop.html">smart home</a></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="product-plr-1">
-                <div class="single-product-wrap mb-50">
-                    <div class="product-img product-img-border border-blue mb-20">
-                        <a href="shop.html">
-                            <img src="{{asset('/')}}frontend/images/product/product-53.png" alt="">
-                        </a>
-                    </div>
-                    <div class="product-content-categories-2 product-content-blue text-center">
-                        <h5><a href="shop.html">beauty</a></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="product-plr-1">
-                <div class="single-product-wrap mb-50">
-                    <div class="product-img product-img-border border-blue mb-20">
-                        <a href="shop.html">
-                            <img src="{{asset('/')}}frontend/images/product/product-92.png" alt="">
-                        </a>
-                    </div>
-                    <div class="product-content-categories-2 product-content-blue text-center">
-                        <h5><a href="shop.html">car parts</a></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="product-plr-1">
-                <div class="single-product-wrap mb-50">
-                    <div class="product-img product-img-border border-blue mb-20">
-                        <a href="shop.html">
-                            <img src="{{asset('/')}}frontend/images/product/product-54.png" alt="">
-                        </a>
-                    </div>
-                    <div class="product-content-categories-2 product-content-blue text-center">
-                        <h5><a href="shop.html">sport</a></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="product-plr-1">
-                <div class="single-product-wrap mb-50">
-                    <div class="product-img product-img-border border-blue mb-20">
-                        <a href="shop.html">
-                            <img src="{{asset('/')}}frontend/images/product/product-93.png" alt="">
-                        </a>
-                    </div>
-                    <div class="product-content-categories-2 product-content-blue text-center">
-                        <h5><a href="shop.html">gym equipments</a></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="product-plr-1">
-                <div class="single-product-wrap mb-50">
-                    <div class="product-img product-img-border border-blue mb-20">
-                        <a href="shop.html">
-                            <img src="{{asset('/')}}frontend/images/product/product-55.png" alt="">
-                        </a>
-                    </div>
-                    <div class="product-content-categories-2 product-content-blue text-center">
-                        <h5><a href="shop.html">baby</a></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="product-plr-1">
-                <div class="single-product-wrap mb-50">
-                    <div class="product-img product-img-border border-blue mb-20">
-                        <a href="shop.html">
-                            <img src="{{asset('/')}}frontend/images/product/product-94.png" alt="">
-                        </a>
-                    </div>
-                    <div class="product-content-categories-2 product-content-blue text-center">
-                        <h5><a href="shop.html">infant</a></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="product-plr-1">
-                <div class="single-product-wrap mb-50">
-                    <div class="product-img product-img-border border-blue mb-20">
-                        <a href="shop.html">
-                            <img src="{{asset('/')}}frontend/images/product/product-52.png" alt="">
-                        </a>
-                    </div>
-                    <div class="product-content-categories-2 product-content-blue text-center">
-                        <h5><a href="shop.html">computer</a></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="product-plr-1">
-                <div class="single-product-wrap mb-50">
-                    <div class="product-img product-img-border border-blue mb-20">
-                        <a href="shop.html">
-                            <img src="{{asset('/')}}frontend/images/product/product-50.png" alt="">
-                        </a>
-                    </div>
-                    <div class="product-content-categories-2 product-content-blue text-center">
-                        <h5><a href="shop.html">Fashion</a></h5>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </div>
@@ -3249,48 +3095,18 @@ Home
         </div>
     </div>
 </div>
-<div class="about-us-area bg-gray-8 pt-115 pb-115">
+<div class="brand-logo-area">
     <div class="container">
-        <div class="about-us-content-4">
-            <div class="about-us-content-4-title">
-                <h4>Norda: The One-stop Shopping Destination</h4>
-            </div>
-            <p>E-commerce is revolutionizing the way we all shop in Bangladesh. Why do you want to hop from one store to another in search of the latest phone when you can find it on the Internet in a single click? Not only mobiles. Norda houses everything you can possibly imagine, from trending electronics like laptops, tablets, smartphones, and mobile accessories to in-vogue fashion staples like shoes, clothing and lifestyle accessories; from modern furniture like sofa sets, dining tables, and wardrobes to appliances that make your life easy like washing machines, TVs, ACs, mixer grinder juicers and other time-saving kitchen and small appliances; from home furnishings like cushion covers, mattresses and bedsheets to toys and musical instruments, we got them all covered. You name it, and you can stay assured about finding them all here. For those of you with erratic working hours, norda is your best bet. Shop in your PJs, at night or in the wee hours of the morning. This e-commerce never shuts down.</p>
-            <p>What's more, with our year-round shopping festivals and events, our prices are irresistible. We're sure you'll find yourself picking up more than what you had in mind. If you are wondering why you should shop from Flipkart when there are multiple options available to you, well, the below will answer your question.</p>
-            <div class="about-us-content-4-title">
-                <h4>Norda Plus</h4>
-            </div>
-            <p>A world of limitless possibilities awaits you - Norda Plus was kickstarted as a loyalty reward programme for all its regular customers at zero subscription fee. All you need is 500 supercoins to be a part of this service. For every 100 rupees spent on Norda order, Plus members earns 4 supercoins & non-plus members earn 2 supercoins. Free delivery, early access during sales and shopping festivals, exchange offers and priority customer service are the top benefits to a Norda Plus member. In short, earn more when you shop more!</p>
-            <p>What's more, you can even use the Flipkart supercoins for a number of exciting services, like:
-                An annual Zomato Gold membership</p>
+        <div class="brand-slider nav-style-3">
+            @foreach ($brands as $brand)
+                <div class="single-brand-logo mb-10">
+                    <img class="max-height-100 max-width-250" src="{{$brand->image?asset($brand->image):asset(setting('default_brand_image'))}}" alt="{{$brand->name}}">
+                </div>
+            @endforeach
         </div>
     </div>
 </div>
-<div class="subscribe-area pt-95 pb-95">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-5 col-md-5">
-                <div class="section-title-3">
-                    <h2>Our Newsletter</h2>
-                    <p>Get updates by subscribe our weekly newsletter</p>
-                </div>
-            </div>
-            <div class="col-lg-7 col-md-7">
-                <div id="mc_embed_signup" class="subscribe-form-2">
-                    <form id="mc-embedded-subscribe-form" class="validate subscribe-form-style-2" novalidate="" target="_blank" name="mc-embedded-subscribe-form" method="post" action="https://devitems.us11.list-manage.com/subscribe/post?u=6bbb9b6f5827bd842d9640c82&amp;id=05d85f18ef">
-                        <div id="mc_embed_signup_scroll" class="mc-form-2 mc-form-2-bg-gray">
-                            <input class="email" type="email" required="" placeholder="Enter your email address" name="EMAIL" value="">
-                            <div class="mc-news-2" aria-hidden="true">
-                                <input type="text" value="" tabindex="-1" name="b_6bbb9b6f5827bd842d9640c82_05d85f18ef">
-                            </div>
-                            <div class="clear-2 clear-2-blue">
-                                <input id="mc-embedded-subscribe" class="button" type="submit" name="subscribe" value="Subscribe">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+
+
 @endsection

@@ -7,5 +7,8 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    //
+    public function category_product($slug)
+    {
+        return "Category";
+    }
 }

@@ -78,7 +78,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">OG Image</label>
+                                <label for="formFile" class="form-label">OG Image (<small class="text-danger">Dimensions must be 800 x 650 pixels</small>)</label>
                                 <input class="form-control @error('og_image') is-invalid @enderror" type="file" name="og_image" id="formFile"  @error('og_image') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('og_image')
@@ -90,7 +90,7 @@
                                 @endif
                             </div>
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Twitter Card</label>
+                                <label for="formFile" class="form-label">Twitter Card (<small class="text-danger">Dimensions must be 800 x 650 pixels</small>)</label>
                                 <input class="form-control @error('twitter_card') is-invalid @enderror" type="file" name="twitter_card" id="formFile"  @error('twitter_card') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('twitter_card')

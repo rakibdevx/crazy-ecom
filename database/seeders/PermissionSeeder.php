@@ -138,6 +138,10 @@ class PermissionSeeder extends Seeder
             // Coupon management
             'Comment-view',
             'Comment-delete',
+
+            // Newsletter management
+            'Newsletter-view',
+            'Newsletter-delete',
         ];
 
         foreach ($permissions as $permission) {

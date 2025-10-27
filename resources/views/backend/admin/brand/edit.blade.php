@@ -56,7 +56,7 @@
                                         <div class="invalid-feedback">@error('status') {{ $message }} @enderror</div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="formFile" class="form-label">Image</label>
+                                        <label for="formFile" class="form-label">Image  (<small class="text-danger">Dimensions must be 100 x 250 pixels</small>)</label>
                                         <input class="form-control  @error('image') is-invalid @enderror" type="file" name="image" id="formFile" @error('image') required @enderror>
                                         <div class="invalid-feedback">
                                             @error('image')

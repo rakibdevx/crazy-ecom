@@ -36,7 +36,7 @@
 
                             @csrf
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Login Background</label>
+                                <label for="formFile" class="form-label">Login Background (<small class="text-danger">Dimensions must be 2000 x 2000 pixels</small>)</label>
                                 <input class="form-control @error('login_background') is-invalid @enderror" type="file" name="login_background" id="formFile"  @error('login_background') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('login_background')
@@ -44,11 +44,11 @@
                                     @enderror
                                 </div>
                                 @if (!empty(setting('login_background')))
-                                    <img src="{{asset(setting('login_background'))}}" height="100px" width="auto" alt="{{setting('site_name')}}">
+                                    <img src="{{asset(setting('login_background'))}}" class= "max-width-300 max-height-100" width="auto" alt="{{setting('site_name')}}">
                                 @endif
                             </div>
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Registration Background</label>
+                                <label for="formFile" class="form-label">Registration Background (<small class="text-danger">Dimensions must be 2000 x 2000 pixels</small>)</label>
                                 <input class="form-control @error('registration_background') is-invalid @enderror" type="file" name="registration_background" id="formFile"  @error('registration_background') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('registration_background')
@@ -56,11 +56,11 @@
                                     @enderror
                                 </div>
                             @if (!empty(setting('registration_background')))
-                                    <img src="{{ asset(setting('registration_background')) }}" height="100px" width="auto" alt="{{ setting('site_name') }}">
+                                    <img src="{{ asset(setting('registration_background')) }}" class= "max-width-300 max-height-100" width="auto" alt="{{ setting('site_name') }}">
                                 @endif
                             </div>
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Forgot Background</label>
+                                <label for="formFile" class="form-label">Forgot Background (<small class="text-danger">Dimensions must be 2000 x 2000 pixels</small>)</label>
                                 <input class="form-control  @error('forgot_background') is-invalid @enderror" type="file" name="forgot_background" id="formFile" @error('forgot_background') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('forgot_background')
@@ -68,11 +68,11 @@
                                     @enderror
                                 </div>
                                 @if (!empty(setting('forgot_background')))
-                                    <img src="{{asset(setting('forgot_background'))}}" height="100px" width="auto" alt="{{setting('site_name')}}">
+                                    <img src="{{asset(setting('forgot_background'))}}" class= "max-width-300 max-height-100" width="auto" alt="{{setting('site_name')}}">
                                 @endif
                             </div>
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Reset Background</label>
+                                <label for="formFile" class="form-label">Reset Background (<small class="text-danger">Dimensions must be 2000 x 2000 pixels</small>)</label>
                                 <input class="form-control  @error('reset_background') is-invalid @enderror" type="file" name="reset_background" id="formFile" @error('reset_background') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('reset_background')
@@ -80,12 +80,12 @@
                                     @enderror
                                 </div>
                                 @if (!empty(setting('reset_background')))
-                                    <img src="{{asset(setting('reset_background'))}}" height="100px" width="auto" alt="{{setting('site_name')}}">
+                                    <img src="{{asset(setting('reset_background'))}}" class= "max-width-300 max-height-100" width="auto" alt="{{setting('site_name')}}">
                                 @endif
                             </div>
 
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Default profile Image</label>
+                                <label for="formFile" class="form-label">Default profile Image (<small class="text-danger">Dimensions must be 250 x 250 pixels</small>)</label>
                                 <input class="form-control  @error('default_profile_image') is-invalid @enderror" type="file" name="default_profile_image" id="formFile" @error('default_profile_image') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('default_profile_image')
@@ -93,11 +93,11 @@
                                     @enderror
                                 </div>
                                 @if (!empty(setting('default_profile_image')))
-                                    <img src="{{asset(setting('default_profile_image'))}}" height="100px" width="auto" alt="{{setting('site_name')}}">
+                                    <img src="{{asset(setting('default_profile_image'))}}" class= "max-width-300 max-height-100" width="auto" alt="{{setting('site_name')}}">
                                 @endif
                             </div>
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Default profile Banner</label>
+                                <label for="formFile" class="form-label">Default profile Banner (<small class="text-danger">Dimensions must be 600 x 1100 pixels</small>)</label>
                                 <input class="form-control  @error('default_profile_banner') is-invalid @enderror" type="file" name="default_profile_banner" id="formFile" @error('default_profile_banner') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('default_profile_banner')
@@ -105,11 +105,11 @@
                                     @enderror
                                 </div>
                                 @if (!empty(setting('default_profile_banner')))
-                                    <img src="{{asset(setting('default_profile_banner'))}}" height="100px" width="auto" alt="{{setting('site_name')}}">
+                                    <img src="{{asset(setting('default_profile_banner'))}}" class= "max-width-300 max-height-100" width="auto" alt="{{setting('site_name')}}">
                                 @endif
                             </div>
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Default Product Image</label>
+                                <label for="formFile" class="form-label">Default Product Image (<small class="text-danger">Dimensions must be 800 x 650 pixels</small>)</label>
                                 <input class="form-control  @error('default_product_image') is-invalid @enderror" type="file" name="default_product_image" id="formFile" @error('default_product_image') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('default_product_image')
@@ -117,11 +117,11 @@
                                     @enderror
                                 </div>
                                 @if (!empty(setting('default_product_image')))
-                                    <img src="{{asset(setting('default_product_image'))}}" height="100px" width="auto" alt="{{setting('site_name')}}">
+                                    <img src="{{asset(setting('default_product_image'))}}" class= "max-width-300 max-height-100" width="auto" alt="{{setting('site_name')}}">
                                 @endif
                             </div>
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Default Category Image</label>
+                                <label for="formFile" class="form-label">Default Category Image (<small class="text-danger">Dimensions must be 150 x 150 pixels</small>)</label>
                                 <input class="form-control  @error('default_category_image') is-invalid @enderror" type="file" name="default_category_image" id="formFile" @error('default_category_image') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('default_category_image')
@@ -129,11 +129,11 @@
                                     @enderror
                                 </div>
                                 @if (!empty(setting('default_category_image')))
-                                    <img src="{{asset(setting('default_category_image'))}}" height="100px" width="auto" alt="{{setting('site_name')}}">
+                                    <img src="{{asset(setting('default_category_image'))}}" class= "max-width-300 max-height-100" width="auto" alt="{{setting('site_name')}}">
                                 @endif
                             </div>
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Default Sub Category Image</label>
+                                <label for="formFile" class="form-label">Default Sub Category Image (<small class="text-danger">Dimensions must be 150 x 150 pixels</small>)</label>
                                 <input class="form-control  @error('default_sub_category_image') is-invalid @enderror" type="file" name="default_sub_category_image" id="formFile" @error('default_sub_category_image') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('default_sub_category_image')
@@ -141,11 +141,11 @@
                                     @enderror
                                 </div>
                                 @if (!empty(setting('default_sub_category_image')))
-                                    <img src="{{asset(setting('default_sub_category_image'))}}" height="100px" width="auto" alt="{{setting('site_name')}}">
+                                    <img src="{{asset(setting('default_sub_category_image'))}}" class= "max-width-300 max-height-100" width="auto" alt="{{setting('site_name')}}">
                                 @endif
                             </div>
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Default Brand Image</label>
+                                <label for="formFile" class="form-label">Default Brand Image (<small class="text-danger">Dimensions must be 100 x 250 pixels</small>)</label>
                                 <input class="form-control  @error('default_brand_image') is-invalid @enderror" type="file" name="default_brand_image" id="formFile" @error('default_brand_image') required @enderror>
                                 <div class="invalid-feedback">
                                     @error('default_brand_image')
@@ -153,7 +153,19 @@
                                     @enderror
                                 </div>
                                 @if (!empty(setting('default_brand_image')))
-                                    <img src="{{asset(setting('default_brand_image'))}}" height="100px" width="auto" alt="{{setting('site_name')}}">
+                                    <img src="{{asset(setting('default_brand_image'))}}" class= "max-width-300 max-height-100" width="auto" alt="{{setting('site_name')}}">
+                                @endif
+                            </div>
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Footer Payment Image (<small class="text-danger">Dimensions must be 300 x 20 pixels</small>)</label>
+                                <input class="form-control  @error('footer_payment_image') is-invalid @enderror" type="file" name="footer_payment_image" id="formFile" @error('footer_payment_image') required @enderror>
+                                <div class="invalid-feedback">
+                                    @error('footer_payment_image')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                                @if (!empty(setting('footer_payment_image')))
+                                    <img src="{{asset(setting('footer_payment_image'))}}" class= "max-width-300 max-height-100" width="auto" alt="{{setting('site_name')}}">
                                 @endif
                             </div>
                             <div class="col">

@@ -61,20 +61,16 @@ class SettingController extends Controller
         Setting::updateOrCreate(['key' => 'footer_text'],['value' => $request->footer_text]);
 
         // return Setting::all();
-        $imageSettings = ['site_logo', 'site_logo_dark', 'site_favicon'];
-        foreach ($imageSettings as $key) {
-            if ($request->hasFile($key)) {
-                $file = $request->file($key);
-                if (setting($key)) {
-                    $oldPath = public_path(setting($key));
-                    if (file_exists($oldPath)) {
-                        @unlink($oldPath);
-                    }
-                }
-                $filename = $key . '_' . time() . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('backend/images/logo'), $filename);
-                Setting::updateOrCreate(['key' => $key],['value' => 'backend/images/logo/' . $filename]);
-            }
+        $imageSettings = [
+            'site_logo' => '250x100',
+            'site_logo_dark' => '250x100',
+            'site_favicon' => '32x32'
+        ];
+
+        foreach ($imageSettings as $key =>$size) {
+            $oldPath = setting($key);
+            $image_url = image_update('site',$key,$request->file($key),$oldPath ,$size);
+            Setting::updateOrCreate(['key' => $key],['value' => $image_url]);
         }
         clearSettingCache();
         return redirect()->back()->with('success', 'Settings updated successfully!');
@@ -103,20 +99,16 @@ class SettingController extends Controller
         Setting::updateOrCreate(['key' => 'meta_keywords'],['value' => $request->meta_keywords]);
         Setting::updateOrCreate(['key' => 'og_title'],['value' => $request->og_title]);
         Setting::updateOrCreate(['key' => 'og_description'],['value' => $request->og_description]);
-        $imageSettings = ['twitter_card', 'og_image'];
-        foreach ($imageSettings as $key) {
-            if ($request->hasFile($key)) {
-                $file = $request->file($key);
-                if (setting($key)) {
-                    $oldPath = public_path(setting($key));
-                    if (file_exists($oldPath)) {
-                        @unlink($oldPath);
-                    }
-                }
-                $filename = $key . '_' . time() . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('backend/images/meta'), $filename);
-                Setting::updateOrCreate(['key' => $key],['value' => 'backend/images/meta/' . $filename]);
-            }
+        $imageSettings = [
+            'twitter_card' => '1200x628',
+            'og_image' => '1200x630',
+        ];
+
+
+        foreach ($imageSettings as $key=>$size) {
+            $oldPath = setting($key);
+            $image_url = image_update('site',$key,$request->file($key),$oldPath ,$size);
+            Setting::updateOrCreate(['key' => $key],['value' => $image_url]);
         }
 
         clearSettingCache();
@@ -321,24 +313,27 @@ class SettingController extends Controller
             'default_category_image'=> ['nullable', 'file', new ValidImage()],
             'default_sub_category_image'=> ['nullable', 'file', new ValidImage()],
             'default_brand_image'=> ['nullable', 'file', new ValidImage()],
+            'footer_payment_image'=> ['nullable', 'file', new ValidImage()],
         ]);
 
-        $imageSettings = ['login_background', 'registration_background', 'forgot_background','reset_background',
-                        'default_profile_image','default_product_image','default_profile_banner','default_category_image',
-                        'default_sub_category_image','default_brand_image'];
-        foreach ($imageSettings as $key) {
-            if ($request->hasFile($key)) {
-                $file = $request->file($key);
-                if (setting($key)) {
-                    $oldPath = public_path(setting($key));
-                    if (file_exists($oldPath)) {
-                        @unlink($oldPath);
-                    }
-                }
-                $filename = $key . '_' . time() . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('backend/images/default'), $filename);
-                Setting::updateOrCreate(['key' => $key],['value' => 'backend/images/default/' . $filename]);
-            }
+        $imageSettings = [
+            'login_background' => '2000x2000',
+            'registration_background' => '2000x2000',
+            'forgot_background' => '2000x2000',
+            'reset_background' => '2000x2000',
+            'default_profile_image' => '250x250',
+            'default_product_image' => '800x650',
+            'default_profile_banner' => '600x1100',
+            'default_category_image' => '150x150',
+            'default_sub_category_image' => '150x150',
+            'default_brand_image' => '100x250',
+            'footer_payment_image' => '300x20',
+        ];
+
+        foreach ($imageSettings as $key=>$size) {
+            $oldPath = setting($key);
+            $image_url = image_update('site',$key,$request->file($key),$oldPath ,$size);
+            Setting::updateOrCreate(['key' => $key],['value' => $image_url]);
         }
         clearSettingCache();
         return redirect()->back()->with('success', 'Image updated successfully!');

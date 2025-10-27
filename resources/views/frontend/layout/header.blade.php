@@ -46,7 +46,7 @@
                         <div class="header-top-right">
                             <div class="same-style-wrap">
                                 <div class="same-style same-style-mrg-2 track-order">
-                                    <a href="#">Track Orders </a>
+                                    <a href="{{route('track.order')}}">Track Orders </a>
                                 </div>
                                 <div class="same-style same-style-mrg-2 currency-wrap">
                                     <a class="currency-dropdown-active" href="#"> {{setting('currency')}}({{setting('currency_symbol')}})</a>
@@ -73,16 +73,15 @@
                             <div class="categori-style-1">
                                 <select class="nice-select nice-select-style-1">
                                     <option>All Categories </option>
-                                    <option>Clothing </option>
-                                    <option>T-Shirt</option>
-                                    <option>Shoes</option>
-                                    <option>Jeans</option>
+                                    @foreach ($menu_categories as $category)
+                                        <option value="{{$category->id}}">{{$category->name}} </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="search-wrap-3">
                                 <form action="#">
                                     <input placeholder="Search Products..." type="text">
-                                    <button class="blue"><i class="lnr lnr-magnifier"></i></button>
+                                    <button class="blue" type="submit"><i class="lnr lnr-magnifier"></i></button>
                                 </form>
                             </div>
                         </div>
@@ -106,21 +105,40 @@
                 <div class="row align-items-center">
                     <div class="col-lg-3">
                         <div class="main-categori-wrap main-categori-wrap-modify-2">
-                            <a class="categori-show categori-blue" href="#">All Department <i class="icon-arrow-down icon-right"></i></a>
-                            <div class="category-menu-2 category-menu-2-blue categori-hide categori-not-visible-2">
+                            <a class="categori-show categori-blue" href="#">All Categories <i class="icon-arrow-down icon-right"></i></a>
+                            <div class="category-menu categori-hide" style="display: none;">
                                 <nav>
                                     <ul>
-                                        <li><a href="shop.html"><i class="icon-energy"></i> Consumer Electric</a></li>
-                                        <li><a href="shop.html"><i class="icon-handbag"></i> Clothing & Apparel</a></li>
-                                        <li><a href="shop.html"><i class="icon-home"></i> Home, Garden & Kitchen</a></li>
-                                        <li><a href="shop.html"><i class="icon-game-controller"></i> Game Console</a></li>
-                                        <li><a href="shop.html"><i class="icon-eyeglass"></i> Jewelry & Watches </a></li>
-                                        <li><a href="shop.html"><i class="icon-screen-desktop"></i> Computers & Technologies </a></li>
-                                        <li><a href="shop.html"><i class="icon-camera"></i> Camera, Video & Audio</a></li>
-                                        <li><a href="shop.html"><i class="icon-social-dribbble"></i> Sport & Outdoor</a></li>
-                                        <li><a href="shop.html"><i class="icon-screen-smartphone"></i> Phones & Accessories</a></li>
-                                        <li><a href="shop.html"><i class="icon-notebook"></i> Books & Office</a></li>
-                                        <li><a href="shop.html"><i class="icon-rocket"></i> Cars & Motocycles</a></li>
+                                        @foreach ($menu_categories as $category)
+                                            <li class="cr-dropdown">
+                                                <a href="{{route('product.category_product',$category->slug)}}">{{$category->name}}
+                                                    @if ($category->subcategories->count() > 0)
+                                                        <span class="icon-arrow-right"></span>
+                                                    @endif
+                                                </a>
+                                                @if ($category->subcategories->count() > 0)
+                                                    <div class="category-menu-dropdown ct-menu-res-height-1">
+                                                        @foreach ($category->subcategories as $subcategory)
+                                                            <div class="single-category-menu @if ($subcategory->childcategories->count() > 0) ct-menu-mrg-bottom category-menu-border @endif">
+                                                                <h4>
+                                                                    <a href="{{route('product.sub_category_product',$subcategory->slug)}}">
+                                                                        {{$subcategory->name}}
+                                                                    </a>
+                                                                </h4>
+                                                                <ul>
+                                                                    @foreach ($subcategory->childcategories as $childcategory)
+                                                                    <li><a href="{{route('product.child_category_product',$childcategory->slug)}}">{{$childcategory->name}}</a></li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        @endforeach
+                                                        <div class="single-category-menu">
+                                                            <a href="{{route('product.category_product',$category->slug)}}"><img src="{{$category->image?asset($category->image):setting('default_category_image')}}" alt=""></a>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </li>
+                                        @endforeach
                                     </ul>
                                 </nav>
                             </div>
@@ -130,21 +148,9 @@
                         <div class="main-menu main-menu-white main-menu-padding-1 main-menu-font-size-14 main-menu-lh-5">
                             <nav>
                                 <ul>
-                                    <li><a href="index.html">HOME </a>
-                                        <ul class="sub-menu-style">
-                                            <li><a href="index.html">Home version 1 </a></li>
-                                            <li><a href="index-2.html">Home version 2</a></li>
-                                            <li><a href="index-3.html">Home version 3</a></li>
-                                            <li><a href="index-4.html">Home version 4</a></li>
-                                            <li><a href="index-5.html">Home version 5</a></li>
-                                            <li><a href="index-6.html">Home version 6</a></li>
-                                            <li><a href="index-7.html">Home version 7</a></li>
-                                            <li><a href="index-8.html">Home version 8</a></li>
-                                            <li><a href="index-9.html">Home version 9</a></li>
-                                            <li><a href="index-10.html">Home version 10</a></li>
-                                        </ul>
+                                    <li><a href="{{route('index')}}">HOME </a>
                                     </li>
-                                    <li><a href="shop.html">SHOP </a>
+                                    <li><a href="{{route('product.index')}}">SHOP </a>
                                         <ul class="mega-menu-style mega-menu-mrg-2">
                                             <li>
                                                 <ul>
@@ -152,24 +158,6 @@
                                                         <a class="dropdown-title" href="#">Shop Layout</a>
                                                         <ul>
                                                             <li><a href="shop.html">standard style</a></li>
-                                                            <li><a href="shop-list.html">shop list style</a></li>
-                                                            <li><a href="shop-fullwide.html">shop fullwide</a></li>
-                                                            <li><a href="shop-no-sidebar.html">grid no sidebar</a></li>
-                                                            <li><a href="shop-list-no-sidebar.html">list no sidebar</a></li>
-                                                            <li><a href="shop-right-sidebar.html">shop right sidebar</a></li>
-                                                            <li><a href="store-location.html">store location</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-title" href="#">Products Layout</a>
-                                                        <ul>
-                                                            <li><a href="product-details.html">tab style 1</a></li>
-                                                            <li><a href="product-details-2.html">tab style 2</a></li>
-                                                            <li><a href="product-details-sticky.html">sticky style</a></li>
-                                                            <li><a href="product-details-gallery.html">gallery style </a></li>
-                                                            <li><a href="product-details-affiliate.html">affiliate style</a></li>
-                                                            <li><a href="product-details-group.html">group style</a></li>
-                                                            <li><a href="product-details-fixed-img.html">fixed image style </a></li>
                                                         </ul>
                                                     </li>
                                                     <li>
@@ -192,14 +180,7 @@
                                             <li><a href="login-register.html">login / register </a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="blog.html">BLOG </a>
-                                        <ul class="sub-menu-style">
-                                            <li><a href="blog.html">blog standard </a></li>
-                                            <li><a href="blog-no-sidebar.html">blog no sidebar </a></li>
-                                            <li><a href="blog-right-sidebar.html">blog right sidebar</a></li>
-                                            <li><a href="blog-details.html">blog details</a></li>
-                                        </ul>
-                                    </li>
+                                    <li><a href="blog.html">BLOG </a></li>
                                     <li><a href="contact.html">CONTACT </a></li>
                                 </ul>
                             </nav>
@@ -230,7 +211,7 @@
             <div class="row align-items-center">
                 <div class="col-5">
                     <div class="mobile-logo">
-                        <a href="index.html">
+                        <a href="{{route('index')}}">
                             <img alt="" src="{{asset('/')}}frontend/images/logo/logo.png">
                         </a>
                     </div>
@@ -261,9 +242,6 @@
     <div class="clickalbe-sidebar-wrap">
         <a class="sidebar-close"><i class="icon_close"></i></a>
         <div class="mobile-header-content-area">
-            <div class="header-offer-wrap-2 mrg-none mobile-header-padding-border-4">
-                <p><span>FREE SHIPPING</span> world wide for all orders over $199</p>
-            </div>
             <div class="mobile-search mobile-header-padding-border-1">
                 <form class="search-form" action="#">
                     <input type="text" placeholder="Search here…">
@@ -274,45 +252,9 @@
                 <!-- mobile menu start -->
                 <nav>
                     <ul class="mobile-menu">
-                        <li class="menu-item-has-children"><a href="index.html">Home</a>
-                            <ul class="dropdown">
-                                <li><a href="index.html">Home version 1 </a></li>
-                                <li><a href="index-2.html">Home version 2</a></li>
-                                <li><a href="index-3.html">Home version 3</a></li>
-                                <li><a href="index-4.html">Home version 4</a></li>
-                                <li><a href="index-5.html">Home version 5</a></li>
-                                <li><a href="index-6.html">Home version 6</a></li>
-                                <li><a href="index-7.html">Home version 7</a></li>
-                                <li><a href="index-8.html">Home version 8</a></li>
-                                <li><a href="index-9.html">Home version 9</a></li>
-                                <li><a href="index-10.html">Home version 10</a></li>
-                            </ul>
+                        <li class="menu-item-has-children"><a href="{{route('index')}}">Home</a>
                         </li>
-                        <li class="menu-item-has-children "><a href="#">shop</a>
-                            <ul class="dropdown">
-                                <li class="menu-item-has-children"><a href="#">shop layout</a>
-                                    <ul class="dropdown">
-                                        <li><a href="shop.html">standard style</a></li>
-                                        <li><a href="shop-list.html">shop list style</a></li>
-                                        <li><a href="shop-fullwide.html">shop fullwide</a></li>
-                                        <li><a href="shop-no-sidebar.html">grid no sidebar</a></li>
-                                        <li><a href="shop-list-no-sidebar.html">list no sidebar</a></li>
-                                        <li><a href="shop-right-sidebar.html">shop right sidebar</a></li>
-                                        <li><a href="store-location.html">store location</a></li>
-                                    </ul>
-                                </li>
-                                <li class="menu-item-has-children"><a href="#">Products Layout</a>
-                                    <ul class="dropdown">
-                                        <li><a href="product-details.html">tab style 1</a></li>
-                                        <li><a href="product-details-2.html">tab style 2</a></li>
-                                        <li><a href="product-details-sticky.html">sticky style</a></li>
-                                        <li><a href="product-details-gallery.html">gallery style </a></li>
-                                        <li><a href="product-details-affiliate.html">affiliate style</a></li>
-                                        <li><a href="product-details-group.html">group style</a></li>
-                                        <li><a href="product-details-fixed-img.html">fixed image style </a></li>
-                                    </ul>
-                                </li>
-                            </ul>
+                        <li class="menu-item-has-children "><a href="{{route('product.index')}}">shop</a>
                         </li>
                         <li class="menu-item-has-children"><a href="#">Pages</a>
                             <ul class="dropdown">
@@ -327,14 +269,7 @@
                                 <li><a href="login-register.html">login / register </a></li>
                             </ul>
                         </li>
-                        <li class="menu-item-has-children "><a href="#">Blog</a>
-                            <ul class="dropdown">
-                                <li><a href="blog.html">blog standard </a></li>
-                                <li><a href="blog-no-sidebar.html">blog no sidebar </a></li>
-                                <li><a href="blog-right-sidebar.html">blog right sidebar</a></li>
-                                <li><a href="blog-details.html">blog details</a></li>
-                            </ul>
-                        </li>
+                        <li><a href="contact.html">BLog</a></li>
                         <li><a href="contact.html">Contact us</a></li>
                     </ul>
                 </nav>
@@ -347,84 +282,50 @@
                 <div class="categori-hide-2">
                     <nav>
                         <ul class="mobile-menu">
-                            <li><a href="shop.html"><i class="icon-energy"></i> Consumer Electric </a></li>
-                            <li><a href="shop.html"><i class="icon-handbag"></i> Clothing & Apparel </a></li>
-                            <li><a href="shop.html"><i class="icon-home"></i> Home, Garden & Kitchen </a></li>
-                            <li><a href="shop.html"><i class="icon-game-controller"></i> Game Console </a></li>
-                            <li><a href="shop.html"><i class="icon-eyeglass"></i> Jewelry & Watches </a></li>
-                            <li><a href="shop.html"><i class="icon-screen-desktop"></i> Computers & Technologies </a></li>
-                            <li><a href="shop.html"><i class="icon-camera"></i> Camera, Video & Audio </a></li>
-                            <li><a href="shop.html"><i class="icon-social-dribbble"></i> Sport & Outdoor </a></li>
-                            <li><a href="shop.html"><i class="icon-screen-smartphone"></i> Phones & Accessories </a></li>
-                            <li><a href="shop.html"><i class="icon-notebook"></i> Books & Office </a></li>
-                            <li><a href="shop.html"><i class="icon-rocket"></i> Cars & Motocycles </a></li>
+                            @foreach ($menu_categories as $category)
+                                <li class="menu-item-has-children "><a href="{{route('product.category_product',$category->slug)}}">{{$category->name}}</a>
+                            <ul class="dropdown">
+                                @foreach ($category->subcategories as $subcategory)
+                                <li><a href="{{route('product.sub_category_product',$subcategory->slug)}}">{{$subcategory->name}} </a></li>
+                                @endforeach
+                            </ul>
+                        </li>
+                            @endforeach
                         </ul>
                     </nav>
                 </div>
             </div>
             <div class="mobile-header-info-wrap mobile-header-padding-border-3">
                 <div class="single-mobile-header-info">
-                    <a href="order-tracking.html"><i class="lastudioicon-pin-3-2"></i>Track Orders </a>
-                </div>
-                <div class="single-mobile-header-info">
-                    <a class="mobile-language-active" href="#">Language <span><i class="icon-arrow-down"></i></span></a>
-                    <div class="lang-curr-dropdown lang-dropdown-active">
-                        <ul>
-                            <li><a href="#">English</a></li>
-                            <li><a href="#">French</a></li>
-                            <li><a href="#">German</a></li>
-                            <li><a href="#">Spanish</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="single-mobile-header-info">
-                    <a class="mobile-currency-active" href="#">Currency <span><i class="icon-arrow-down"></i></span></a>
-                    <div class="lang-curr-dropdown curr-dropdown-active">
-                        <ul>
-                            <li><a href="#">USD</a></li>
-                            <li><a href="#">EUR</a></li>
-                            <li><a href="#">Real</a></li>
-                            <li><a href="#">BDT</a></li>
-                        </ul>
-                    </div>
+                    <a href="{{route('track.order')}}"><i class="lastudioicon-pin-3-2"></i>Track Orders </a>
                 </div>
             </div>
             <div class="mobile-contact-info mobile-header-padding-border-4">
                 <ul>
-                    <li><i class="icon-phone "></i> (+612) 2531 5600</li>
-                    <li><i class="icon-envelope-open "></i> norda@domain.com</li>
-                    <li><i class="icon-home"></i> PO Box 1622 Colins Street West Australia</li>
+                    <li><i class="icon-phone "></i> {{setting('support_phone')}}</li>
+                    <li><i class="icon-envelope-open "></i>{{setting('support_email')}}</li>
+                    <li><i class="icon-home"></i> {{setting('address')}}</li>
                 </ul>
             </div>
             <div class="mobile-social-icon">
                 @if (setting('facebook_link'))
-                    <a href="{{ setting('facebook_link') }}" target="_blank" title="Facebook">
-                        <i class="icon-social-facebook"></i>
-                    </a>
+                    <a class="facebook" href="{{setting('facebook_link')}}"><i class="icon-social-facebook"></i></a>
                 @endif
 
                 @if (setting('twitter_link'))
-                    <a href="{{ setting('twitter_link') }}" target="_blank" title="Twitter">
-                        <i class="icon-social-twitter"></i>
-                    </a>
+                    <a class="twitter" href="{{setting('twitter_link')}}"><i class="icon-social-twitter"></i></a>
                 @endif
 
                 @if (setting('instagram_link'))
-                    <a href="{{ setting('instagram_link') }}" target="_blank" title="Instagram">
-                        <i class="icon-social-instagram"></i>
-                    </a>
+                    <a class="instagram" href="{{setting('instagram_link')}}"><i class="icon-social-instagram"></i></a>
                 @endif
 
                 @if (setting('youtube_link'))
-                    <a href="{{ setting('youtube_link') }}" target="_blank" title="YouTube">
-                        <i class="icon-social-youtube"></i>
-                    </a>
+                    <a class="instagram" href="{{setting('youtube_link')}}"><i class="icon-social-youtube"></i></a>
                 @endif
 
                 @if (setting('pinterest_link'))
-                    <a href="{{ setting('pinterest_link') }}" target="_blank" title="Pinterest">
-                        <i class="icon-social-pinterest"></i>
-                    </a>
+                    <a class="pinterest" href="{{setting('pinterest_link')}}"><i class="icon-social-pinterest"></i></a>
                 @endif
             </div>
         </div>

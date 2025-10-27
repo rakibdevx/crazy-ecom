@@ -83,34 +83,11 @@ class ProfileController extends Controller
         ]);
         $admin = Auth::guard('admin')->user();
 
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            if ($admin->profile_image) {
-                $oldPath = public_path($admin->profile_image);
-                if (file_exists($oldPath)) {
-                    @unlink($oldPath);
-                }
-            }
-            $filename = 'image' . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('backend/images/admin/profiles'), $filename);
-            $admin->update([
-                'profile_image'=> 'backend/images/admin/profiles/' . $filename
-            ]);
-        }
-        if ($request->hasFile('banner_image')) {
-            $file = $request->file('banner_image');
-            if ($admin->banner_image) {
-                $oldPath = public_path($admin->banner_image);
-                if (file_exists($oldPath)) {
-                    @unlink($oldPath);
-                }
-            }
-            $filename = 'banner_image' . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('backend/images/admin/banners'), $filename);
-            $admin->update([
-                'banner_image'=> 'backend/images/admin/banners/' . $filename
-            ]);
-        }
+        $admin->profile_image = image_update('admin/profiles','profiles',$request->file('image'),$admin->profile_image ,'250x250');
+        $admin->banner_image = image_update('admin/banner','banner',$request->file('banner_image'),$admin->banner_image ,'600x1100' );
+
+        $admin->save();
+
         return back()->with('success', 'Image updated successfully!');
     }
 }

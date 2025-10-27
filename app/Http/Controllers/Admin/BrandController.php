@@ -114,13 +114,7 @@ class BrandController extends Controller
             'image'=> ['nullable', 'file', new ValidImage()],
         ]);
 
-        $imagePath = '';
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = 'brand' . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('backend/images/brand'), $filename);
-            $imagePath = 'backend/images/brand/' . $filename;
-        }
+        $imagePath = image_save('brand', 'brand', $request->file('image'), '100x250');
 
         Brand::create([
             'name' => $request->name,
@@ -154,20 +148,7 @@ class BrandController extends Controller
             'image'=> ['nullable', 'file', new ValidImage()],
         ]);
 
-        $imagePath = $brand->image;
-
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            if ($imagePath) {
-                $oldPath = public_path($imagePath);
-                if (file_exists($oldPath)) {
-                    @unlink($oldPath);
-                }
-            }
-            $filename = 'brand' . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('backend/images/brand'), $filename);
-            $imagePath = 'backend/images/brand/' . $filename;
-        }
+        $imagePath = image_update('brand', 'brand', $request->file('image'), $brand->image, '100x250');
 
         $brand->update([
             'name' => $request->name,

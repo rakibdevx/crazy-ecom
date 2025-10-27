@@ -114,14 +114,7 @@ class CategoryController extends Controller
             'status' => 'required|in:active,inactive',
             'image'=> ['nullable', 'file', new ValidImage()],
         ]);
-
-        $imagePath = '';
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = 'category' . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('backend/images/category'), $filename);
-            $imagePath = 'backend/images/category/' . $filename;
-        }
+        $imagePath = image_save('category', 'category', $request->file('image'), '200x200');
 
         Category::create([
             'name' => $request->name,
@@ -155,20 +148,7 @@ class CategoryController extends Controller
             'image'=> ['nullable', 'file', new ValidImage()],
         ]);
 
-        $imagePath = $category->image;
-
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            if ($imagePath) {
-                $oldPath = public_path($imagePath);
-                if (file_exists($oldPath)) {
-                    @unlink($oldPath);
-                }
-            }
-            $filename = 'category' . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('backend/images/category'), $filename);
-            $imagePath = 'backend/images/category/' . $filename;
-        }
+        $imagePath = image_update('category', 'category', $request->file('image'), $category->image, '150x150');
 
         $category->update([
             'name' => $request->name,
