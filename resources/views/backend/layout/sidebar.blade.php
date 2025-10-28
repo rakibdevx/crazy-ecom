@@ -239,6 +239,11 @@
                                     <a href="{{route('admin.setting.system')}}"><i class="material-icons-outlined">arrow_right</i>System Configerations</a>
                                 </li>
                             @endcan
+                            @can('Theme-setting')
+                                <li class="{{ request()->routeIs('admin.setting.theme') ? 'mm-active' : '' }}">
+                                    <a href="{{route('admin.setting.theme')}}"><i class="material-icons-outlined">arrow_right</i>Theme</a>
+                                </li>
+                            @endcan
                             @can('Image-setting')
                                 <li class="{{ request()->routeIs('admin.setting.image') ? 'mm-active' : '' }}">
                                     <a href="{{route('admin.setting.image')}}"><i class="material-icons-outlined">arrow_right</i>Image Setting</a>
@@ -252,6 +257,14 @@
                         </ul>
                     </li>
                 @endcanany
+                @canany(['Slider-view', 'Slider-edit','Slider-delete','Slider-create'])
+                    <li class="{{ request()->routeIs('admin.newsletter.*') ? 'mm-active' : '' }}">
+                        <a href="{{route('admin.sliders.index')}}">
+                            <div class="parent-icon"><i class="material-icons-outlined">image</i></div>
+                            <div class="menu-title">Sliders</div>
+                        </a>
+                    </li>
+                @endcan
                 @canany(['Newsletter-view', 'Newsletter-delete'])
                     <li class="{{ request()->routeIs('admin.newsletter.*') ? 'mm-active' : '' }}">
                         <a href="{{route('admin.newsletter.index')}}">

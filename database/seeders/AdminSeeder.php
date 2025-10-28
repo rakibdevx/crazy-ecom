@@ -24,7 +24,7 @@ class AdminSeeder extends Seeder
         ]);
 
         $admin->assignRole('Super Admin');
-        
+
         $this->command->info('Admin seeded successfully!');
     }
 }

@@ -73,7 +73,9 @@ class ProductSeeder extends Seeder
                 'width_cm' => $faker->randomFloat(2, 10, 50),
                 'height_cm' => $faker->randomFloat(2, 5, 30),
                 'tags' => json_encode($faker->words(3)),
-                'thumbnail' => 'backend/images/product/thumbnail/dummy_' . rand(1,10) . '.jpg',
+                'view_count' => rand(100,10000),
+                'sold_count' => rand(100,10000),
+                'thumbnail' => 'demo/product_' . $i . '.jpg',
             ]);
 
             // Variants
@@ -104,7 +106,7 @@ class ProductSeeder extends Seeder
             $galleryCount = $faker->numberBetween(1, 4);
             for ($g = 0; $g < $galleryCount; $g++) {
                 $product->gallery()->create([
-                    'url' => 'backend/images/product/gallery/dummy_' . rand(1,10) . '.jpg',
+                    'url' => 'demo/product_gallery_' . rand(1,10) . '.jpg',
                 ]);
             }
 

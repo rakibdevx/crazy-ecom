@@ -20,15 +20,17 @@ class BrandSeeder extends Seeder
             'Canon','Logitech','Microsoft','Asus','Intel',
             'Bosch','Panasonic','Philips','Lenovo','Huawei'
         ];
-
+        $counter = 1;
         foreach ($brands as $brand) {
             DB::table('brands')->insert([
                 'name' => $brand,
                 'slug' => Str::slug($brand),
                 'status' => 'active',
+                'image' => 'demo/brand_' . $counter . '.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+            $counter++;
         }
     }
 }

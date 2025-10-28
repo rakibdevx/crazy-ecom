@@ -295,6 +295,37 @@ class SettingController extends Controller
         return redirect()->back()->with('success', 'Config updated successfully!');
     }
 
+    public function theme()
+    {
+        return view('backend.admin.setting.theme');
+    }
+
+    public function theme_update(Request $request)
+    {
+        $request->validate([
+            'best_selling_enable'   => 'nullable|string',
+            'hot_deals_enable'        => 'nullable|boolean',
+            'featured_products_enable'=> 'nullable|boolean',
+            'trending_products_enable'=> 'nullable|boolean',
+            'popular_categories_enable'=> 'nullable|boolean',
+            'suggest_today_enable'    => 'nullable|boolean',
+            'brands_enable'    => 'nullable|boolean',
+        ]);
+
+        Setting::updateOrCreate(['key' => 'best_selling_enable'], ['value' => $request->best_selling_enable]);
+        Setting::updateOrCreate(['key' => 'hot_deals_enable'], ['value' => $request->has('hot_deals_enable') ? 1 : 0]);
+        Setting::updateOrCreate(['key' => 'featured_products_enable'], ['value' => $request->has('featured_products_enable') ? 1 : 0]);
+        Setting::updateOrCreate(['key' => 'trending_products_enable'], ['value' => $request->has('trending_products_enable') ? 1 : 0]);
+        Setting::updateOrCreate(['key' => 'popular_categories_enable'], ['value' => $request->has('popular_categories_enable') ? 1 : 0]);
+        Setting::updateOrCreate(['key' => 'suggest_today_enable'], ['value' => $request->has('suggest_today_enable') ? 1 : 0]);
+        Setting::updateOrCreate(['key' => 'brands_enable'], ['value' => $request->has('brands_enable') ? 1 : 0]);
+        // Clear cache and redirect
+        clearSettingCache();
+        return redirect()->back()->with('success', 'Theme updated successfully!');
+    }
+
+
+
     public function image()
     {
         return view('backend.admin.setting.image');
@@ -313,6 +344,7 @@ class SettingController extends Controller
             'default_category_image'=> ['nullable', 'file', new ValidImage()],
             'default_sub_category_image'=> ['nullable', 'file', new ValidImage()],
             'default_brand_image'=> ['nullable', 'file', new ValidImage()],
+            'default_slider_image'=> ['nullable', 'file', new ValidImage()],
             'footer_payment_image'=> ['nullable', 'file', new ValidImage()],
         ]);
 
@@ -327,6 +359,7 @@ class SettingController extends Controller
             'default_category_image' => '150x150',
             'default_sub_category_image' => '150x150',
             'default_brand_image' => '100x250',
+            'default_slider_image' => '700x480',
             'footer_payment_image' => '300x20',
         ];
 

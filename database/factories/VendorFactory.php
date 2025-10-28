@@ -17,6 +17,8 @@ class VendorFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    protected static $profileImageCounter = 1;
+    protected static $profileBannerCounter = 1;
     public function definition(): array
     {
         return [
@@ -27,6 +29,8 @@ class VendorFactory extends Factory
             'phone' => $this->faker->phoneNumber,
             'company_name' => $this->faker->company,
             'company_website' => $this->faker->url,
+            'profile_image' => 'demo/vendor_' . self::$profileImageCounter++ . '.jpg',
+            'banner_image' => 'demo/vendor_banner_' . self::$profileBannerCounter++ . '.jpg',
             'status' => 'active',
             'verified' => true,
             'created_at' => now(),

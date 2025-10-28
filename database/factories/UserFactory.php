@@ -9,7 +9,7 @@ use App\Models\User;
 class UserFactory extends Factory
 {
     protected $model = User::class;
-
+    protected static $profileImageCounter = 1;
     public function definition(): array
     {
         return [
@@ -18,6 +18,7 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'password' => Hash::make('password123'),
             'phone' => $this->faker->phoneNumber,
+            'profile_image' => 'demo/user_' . self::$profileImageCounter++ . '.jpg',
             'status' => true,
             'created_at' => now(),
             'updated_at' => now(),

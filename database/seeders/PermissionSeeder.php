@@ -23,6 +23,7 @@ class PermissionSeeder extends Seeder
             'Security-setting',
             'Config-setting',
             'Image-setting',
+            'Theme-setting',
             'Clear-cache',
 
             // MailTemptale Management
@@ -127,6 +128,13 @@ class PermissionSeeder extends Seeder
             'Product-create',
             'Product-edit',
             'Product-delete',
+
+
+            // Coupon management
+            'Slider-view',
+            'Slider-create',
+            'Slider-edit',
+            'Slider-delete',
 
 
             // Coupon management

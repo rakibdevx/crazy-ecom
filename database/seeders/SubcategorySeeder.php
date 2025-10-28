@@ -155,15 +155,18 @@ class SubcategorySeeder extends Seeder
             ['category_id' => 20, 'name' => 'Travel Gadgets'],
         ];
 
+        $counter = 1;
         foreach ($subcategories as $sub) {
             DB::table('sub_categories')->insert([
                 'category_id' => $sub['category_id'],
                 'name' => $sub['name'],
                 'slug' => Str::slug($sub['name']),
                 'status' => 'active',
+                'image' => 'demo/sub_category_' . $counter . '.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+            $counter++;
         }
     }
 }

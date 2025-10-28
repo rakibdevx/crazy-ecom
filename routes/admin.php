@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\NewsletterController;
+use App\Http\Controllers\Admin\SliderController;
 
 // login route
 Route::prefix('admin')->name('admin.')->middleware(['web','guest:admin'])->group(function () {
@@ -109,6 +110,9 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.adm
     Route::get('products/get-subcategories', [ProductController::class, 'getSubCategories'])->name('product.getSubCategories');
     Route::get('products/get-childcategories', [ProductController::class, 'getChildCategories'])->name('product.getChildCategories');
 
+    // sliders Route
+    Route::resource('sliders', SliderController::class);
+
     Route::resource('coupon', CouponController::class);
     Route::get('coupon/subcategories-by-category/{id}', [CouponController::class, 'getSubcategories'])->name('coupon.getSubcategories');
     Route::get('coupon/childcategories-by-subcategory/{id}', [CouponController::class, 'getChildCategories'])->name('coupon.getChildCategories');
@@ -143,6 +147,9 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.adm
 
         Route::get('/config', [SettingController::class, 'config'])->name('config');
         Route::post('/config', [SettingController::class, 'config_update'])->name('config.update');
+
+        Route::get('/theme', [SettingController::class, 'theme'])->name('theme');
+        Route::post('/theme', [SettingController::class, 'theme_update'])->name('theme.update');
 
         Route::get('/image', [SettingController::class, 'image'])->name('image');
         Route::post('/image', [SettingController::class, 'image_update'])->name('image.update');

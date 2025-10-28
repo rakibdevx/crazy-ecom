@@ -15,6 +15,7 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
+        $counter = 1;
         $categories = [
             'Electronics', 'Fashion', 'Home & Kitchen', 'Books', 'Toys',
             'Sports', 'Beauty', 'Automotive', 'Groceries', 'Health',
@@ -27,9 +28,11 @@ class CategorySeeder extends Seeder
                 'name' => $category,
                 'slug' => Str::slug($category),
                 'status' => 'active',
+                'image' => 'demo/category_' . $counter . '.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+            $counter++;
         }
     }
 }

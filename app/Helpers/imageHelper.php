@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\File;
 
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Typography\FontFactory;
 
 if (!function_exists('image_save')) {
 
@@ -19,7 +20,7 @@ if (!function_exists('image_save')) {
             }
             $filename .= '_' . time() . '.' . $file->getClientOriginalExtension();
 
-            $destination = public_path('backend/images/' . $folder);
+            $destination = public_path('images/' . $folder);
             File::ensureDirectoryExists($destination);
 
             $manager = new ImageManager(Driver::class);
@@ -35,7 +36,8 @@ if (!function_exists('image_save')) {
             }
             $image->save($destination . '/' . $filename);
 
-            $imagePath = 'backend/images/' . $folder . '/' . $filename;
+
+            $imagePath = 'images/' . $folder . '/' . $filename;
         }
 
         return $imagePath;

@@ -83,6 +83,16 @@ class SettingSeeder extends Seeder
             ['key' => 'time_format', 'value' => 'H:i'],
             ['key' => 'default_pagination', 'value' => '20'],
 
+
+            // Theme Setting
+            ['key' => 'best_selling_enable', 'value' => '1'],
+            ['key' => 'hot_deals_enable', 'value' => '1'],
+            ['key' => 'featured_products_enable', 'value' => '1'],
+            ['key' => 'trending_products_enable', 'value' => '1'],
+            ['key' => 'popular_categories_enable', 'value' => '1'],
+            ['key' => 'suggest_today_enable', 'value' => '1'],
+            ['key' => 'brands_enable', 'value' => '1'],
+
             // 🔹 Security
             ['key' => 'max_login_attempts', 'value' => '5'],
             ['key' => 'lockout_time', 'value' => '10'],
@@ -103,6 +113,7 @@ class SettingSeeder extends Seeder
             ['key' => 'default_category_image', 'value' => 'backend/images/images/default_category_image.png'],
             ['key' => 'default_sub_category_image', 'value' => 'backend/images/images/default_sub_category_image.png'],
             ['key' => 'default_brand_image', 'value' => 'backend/images/images/default_brand_image.png'],
+            ['key' => 'default_slider_image', 'value' => 'backend/images/images/default_slider_image.png'],
             ['key' => 'footer_payment_image', 'value' => 'backend/images/images/footer_payment_image.png'],
 
            // Image Upload Config

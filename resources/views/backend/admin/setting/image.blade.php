@@ -157,6 +157,18 @@
                                 @endif
                             </div>
                             <div class="mb-3">
+                                <label for="formFile" class="form-label">Default Slider Image (<small class="text-danger">Dimensions must be 700 x 480 pixels</small>)</label>
+                                <input class="form-control  @error('default_slider_image') is-invalid @enderror" type="file" name="default_slider_image" id="formFile" @error('default_slider_image') required @enderror>
+                                <div class="invalid-feedback">
+                                    @error('default_slider_image')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                                @if (!empty(setting('default_slider_image')))
+                                    <img src="{{asset(setting('default_slider_image'))}}" class= "max-width-300 max-height-100" width="auto" alt="{{setting('site_name')}}">
+                                @endif
+                            </div>
+                            <div class="mb-3">
                                 <label for="formFile" class="form-label">Footer Payment Image (<small class="text-danger">Dimensions must be 300 x 20 pixels</small>)</label>
                                 <input class="form-control  @error('footer_payment_image') is-invalid @enderror" type="file" name="footer_payment_image" id="formFile" @error('footer_payment_image') required @enderror>
                                 <div class="invalid-feedback">
