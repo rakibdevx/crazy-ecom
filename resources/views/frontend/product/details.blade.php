@@ -18,7 +18,7 @@
                         <li>
                             <a href="{{route('product.index')}}">Products</a>
                         </li>
-                        <li class="active">{{$product->name}}</li>
+                        <li class="active text-capitalize">{{$product->name}}</li>
                     </ul>
                 </div>
             </div>
@@ -29,69 +29,49 @@
                     <div class="col-lg-6 col-md-12">
                         <div class="product-details-tab">
                             <div class="product-dec-right pro-dec-big-img-slider">
+                                 @php
+                                    $image = null;
+                                        if ($product->thumbnail && file_exists(public_path($product->thumbnail))) {
+                                            $image = asset($product->thumbnail);
+                                        } else {
+                                            $image = asset(setting('default_product_image'));
+                                        }
+                                @endphp
                                 <div class="easyzoom-style">
                                     <div class="easyzoom easyzoom--overlay">
-                                        <a href="assets/images/product-details/b-large-1.jpg">
-                                            <img src="{{asset('/')}}frontend/images/product-details/large-1.jpg" alt="">
+                                        <a href="{{$image}}">
+                                            <img src="{{$image}}" alt="">
                                         </a>
                                     </div>
-                                    <a class="easyzoom-pop-up img-popup" href="assets/images/product-details/b-large-1.jpg"><i class="icon-size-fullscreen"></i></a>
+                                    <a class="easyzoom-pop-up img-popup" href="{{$image}}"><i class="icon-size-fullscreen"></i></a>
                                 </div>
-                                <div class="easyzoom-style">
-                                    <div class="easyzoom easyzoom--overlay">
-                                        <a href="assets/images/product-details/b-large-2.jpg">
-                                            <img src="{{asset('/')}}frontend/images/product-details/large-2.jpg" alt="">
-                                        </a>
+                                @foreach ($product->gallery as $gallery)
+
+                                    <div class="easyzoom-style">
+                                        <div class="easyzoom easyzoom--overlay">
+                                            <a href="{{asset($gallery->url)}}">
+                                                <img src="{{asset($gallery->url)}}" alt="">
+                                            </a>
+                                        </div>
+                                        <a class="easyzoom-pop-up img-popup" href="{{asset($gallery->url)}}"><i class="icon-size-fullscreen"></i></a>
                                     </div>
-                                    <a class="easyzoom-pop-up img-popup" href="assets/images/product-details/b-large-2.jpg"><i class="icon-size-fullscreen"></i></a>
-                                </div>
-                                <div class="easyzoom-style">
-                                    <div class="easyzoom easyzoom--overlay">
-                                        <a href="assets/images/product-details/b-large-3.jpg">
-                                            <img src="{{asset('/')}}frontend/images/product-details/large-3.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <a class="easyzoom-pop-up img-popup" href="assets/images/product-details/b-large-3.jpg"><i class="icon-size-fullscreen"></i></a>
-                                </div>
-                                <div class="easyzoom-style">
-                                    <div class="easyzoom easyzoom--overlay">
-                                        <a href="assets/images/product-details/b-large-4.jpg">
-                                            <img src="{{asset('/')}}frontend/images/product-details/large-4.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <a class="easyzoom-pop-up img-popup" href="assets/images/product-details/b-large-4.jpg"><i class="icon-size-fullscreen"></i></a>
-                                </div>
-                                <div class="easyzoom-style">
-                                    <div class="easyzoom easyzoom--overlay">
-                                        <a href="assets/images/product-details/b-large-2.jpg">
-                                            <img src="{{asset('/')}}frontend/images/product-details/large-2.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <a class="easyzoom-pop-up img-popup" href="assets/images/product-details/b-large-2.jpg"><i class="icon-size-fullscreen"></i></a>
-                                </div>
+                                @endforeach
                             </div>
                             <div class="product-dec-left product-dec-slider-small-2 product-dec-small-style2">
                                 <div class="product-dec-small active">
-                                    <img src="{{asset('/')}}frontend/images/product-details/small-1.jpg" alt="">
+                                    <img src="{{$image}}" alt="">
                                 </div>
-                                <div class="product-dec-small">
-                                    <img src="{{asset('/')}}frontend/images/product-details/small-2.jpg" alt="">
+                                @foreach ($product->gallery as $gallery)
+                                <div class="product-dec-small active">
+                                    <img src="{{asset($gallery->url)}}" alt="">
                                 </div>
-                                <div class="product-dec-small">
-                                    <img src="{{asset('/')}}frontend/images/product-details/small-3.jpg" alt="">
-                                </div>
-                                <div class="product-dec-small">
-                                    <img src="{{asset('/')}}frontend/images/product-details/small-4.jpg" alt="">
-                                </div>
-                                <div class="product-dec-small">
-                                    <img src="{{asset('/')}}frontend/images/product-details/small-2.jpg" alt="">
-                                </div>
+                                 @endforeach
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12">
                         <div class="product-details-content pro-details-content-mt-md">
-                            <h2>{{$product->name}}</h2>
+                            <h2 class="text-capitalize">{{$product->name}}</h2>
                             <div class="product-ratting-review-wrap">
                                 <div class="product-ratting-digit-wrap">
                                     <div class="product-ratting">
@@ -116,52 +96,129 @@
                                 </div>
                             </div>
                             <p>{{$product->short_description}}</p>
-                            <div class="pro-details-price">
-                                <span class="new-price">$75.72</span>
-                                <span class="old-price">$95.72</span>
-                            </div>
-                            <div class="pro-details-color-wrap">
-                                <span>Color:</span>
-                                <div class="pro-details-color-content">
-                                    <ul>
-                                        <ul class="product-colors">
-                                            @foreach($product->productColors as $color)
+                            @if ($product->has_variants == 1)
+                                @php
+                                    $firstVariant = $product->variants->first();
+                                @endphp
+
+                                @if ($firstVariant)
+                                    <div class="pro-details-price">
+                                        <span class="new-price variant_price">{{ $firstVariant->price }}</span>
+                                        <span class="old-price variant_old_price">{{ $firstVariant->old_price }}</span>
+                                    </div>
+                                @endif
+                            @else
+                                <div class="pro-details-price">
+                                    <span class="new-price">{{$product->sale_price}}</span>
+                                    @if ($product->old_price)
+                                        <span class="old-price">{{$product->old_price}}</span>
+                                    @endif
+                                </div>
+                            @endif
+                            @if ($product->has_variants == 1)
+                                @if ($product->variants && $product->variants->count() > 0)
+                                    @php
+                                        $firstColor = $product->variants->groupBy('color_id')->first()->first();
+                                    @endphp
+                                    <div class="pro-details-color-wrap">
+                                        <span>Color:</span>
+                                        <div class="pro-details-color-content">
+                                            <ul class="product-colors">
+                                                @foreach($product->variants->groupBy('color_id') as $colorVariants)
+                                                    <li>
+                                                        <a href="#"
+                                                        class="color-item {{ $loop->first ? 'active' : '' }}"
+                                                        data-color-id="{{ $colorVariants->first()->color->id }}"
+                                                        style="background-color: {{ $colorVariants->first()->color->code }}">
+                                                            {{ $colorVariants->first()->color->name }}
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                            <input type="hidden" id="selected_color" name="selected_color" value="{{ $firstColor->color->id }}">
+                                        </div>
+                                    </div>
+                                @endif
+                            @else
+                                @if ($product->productColors && $product->productColors->count() > 0)
+                                    <div class="pro-details-color-wrap">
+                                        <span>Color:</span>
+                                        <div class="pro-details-color-content">
+                                            <ul class="product-colors">
+                                                    @foreach($product->productColors as $color)
+                                                        <li>
+                                                            <a href="#"
+                                                            class="color-item  @if ($loop->first) active @endif"
+                                                            style="background-color: {{ $color->color->code }};"
+                                                            data-color-id="{{ $color->color->id }}">
+                                                            {{ $color->color->name }}
+
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            <input type="hidden" id="selected_color" name="selected_color" value="{{$product->productColors[0]->color->id}}">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
+
+                            @if ($product->has_variants == 1)
+                                @if ($product->variants && $product->variants->count() > 0)
+                                    @php
+                                        $groupedSizes = $product->variants->groupBy('size_id');
+                                        $firstSize = $groupedSizes->first()->first();
+                                    @endphp
+                                    <div class="pro-details-size">
+                                        <span>Size:</span>
+                                        <div class="pro-details-size-content">
+                                            <ul>
+                                                @foreach($groupedSizes as $sizeId => $sizeVariants)
+                                                    @php
+                                                        $sizeItem = $sizeVariants->first()->size;
+                                                    @endphp
+                                                    <li>
+                                                        <a href="#"
+                                                        class="size-item {{ $loop->first ? 'active' : '' }}"
+                                                        data-size-id="{{ $sizeItem->id }}">
+                                                            {{ $sizeItem->name }}
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                            <input type="hidden" id="selectedSize" name="size_id" value="{{ $firstSize->size->id }}">
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
+
+                            @if ($product->productSizes && $product->productSizes->count() > 0)
+                                <div class="pro-details-size">
+                                    <span>Size:</span>
+                                    <div class="pro-details-size-content">
+                                        <ul>
+                                            @foreach($product->productSizes as $size)
                                                 <li>
                                                     <a href="#"
-                                                    class="color-item"
-                                                    style="background-color: {{ $color->color->code }};"
-                                                    data-color-id="{{ $color->color->code }}">
-                                                    {{ $color->color->name }}
-
+                                                    class="size-item  @if ($loop->first) active @endif"
+                                                    data-size-id="{{ $size->size->id }}">
+                                                    {{ $size->size->name }}
                                                     </a>
                                                 </li>
                                             @endforeach
                                         </ul>
-                                    </ul>
+                                        <input type="hidden" id="selectedSize" name="size_id" value="{{$product->productSizes[0]->size->id}}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="pro-details-size">
-                                <span>Size:</span>
-                                <div class="pro-details-size-content">
-                                    <ul>
-                                        @foreach($product->productSizes as $size)
-                                            <li>
-                                                <a href="#"
-                                                class="size-item"
-                                                data-size-id="{{ $size->size->id }}">
-                                                {{ $size->size->name }}
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                    <input type="hidden" id="selectedSize" name="size_id" value="">
-                                </div>
-                            </div>
+                            @endif
                             <div class="pro-details-quality">
                                 <span>Quantity:</span>
                                 <div class="cart-plus-minus">
-                                    <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1">
+                                    <input class="cart-plus-minus-box qty-input" type="text" name="qtybutton" value="1">
                                 </div>
+                                <input type="hidden" id="product_id" value="{{ $product->id }}">
+
                             </div>
                             <div class="product-details-meta">
                                 <ul>
@@ -184,7 +241,34 @@
                             </div>
                             <div class="pro-details-action-wrap">
                                 <div class="pro-details-add-to-cart">
-                                    <a title="Add to Cart" href="#">Add To Cart </a>
+                                    @if ($product->has_variants == 1)
+                                        @php
+                                            $variant = $product->variants
+                                                        ->where('color_id', $firstColor->color_id)
+                                                        ->where('size_id', $firstSize->size_id)
+                                                        ->first();
+                                            $isOutOfStock = !$variant || $variant->stock_quantity == 0;
+                                        @endphp
+
+                                        <a class="btn {{ $isOutOfStock ? 'btn-secondary disabled' : 'btn-primary' }}" id="addToCartBtn"
+                                        href="#"
+                                        {{ $isOutOfStock ? 'tabindex=-1 aria-disabled=true' : '' }}>
+                                            {{ $isOutOfStock ? 'Out of Stock' : 'Add To Cart' }}
+                                        </a>
+
+                                    @else
+                                        @php
+                                            $isOutOfStock = $product->stock_quantity == 0;
+                                        @endphp
+
+                                        <a class="btn {{ $isOutOfStock ? 'btn-secondary disabled' : 'btn-primary' }}" id="addToCartBtn"
+                                        href="#"
+                                        {{ $isOutOfStock ? 'tabindex=-1 aria-disabled=true' : '' }}>
+                                            {{ $isOutOfStock ? 'Out of Stock' : 'Add To Cart' }}
+                                        </a>
+                                    @endif
+
+
                                 </div>
                                 <div class="pro-details-action">
                                     <a title="Add to Wishlist" href="#"><i class="icon-heart"></i></a>
@@ -248,7 +332,7 @@
                                             @if(!empty($product->name))
                                                 <tr>
                                                     <td class="title width1">Name</td>
-                                                    <td>{{ $product->name }}</td>
+                                                    <td class="text-capitalize">{{ $product->name }}</td>
                                                 </tr>
                                             @endif
 
@@ -444,7 +528,15 @@
                                 <div class="single-product-wrap">
                                     <div class="product-img product-img-zoom mb-20">
                                         <a href="{{route('product.details',$product->slug)}}">
-                                            <img src="{{asset($product->thumbnail)}}" alt="">
+                                             @php
+                                                $image = null;
+                                                    if ($product->thumbnail && file_exists(public_path($product->thumbnail))) {
+                                                        $image = asset($product->thumbnail);
+                                                    } else {
+                                                        $image = asset(setting('default_product_image'));
+                                                    }
+                                            @endphp
+                                            <img src="{{$image}}" alt="">
                                         </a>
                                         @if ($product->has_variants == 0)
                                         <span class="pro-badge left bg-red">-{{setting('currency_symbol') . ($product->old_price - $product->sale_price) }}</span>
@@ -552,6 +644,7 @@
         </div>
 @endsection
 @push('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.querySelectorAll('.size-item').forEach(item => {
         item.addEventListener('click', function(e) {
@@ -559,8 +652,110 @@
             document.querySelectorAll('.size-item').forEach(i => i.classList.remove('active'));
             this.classList.add('active');
             document.getElementById('selectedSize').value = this.dataset.sizeId;
+
+            var $input = $('.qty-input');
+            const productId = $('#product_id').val();
+            const productColor = $('#selected_color');;
+
+            updateQuantityAndCheckStock($input, productId,productColor.val(),this.dataset.sizeId, 0);
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const colorItems = document.querySelectorAll('.color-item');
+        const colorInput = document.getElementById('selected_color');
+
+        colorItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const colorCode = this.getAttribute('data-color-id');
+                colorInput.value = colorCode;
+
+                var $input = $('.qty-input');
+                const productId = $('#product_id').val();
+                const productSize = $('#selectedSize');
+
+                updateQuantityAndCheckStock($input, productId, colorCode, productSize.val(), 0);
+
+            });
+        });
+    });
+
+    // Stock
+    async function updateQuantityAndCheckStock($input, productId, color = null, size = null, increment = 0) {
+        let oldValue = parseFloat($input.val()) || 1;
+        let newVal = oldValue + increment;
+        if (newVal < 1) newVal = 1;
+        $input.val(newVal).attr('value', newVal);
+        try {
+            const res = await fetch(`{{ route('checkStock') }}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    product_id: productId,
+                    quantity: newVal,
+                    color: color,
+                    size: size
+                })
+            });
+            const data = await res.json();
+            $('.variant_price').html(data.price);
+            let $btn = $('#addToCartBtn');
+            if(data.old_price) {
+                $('.variant_old_price').html(data.old_price).show();
+            } else {
+                $('.variant_old_price').hide();
+            }
+            if(data.max_stock == 0){
+                $btn.removeClass('btn-primary').addClass('btn-secondary disabled')
+                    .attr('tabindex','-1')
+                    .attr('aria-disabled','true')
+                    .text('Out of Stock');
+            } else if(data.max_stock > 0){
+                $btn.removeClass('btn-secondary disabled').addClass('btn-primary')
+                    .removeAttr('tabindex')
+                    .removeAttr('aria-disabled')
+                    .text('Add To Cart');
+            }
+
+            if (!data.available) {
+                Swal.fire(
+                    'Alert!',
+                    `${data.message}`,
+                    'error'
+                );
+                $input.val(data.max_stock).attr('value', data.max_stock);
+            }
+        } catch (err) {
+            console.error('Stock check error:', err);
+        }
+    }
+
+    $(document).ready(function() {
+        var CartPlusMinus = $('.cart-plus-minus');
+        CartPlusMinus.prepend('<div class="dec qtybutton">-</div>');
+        CartPlusMinus.append('<div class="inc qtybutton">+</div>');
+
+        const productId = $('#product_id').val();
+        const productColor = $('#selected_color');
+        const productSize = $('#selectedSize');
+
+        $(document).on('click', '.qtybutton', function() {
+            var $input = $(this).closest('.cart-plus-minus').find('input');
+            var increment = $(this).hasClass('inc') ? 1 : -1;
+            updateQuantityAndCheckStock($input, productId, productColor.val(), productSize.val(), increment);
+        });
+
+        $(document).on('input', 'input.qty-input', function() {
+            var $input = $(this);
+            updateQuantityAndCheckStock($input, productId, productColor.val(), productSize.val(), 0);
+        });
+
+    });
+
 
 </script>
 @endpush

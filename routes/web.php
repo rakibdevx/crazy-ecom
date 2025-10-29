@@ -49,6 +49,7 @@ use Illuminate\Support\Facades\Auth;
 
     });
     Route::get('product/{slug}', [ProductController::class, 'details'])->name('product.details');
+    Route::post('/check-stock', [ProductController::class, 'checkStock'])->name('checkStock');
 
 
     Route::get('/track-order', [HomeController::class, 'index'])->name('track.order');

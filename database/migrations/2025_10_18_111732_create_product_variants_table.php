@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('size_id')->nullable()->constrained('sizes')->nullOnDelete();
             $table->integer('stock_quantity')->default(0);
             $table->decimal('price', 12, 2);
-            $table->decimal('sale_price', 12, 2)->nullable();
+            $table->decimal('old_price', 12, 2)->nullable();
             $table->timestamps();
 
             $table->unique(['product_id', 'color_id', 'size_id']);

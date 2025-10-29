@@ -214,7 +214,7 @@ class ProductController extends Controller
     {
         $brand = Brand::where('slug', $slug)->where('status','active')->firstOrFail();
 
-        $query = Product::with(['variants', 'category', 'brand'])
+        $query = Product::with(['variants', 'category', 'brand','gallery'])
             ->where('status', 'active')
             ->where('brand_id', $brand->id);
 
@@ -358,6 +358,72 @@ class ProductController extends Controller
         return view('frontend.product.details', compact('product', 'relatedProducts'));
     }
 
+    public function checkStock(Request $request)
+    {
+        $qty = $request->quantity;
+        $product = Product::findOrFail($request->product_id);
+        $availableStock = $product->stock_quantity;
 
+        if ($product->has_variants == 1) {
+            if (!$request->color || !$request->size) {
+                return response()->json([
+                    'available' => false,
+                    'max_stock' => 0,
+                    'message' => 'Please select a color and size first.'
+                ]);
+            }
+            $variant = \App\Models\ProductVariant::where('product_id', $request->product_id)
+                        ->where('color_id', $request->color)
+                        ->where('size_id', $request->size)
+                        ->first();
+
+            if (!$variant) {
+                return response()->json([
+                    'available' => false,
+                    'max_stock' => 0,
+                    'message' => 'This color and size combination is not available.'
+                ]);
+            }
+            if ($variant->stock_quantity < $qty) {
+                return response()->json([
+                    'available' => false,
+                    'max_stock' => $variant->stock_quantity,
+                    'message' => 'Only ' . $variant->stock_quantity . ' items are available in stock.',
+                    'price' => $variant->price,
+                    'old_price' => $variant->old_price,
+                ]);
+            }
+
+        } else {
+            if ($qty > $availableStock) {
+                return response()->json([
+                    'available' => false,
+                    'max_stock' => $availableStock,
+                    'message' => "Only $availableStock items are available in stock."
+                ]);
+            }
+        }
+
+        if ($product->has_variants == 1)
+        {
+            return response()->json(
+                [
+                    'available' => true,
+                    'price' => $variant->price,
+                    'max_stock' => $variant->stock_quantity,
+                    'old_price' => $variant->old_price,
+                ],
+            );
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'available' => true,
+                ],
+            );
+        }
+
+    }
 }
 
