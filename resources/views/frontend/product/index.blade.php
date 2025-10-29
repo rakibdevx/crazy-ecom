@@ -3,26 +3,67 @@
     Products
 @endpush
 @section('body')
- <div class="breadcrumb-area bg-gray">
+        <div class="breadcrumb-area bg-gray">
             <div class="container">
                 <div class="breadcrumb-content text-center">
                     <ul>
                         <li>
                             <a href="{{route('index')}}">Home</a>
                         </li>
-                        <li class="active">Shop </li>
+                        <li><a href="{{ route('product.index') }}">Shop</a></li>
+                        @isset($datatype)
+                            <li class="active">{{$datatype}}</li>
+                        @endisset
+                        @if(isset($category))
+                            <li class="active">{{ $category->name }}</li>
+                        @elseif(isset($subcategory))
+                            @if($subcategory->category)
+                                <li>
+                                    <a href="{{ route('product.category_product', $subcategory->category->slug) }}">
+                                        {{ $subcategory->category->name }}
+                                    </a>
+                                </li>
+                            @endif
+                            <li class="active">{{ $subcategory->name }}</li>
+
+                        @elseif(isset($childCategory))
+                            @if($childCategory->category)
+                                <li>
+                                    <a href="{{ route('product.category_product', $childCategory->category->slug) }}">
+                                        {{ $childCategory->category->name }}
+                                    </a>
+                                </li>
+                            @endif
+
+                            @if($childCategory->subcategory)
+                                <li>
+                                    <a href="{{ route('product.sub_category_product', $childCategory->subcategory->slug) }}">
+                                        {{ $childCategory->subcategory->name }}
+                                    </a>
+                                </li>
+                            @endif
+
+                            <li class="active">{{ $childCategory->name }}</li>
+
+                        @elseif(isset($brand))
+                            <li class="active">{{ $brand->name }}</li>
+                        @endif
                     </ul>
                 </div>
             </div>
         </div>
-        <form method="GET" class="filters-form">
+        <form action="" id="filter_from" method="get">
         <div class="shop-area pt-120">
             <div class="container">
                 <div class="row flex-row-reverse">
-                    <div class="col-lg-9">
+                    <div class="col-lg-10">
                         <div class="shop-topbar-wrapper">
                             <div class="shop-topbar-left">
-                                <p>Showing 1 - 20 of 30 results </p>
+                                @if ($products->count() > 0)
+                                    <p>
+                                        Showing {{ $products->firstItem() }} - {{ $products->lastItem() }} of {{ $products->total() }} results
+                                    </p>
+                                @endif
                             </div>
                             <div class="product-sorting-wrapper">
                                 <div class="product-shorting shorting-style">
@@ -50,10 +91,10 @@
                         <div class="shop-bottom-area">
                             <div class="row">
                                 @forelse ($products as $product)
-                                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
                                     <div class="single-product-wrap mb-35">
                                         <div class="product-img product-img-zoom mb-15">
-                                            <a href="product-details.html">
+                                            <a href="{{route('product.details',$product->slug)}}">
                                                 @php
                                                     $image = null;
                                                         if ($product->thumbnail && file_exists(public_path($product->thumbnail))) {
@@ -64,9 +105,9 @@
                                                 @endphp
                                                 <img src="{{asset($image)}}" alt="{{$product->name}}">
                                             </a>
-                                            @if ($product->has_variants == 1)
-                                        <span class="pro-badge left bg-red">-{{setting('currency_symbol') . ($product->old_price - $product->sale_price) }}</span>
-                                        @endif
+                                            @if ($product->has_variants == 0)
+                                            <span class="pro-badge left bg-red">-{{setting('currency_symbol') . ($product->old_price - $product->sale_price) }}</span>
+                                            @endif
                                         <div class="product-action-2 tooltip-style-2">
                                             <button title="Wishlist"><i class="icon-heart"></i></button>
                                             <button title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="icon-size-fullscreen icons"></i></button>
@@ -74,7 +115,7 @@
                                         </div>
                                     </div>
                                     <div class="product-content-wrap-3">
-                                        <h3 class="mrg-none text-capitalize"><a href="product-details.html">{{$product->name}}</a></h3>
+                                        <h3 class="mrg-none text-capitalize"><a href="{{route('product.details',$product->slug)}}">{{$product->name}}</a></h3>
                                         <div class="product-rating-wrap-2">
                                             <div class="product-rating-4">
                                                 @php
@@ -118,7 +159,7 @@
 
                                     </div>
                                     <div class="product-content-wrap-3 product-content-position-2 pro-position-2-padding-dec px-2">
-                                        <h3 class="mrg-none text-capitalize"><a class="blue" href="product-details.html">{{$product->name}}</a></h3>
+                                        <h3 class="mrg-none text-capitalize"><a class="blue" href="{{route('product.details',$product->slug)}}">{{$product->name}}</a></h3>
                                         <div class="product-rating-wrap-2">
                                             <div class="product-rating-4">
                                                 @php
@@ -161,9 +202,6 @@
                                         <div class="pro-add-to-cart-2">
                                             <button title="Add to Cart">Add To Cart</button>
                                         </div>
-                                            <div class="pro-add-to-cart">
-                                                <button title="Add to Cart">Add To Cart</button>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -181,139 +219,59 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <div class="sidebar-wrapper sidebar-wrapper-mrg-right">
-                            <div class="sidebar-widget mb-40">
-                                <h4 class="sidebar-widget-title">Search </h4>
-                                <div class="sidebar-search">
-                                    <form class="sidebar-search-form" action="#">
-                                        <input type="text" placeholder="Search here...">
-                                        <button>
-                                            <i class="icon-magnifier"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="sidebar-widget shop-sidebar-border mb-35 pt-40">
-                                <h4 class="sidebar-widget-title">Categories </h4>
+                           <div class="sidebar-widget shop-sidebar-border mb-35">
+                                <h4 class="sidebar-widget-title">Categories</h4>
                                 <div class="shop-catigory">
-                                    <ul>
-                                        <li><a href="shop.html">T-Shirt</a></li>
-                                        <li><a href="shop.html">Shoes</a></li>
-                                        <li><a href="shop.html">Clothing </a></li>
-                                        <li><a href="shop.html">Women </a></li>
-                                        <li><a href="shop.html">Baby Boy </a></li>
-                                        <li><a href="shop.html">Accessories </a></li>
+                                    <ul id="category-list">
+                                        @foreach ($categories as $index => $category)
+                                            <li class="{{ $index >= 7 ? 'extra-category hidden' : '' }}">
+                                                <a href="{{ route('product.category_product', $category->slug) }}">
+                                                    {{ $category->name }}
+                                                </a>
+                                            </li>
+                                        @endforeach
                                     </ul>
+                                    @if(count($categories) > 10)
+                                        <div class="btn-style-2">
+                                            <a id="view-more-categories" class="btn btn-link ps-0">View More</a>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
+                           <div class="sidebar-widget shop-sidebar-border mb-35">
+                                <h4 class="sidebar-widget-title">Brands</h4>
+                                <div class="shop-catigory">
+                                    <ul id="category-list">
+                                        @foreach ($brands as $index => $brand)
+                                            <li class="{{ $index >= 7 ? 'extra-brands hidden' : '' }}">
+                                                <a href="{{ route('product.brand_product', $brand->slug) }}">
+                                                    {{ $brand->name }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                    @if(count($brands) > 10)
+                                        <div class="btn-style-2">
+                                            <a id="view-more-brands" class="btn btn-link ps-0">View More</a>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+
                             <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
                                 <h4 class="sidebar-widget-title">Price Filter </h4>
                                 <div class="price-filter">
-                                    <span>Range:  $100.00 - 1.300.00 </span>
+                                    <span>Range:  {{setting('currency_symbol')}}{{$minPriceFilter}} - {{setting('currency_symbol')}}{{$maxPriceFilter}} </span>
                                     <div id="slider-range"></div>
                                     <div class="price-slider-amount">
                                         <div class="label-input">
-                                            <input type="text" id="amount" name="price" placeholder="Add Your Price" />
+                                            <input type="text" id="amount" placeholder="" />
+                                            <input type="hidden" id="max_price" name="max_price" placeholder="" />
+                                            <input type="hidden" id="min_price" name="min_price" placeholder="" />
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
-                                <h4 class="sidebar-widget-title">Refine By </h4>
-                                <div class="sidebar-widget-list">
-                                    <ul>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox"> <a href="#">On Sale <span>4</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">New <span>5</span></a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">In Stock <span>6</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
-                                <h4 class="sidebar-widget-title">Size </h4>
-                                <div class="sidebar-widget-list">
-                                    <ul>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">XL <span>4</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">L <span>5</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">SM <span>6</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">XXL <span>7</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
-                                <h4 class="sidebar-widget-title">Color </h4>
-                                <div class="sidebar-widget-list">
-                                    <ul>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">Green <span>7</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">Cream <span>8</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">Blue <span>9</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">Black <span>3</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="sidebar-widget shop-sidebar-border pt-40">
-                                <h4 class="sidebar-widget-title">Popular Tags</h4>
-                                <div class="tag-wrap sidebar-widget-tag">
-                                    <a href="#">Clothing</a>
-                                    <a href="#">Accessories</a>
-                                    <a href="#">For Men</a>
-                                    <a href="#">Women</a>
-                                    <a href="#">Fashion</a>
                                 </div>
                             </div>
                         </div>
@@ -321,5 +279,66 @@
                 </div>
             </div>
         </div>
-        </form>
+    </form>
 @endsection
+@push('js')
+    <script>
+        $(function() {
+            var sliderrange = $('#slider-range');
+            var amountprice = $('#amount');
+            var minInput = $('#min_price');
+            var maxInput = $('#max_price');
+            var form = $('#filter_from');
+
+            sliderrange.slider({
+                range: true,
+                min: {{ $minPriceFilter }},
+                max: {{ $maxPriceFilter }},
+                values: [
+                    {{ request('min_price', $minPriceFilter) }},
+                    {{ request('max_price', $maxPriceFilter) }}
+                ],
+                slide: function(event, ui) {
+                    amountprice.val("{{ setting('currency_symbol') }}" + ui.values[0] +
+                                    " - {{ setting('currency_symbol') }}" + ui.values[1]);
+                },
+                change: function(event, ui) {
+                    minInput.val(ui.values[0]);
+                    maxInput.val(ui.values[1]);
+                    form.submit();
+                }
+            });
+
+            // initial display
+            amountprice.val("{{ setting('currency_symbol') }}" + sliderrange.slider("values", 0) +
+                            " - {{ setting('currency_symbol') }}" + sliderrange.slider("values", 1));
+        });
+
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('view-more-categories');
+        if(btn) {
+            btn.addEventListener('click', function() {
+                const extra = document.querySelectorAll('.extra-category');
+                extra.forEach(li => li.classList.toggle('hidden'));
+                btn.textContent = btn.textContent === 'View More' ? 'View Less' : 'View More';
+            });
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('view-more-brands');
+        if(btn) {
+            btn.addEventListener('click', function() {
+                const extra = document.querySelectorAll('.extra-brands');
+                extra.forEach(li => li.classList.toggle('hidden'));
+                btn.textContent = btn.textContent === 'View More' ? 'View Less' : 'View More';
+            });
+        }
+    });
+    </script>
+@endpush
+
+
+

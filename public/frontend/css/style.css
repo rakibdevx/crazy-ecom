@@ -13898,6 +13898,12 @@ textarea:focus {
   color: #ffffff;
   border: 1px solid #ff2f2f;
 }
+.product-details-content .pro-details-size .pro-details-size-content ul li a.active {
+  background-color: #ff2f2f;
+  color: #ffffff;
+  border: 1px solid #ff2f2f;
+}
+
 .product-details-content .pro-details-group {
   margin: 35px 0 25px;
 }
@@ -17665,4 +17671,7 @@ h3.cart-page-title {
 .max-width-250
 {
  max-width: 250px;
+}
+.hidden {
+    display: none;
 }

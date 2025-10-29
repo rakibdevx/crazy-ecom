@@ -11,9 +11,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- SEO Meta -->
-    <meta name="title" content="{{ setting('meta_title') }}">
-    <meta name="description" content="{{ setting('meta_description') }}">
-    <meta name="keywords" content="{{ setting('meta_keywords') }}">
+    <meta name="title" content="@yield('meta_title', setting('meta_title'))">
+    <meta name="description" content="@yield('meta_description', setting('meta_description'))">
+    <meta name="keywords" content="@yield('meta_keywords', setting('meta_keywords'))">
+
 
     <!-- Open Graph (Facebook, etc.) -->
     <meta property="og:type" content="website">
@@ -208,6 +209,8 @@
     <script src="{{asset('/')}}frontend/js/plugins/ajax-mail.js"></script>
     <!-- Main JS -->
     <script src="{{asset('/')}}frontend/js/main.js"></script>
+
+    @stack('js')
 
 </body>
 

@@ -108,7 +108,7 @@ Home
                 <div class="d-flex justify-content-between">
                     <h2>best selling Items </h2>
                     <div class="more-product-btn text-center">
-                        <a href="shop.html">More</a>
+                        <a href="{{route('product.best_selling_product')}}">More</a>
                     </div>
                 </div>
                 <hr>
@@ -120,10 +120,10 @@ Home
                             <div class="product-plr-1">
                                 <div class="single-product-wrap">
                                     <div class="product-img product-img-zoom mb-20">
-                                        <a href="product-details.html">
+                                        <a href="{{route('product.details',$product->slug)}}">
                                             <img src="{{asset($product->thumbnail)}}" alt="">
                                         </a>
-                                        @if ($product->has_variants == 1)
+                                        @if ($product->has_variants == 0)
                                         <span class="pro-badge left bg-red">-{{setting('currency_symbol') . ($product->old_price - $product->sale_price) }}</span>
                                         @endif
                                         <div class="product-action-2 tooltip-style-2">
@@ -133,7 +133,7 @@ Home
                                         </div>
                                     </div>
                                     <div class="product-content-wrap-3">
-                                        <h3 class="mrg-none text-capitalize"><a href="product-details.html">{{$product->name}}</a></h3>
+                                        <h3 class="mrg-none text-capitalize"><a href="{{route('product.details',$product->slug)}}">{{$product->name}}</a></h3>
                                         <div class="product-rating-wrap-2">
                                             <div class="product-rating-4">
                                                 @php
@@ -177,7 +177,7 @@ Home
 
                                     </div>
                                     <div class="product-content-wrap-3 product-content-position-2 pro-position-2-padding-dec px-2">
-                                        <h3 class="mrg-none text-capitalize"><a class="blue" href="product-details.html">{{$product->name}}</a></h3>
+                                        <h3 class="mrg-none text-capitalize"><a class="blue" href="{{route('product.details',$product->slug)}}">{{$product->name}}</a></h3>
                                         <div class="product-rating-wrap-2">
                                             <div class="product-rating-4">
                                                 @php
@@ -237,7 +237,7 @@ Home
                 <div class="d-flex justify-content-between">
                     <h2>Hot Deals </h2>
                     <div class="more-product-btn text-center">
-                        <a href="shop.html">More</a>
+                        <a href="{{route('product.hot_deals_product')}}">More</a>
                     </div>
                 </div>
                 <hr>
@@ -249,10 +249,10 @@ Home
                             <div class="product-plr-1">
                                 <div class="single-product-wrap">
                                     <div class="product-img product-img-zoom mb-20">
-                                        <a href="product-details.html">
+                                        <a href="{{route('product.details',$product->slug)}}">
                                             <img src="{{asset($product->thumbnail)}}" alt="{{$product->name}}">
                                         </a>
-                                        @if ($product->has_variants == 1)
+                                        @if ($product->has_variants == 0)
                                         <span class="pro-badge left bg-red">-{{setting('currency_symbol') . ($product->old_price - $product->sale_price) }}</span>
                                         @endif
                                         <div class="product-action-2 tooltip-style-2">
@@ -262,7 +262,7 @@ Home
                                         </div>
                                     </div>
                                     <div class="product-content-wrap-3">
-                                        <h3 class="mrg-none text-capitalize"><a href="product-details.html">{{$product->name}}</a></h3>
+                                        <h3 class="mrg-none text-capitalize"><a href="{{route('product.details',$product->slug)}}">{{$product->name}}</a></h3>
                                         <div class="product-rating-wrap-2">
                                             <div class="product-rating-4">
                                                 @php
@@ -306,7 +306,7 @@ Home
 
                                     </div>
                                     <div class="product-content-wrap-3 product-content-position-2 pro-position-2-padding-dec px-2">
-                                        <h3 class="mrg-none text-capitalize"><a class="blue" href="product-details.html">{{$product->name}}</a></h3>
+                                        <h3 class="mrg-none text-capitalize"><a class="blue" href="{{route('product.details',$product->slug)}}">{{$product->name}}</a></h3>
                                         <div class="product-rating-wrap-2">
                                             <div class="product-rating-4">
                                                 @php
@@ -366,7 +366,7 @@ Home
                 <div class="d-flex justify-content-between">
                     <h2>Featured Products</h2>
                     <div class="more-product-btn text-center">
-                        <a href="shop.html">More</a>
+                        <a href="{{route('product.featured_product')}}">More</a>
                     </div>
                 </div>
                 <hr>
@@ -378,10 +378,10 @@ Home
                             <div class="product-plr-1">
                                 <div class="single-product-wrap">
                                     <div class="product-img product-img-zoom mb-20">
-                                        <a href="product-details.html">
+                                        <a href="{{route('product.details',$product->slug)}}">
                                             <img src="{{asset($product->thumbnail)}}" alt="">
                                         </a>
-                                        @if ($product->has_variants == 1)
+                                        @if ($product->has_variants == 0)
                                         <span class="pro-badge left bg-red">-{{setting('currency_symbol') . ($product->old_price - $product->sale_price) }}</span>
                                         @endif
                                         <div class="product-action-2 tooltip-style-2">
@@ -391,7 +391,7 @@ Home
                                         </div>
                                     </div>
                                     <div class="product-content-wrap-3">
-                                        <h3 class="mrg-none text-capitalize"><a href="product-details.html">{{$product->name}}</a></h3>
+                                        <h3 class="mrg-none text-capitalize"><a href="{{route('product.details',$product->slug)}}">{{$product->name}}</a></h3>
                                         <div class="product-rating-wrap-2">
                                             <div class="product-rating-4">
                                                 @php
@@ -435,7 +435,7 @@ Home
 
                                     </div>
                                     <div class="product-content-wrap-3 product-content-position-2 pro-position-2-padding-dec px-2">
-                                        <h3 class="mrg-none text-capitalize"><a class="blue" href="product-details.html">{{$product->name}}</a></h3>
+                                        <h3 class="mrg-none text-capitalize"><a class="blue" href="{{route('product.details',$product->slug)}}">{{$product->name}}</a></h3>
                                         <div class="product-rating-wrap-2">
                                             <div class="product-rating-4">
                                                 @php
@@ -495,7 +495,7 @@ Home
                 <div class="d-flex justify-content-between">
                     <h2>Trending Products </h2>
                 <div class="more-product-btn text-center">
-                    <a href="shop.html">More</a>
+                    <a href="{{route('product.trending_product')}}">More</a>
                 </div>
             </div>
             <hr>
@@ -507,10 +507,10 @@ Home
                             <div class="product-plr-1">
                                 <div class="single-product-wrap">
                                     <div class="product-img product-img-zoom mb-20">
-                                        <a href="product-details.html">
+                                        <a href="{{route('product.details',$product->slug)}}">
                                             <img src="{{asset($product->thumbnail)}}" alt="">
                                         </a>
-                                        @if ($product->has_variants == 1)
+                                        @if ($product->has_variants == 0)
                                         <span class="pro-badge left bg-red">-{{setting('currency_symbol') . ($product->old_price - $product->sale_price) }}</span>
                                         @endif
                                         <div class="product-action-2 tooltip-style-2">
@@ -520,7 +520,7 @@ Home
                                         </div>
                                     </div>
                                     <div class="product-content-wrap-3">
-                                        <h3 class="mrg-none text-capitalize"><a href="product-details.html">{{$product->name}}</a></h3>
+                                        <h3 class="mrg-none text-capitalize"><a href="{{route('product.details',$product->slug)}}">{{$product->name}}</a></h3>
                                         <div class="product-rating-wrap-2">
                                             <div class="product-rating-4">
                                                 @php
@@ -564,7 +564,7 @@ Home
 
                                     </div>
                                     <div class="product-content-wrap-3 product-content-position-2 pro-position-2-padding-dec px-2">
-                                        <h3 class="mrg-none text-capitalize"><a class="blue" href="product-details.html">{{$product->name}}</a></h3>
+                                        <h3 class="mrg-none text-capitalize"><a class="blue" href="{{route('product.details',$product->slug)}}">{{$product->name}}</a></h3>
                                         <div class="product-rating-wrap-2">
                                             <div class="product-rating-4">
                                                 @php
@@ -624,7 +624,6 @@ Home
                 <div class="d-flex justify-content-between">
                     <h2>popular categories</h2>
                     <div class="more-product-btn text-center">
-                        <a href="shop.html">More</a>
                     </div>
                 </div>
                 <hr>
@@ -683,7 +682,7 @@ Home
             <div class="d-flex justify-content-between">
                 <h2>Sugguest today</h2>
                 <div class="more-product-btn text-center">
-                    <a href="shop.html">More</a>
+                    <a href="{{route('product.index')}}">More</a>
                 </div>
             </div>
             <hr>
@@ -1545,7 +1544,6 @@ Home
                  <div class="d-flex justify-content-between">
                      <h2>Brands</h2>
                     <div class="more-product-btn text-center">
-                        <a href="shop.html">More</a>
                     </div>
                 </div>
                 <hr>
@@ -1553,7 +1551,7 @@ Home
             <div class="brand-slider nav-style-3">
                 @foreach ($brands as $brand)
                     <div class="single-brand-logo mb-10">
-                        <img class="max-height-100 max-width-250" src="{{$brand->image?asset($brand->image):asset(setting('default_brand_image'))}}" alt="{{$brand->name}}">
+                        <a href="{{route('product.brand_product',$brand->slug)}}"><img class="max-height-100 max-width-250" src="{{$brand->image?asset($brand->image):asset(setting('default_brand_image'))}}" alt="{{$brand->name}}"></a>
                     </div>
                 @endforeach
             </div>

@@ -286,7 +286,7 @@
 
                                                     <div class="row g-3 mt-3">
                                                         <div class="col-md-6">
-                                                            <h6>Old Quantity</h6>
+                                                            <h6>Old Price</h6>
                                                             <input class="form-control" name="old_price" value="{{$product->old_price}}" type="number" placeholder="Old Price">
                                                         </div>
                                                         <div class="col-md-6">

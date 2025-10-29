@@ -41,9 +41,15 @@ use Illuminate\Support\Facades\Auth;
         Route::get('category/{slug}', [ProductController::class, 'category_product'])->name('category_product');
         Route::get('sub_category/{slug}', [ProductController::class, 'sub_category_product'])->name('sub_category_product');
         Route::get('child_category/{slug}', [ProductController::class, 'child_category_product'])->name('child_category_product');
-        Route::get('brand/{slug}', [ProductController::class, 'brand'])->name('brand');
+        Route::get('brand/{slug}', [ProductController::class, 'brand_product'])->name('brand_product');
+        Route::get('best_selling', [ProductController::class, 'best_selling'])->name('best_selling_product');
+        Route::get('hot_deals', [ProductController::class, 'hot_deals'])->name('hot_deals_product');
+        Route::get('featured', [ProductController::class, 'featured'])->name('featured_product');
+        Route::get('trending', [ProductController::class, 'trending'])->name('trending_product');
 
     });
+    Route::get('product/{slug}', [ProductController::class, 'details'])->name('product.details');
+
 
     Route::get('/track-order', [HomeController::class, 'index'])->name('track.order');
 
