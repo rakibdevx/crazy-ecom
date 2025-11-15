@@ -177,7 +177,7 @@
                                             <li><a href="compare.html">compare </a></li>
                                             <li><a href="contact.html">contact us </a></li>
                                             <li><a href="order-tracking.html">order tracking</a></li>
-                                            <li><a href="login-register.html">login / register </a></li>
+                                            <li><a href="{{route('login')}}">login / register </a></li>
                                         </ul>
                                     </li>
                                     <li><a href="blog.html">BLOG </a></li>
@@ -189,7 +189,7 @@
                     <div class="col-lg-3">
                         <div class="header-action header-action-flex pr-20">
                             <div class="same-style-2 same-style-2-white same-style-2-font-dec">
-                                <a href="login-register.html"><i class="icon-user"></i></a>
+                                <a href="{{route('login')}}"><i class="icon-user"></i></a>
                             </div>
                             <div class="same-style-2 same-style-2-white same-style-2-font-dec">
                                 <a href="wishlist.html"><i class="icon-heart"></i><span class="pro-count red">03</span></a>
@@ -219,7 +219,7 @@
                 <div class="col-7">
                     <div class="header-action header-action-flex">
                         <div class="same-style-2 same-style-2-font-inc">
-                            <a href="login-register.html"><i class="icon-user"></i></a>
+                            <a href="{{route('login')}}"><i class="icon-user"></i></a>
                         </div>
                         <div class="same-style-2 same-style-2-font-inc">
                             <a href="wishlist.html"><i class="icon-heart"></i><span class="pro-count red">03</span></a>
@@ -266,7 +266,7 @@
                                 <li><a href="compare.html">compare </a></li>
                                 <li><a href="contact.html">contact us </a></li>
                                 <li><a href="order-tracking.html">order tracking</a></li>
-                                <li><a href="login-register.html">login / register </a></li>
+                                <li><a href="{{route('login')}}">login / register </a></li>
                             </ul>
                         </li>
                         <li><a href="contact.html">BLog</a></li>

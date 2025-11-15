@@ -1,18 +1,12 @@
 <?php
 
+use App\Http\Controllers\Frontend\AuthController;
 use App\Http\Controllers\Frontend\NewsletterController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-
-
-// Routes
-
-    Route::get('/login', function () {
-        return "login";
-    })->name('login');
 
     Route::get('/home', function () {
         if (Auth::guard('admin')->check()) {
@@ -21,12 +15,30 @@ use Illuminate\Support\Facades\Auth;
         if (Auth::guard('vendor')->check()) {
             return redirect()->route('vendor.dashboard');
         }
+        if (Auth::guard('user')->check()) {
+            return redirect()->route('user.dashboard');
+        }
         return redirect('/');
     })->name('home');
 
+    // Routes
+    // Login
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+
+    // Register
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+
+    // Logout
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-// Front end Route
+
+
+
+
+    // Front end Route
     Route::get('/', [HomeController::class, 'index'])->name('index');
 
 

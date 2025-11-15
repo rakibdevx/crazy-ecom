@@ -211,12 +211,31 @@
                             </div>
                             <div class="pro-pagination-style text-center mt-10">
                                 <ul>
-                                    <li><a class="prev" href="#"><i class="icon-arrow-left"></i></a></li>
-                                    <li><a class="active" href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a class="next" href="#"><i class="icon-arrow-right"></i></a></li>
+                                    {{-- Previous --}}
+                                    @if ($products->onFirstPage())
+                                        <li><a class="prev disabled"><i class="icon-arrow-left"></i></a></li>
+                                    @else
+                                        <li><a class="prev" href="{{ $products->previousPageUrl() }}"><i class="icon-arrow-left"></i></a></li>
+                                    @endif
+
+                                    {{-- Page Numbers --}}
+                                    @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
+                                        <li>
+                                            <a class="{{ $page == $products->currentPage() ? 'active' : '' }}" href="{{ $url }}">
+                                                {{ $page }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+
+                                    {{-- Next --}}
+                                    @if ($products->hasMorePages())
+                                        <li><a class="next" href="{{ $products->nextPageUrl() }}"><i class="icon-arrow-right"></i></a></li>
+                                    @else
+                                        <li><a class="next disabled"><i class="icon-arrow-right"></i></a></li>
+                                    @endif
                                 </ul>
                             </div>
+
                         </div>
                     </div>
                     <div class="col-lg-2">
