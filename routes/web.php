@@ -66,6 +66,20 @@ use Illuminate\Support\Facades\Auth;
     Route::get('/track-order', [HomeController::class, 'index'])->name('track.order');
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
 Route::get('/image', function () {
     $path = public_path('demo');
     if (!file_exists($path)) mkdir($path, 0755, true);
