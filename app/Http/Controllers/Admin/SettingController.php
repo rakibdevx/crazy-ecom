@@ -218,7 +218,9 @@ class SettingController extends Controller
             'front_maintenance_mode' => 'required|boolean',
             'vendor_maintenance_mode' => 'required|boolean',
             'user_registration_enabled' => 'required|boolean',
+            'user_default_status' => 'required|boolean',
             'vendor_registration_enabled' => 'required|boolean',
+            'vendor_default_status' => 'required|boolean',
             'email_verification' => 'required|boolean',
             'app_debug' => 'required|boolean',
             'currency' => 'required|string|max:10',
@@ -232,7 +234,9 @@ class SettingController extends Controller
         Setting::updateOrCreate(['key' => 'front_maintenance_mode'],['value' => $request->front_maintenance_mode]);
         Setting::updateOrCreate(['key' => 'vendor_maintenance_mode'],['value' => $request->vendor_maintenance_mode]);
         Setting::updateOrCreate(['key' => 'user_registration_enabled'],['value' => $request->user_registration_enabled]);
+        Setting::updateOrCreate(['key' => 'user_default_status'],['value' => $request->user_default_status]);
         Setting::updateOrCreate(['key' => 'vendor_registration_enabled'],['value' => $request->vendor_registration_enabled]);
+        Setting::updateOrCreate(['key' => 'vendor_default_status'],['value' => $request->vendor_default_status]);
         Setting::updateOrCreate(['key' => 'email_verification'],['value' => $request->email_verification]);
         Setting::updateOrCreate(['key' => 'app_debug'],['value' => $request->app_debug]);
         $debugValue = $request->app_debug == 1 ? 'true' : 'false';

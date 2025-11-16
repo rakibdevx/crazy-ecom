@@ -27,6 +27,7 @@ Route::prefix('vendor')->name('vendor.')->middleware('web')->group(function () {
     Route::get('otp/{email}', [AuthController::class, 'otp'])->name('otp');
     Route::post('otp', [AuthController::class, 'verifyOtp'])->name('otp.verify');
     Route::get('resend-otp/{email}', [AuthController::class, 'resendOtp'])->name('resendOtp');
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 
@@ -52,7 +53,6 @@ Route::prefix('vendor')->name('vendor.')->middleware(['web','auth:vendor','auth.
         Route::post('/business', [ProfileController::class, 'updateBusiness'])->name('business');
         Route::post('/social', [ProfileController::class, 'updatesocial'])->name('social');
     });
-    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 
     // dashboard route

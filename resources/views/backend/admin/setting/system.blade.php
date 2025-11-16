@@ -53,12 +53,30 @@
                             <div class="invalid-feedback">@error('user_registration_enabled') {{ $message }} @enderror</div>
                         </div>
                         <div class="mb-3">
+                            <label class="form-label">User Default Status:</label>
+                            <select name="user_default_status" class="form-control @error('user_default_status') is-invalid @enderror" @error('user_default_status') required @enderror>
+                                <option value="1" {{ old('user_default_status', setting('user_default_status')) == 1 ? 'selected' : '' }}>Active</option>
+                                <option value="0" {{ old('user_default_status', setting('user_default_status')) == 0 ? 'selected' : '' }}>Pending</option>
+                            </select>
+                            <div class="invalid-feedback">@error('user_default_status') {{ $message }} @enderror</div>
+                        </div>
+
+                        <div class="mb-3">
                             <label class="form-label">Vendor Registration Enabled:</label>
                             <select name="vendor_registration_enabled" class="form-control @error('vendor_registration_enabled') is-invalid @enderror" @error('vendor_registration_enabled') required @enderror>
                                 <option value="1" {{ old('vendor_registration_enabled', setting('vendor_registration_enabled')) == 1 ? 'selected' : '' }}>Enabled</option>
                                 <option value="0" {{ old('vendor_registration_enabled', setting('vendor_registration_enabled')) == 0 ? 'selected' : '' }}>Disabled</option>
                             </select>
                             <div class="invalid-feedback">@error('vendor_registration_enabled') {{ $message }} @enderror</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Vendor Default Status:</label>
+                            <select name="vendor_default_status" class="form-control @error('vendor_default_status') is-invalid @enderror" @error('vendor_default_status') required @enderror>
+                                <option value="1" {{ old('vendor_default_status', setting('vendor_default_status')) == 1 ? 'selected' : '' }}>Active</option>
+                                <option value="0" {{ old('vendor_default_status', setting('vendor_default_status')) == 0 ? 'selected' : '' }}>Pending</option>
+                            </select>
+                            <div class="invalid-feedback">@error('vendor_default_status') {{ $message }} @enderror</div>
                         </div>
 
 

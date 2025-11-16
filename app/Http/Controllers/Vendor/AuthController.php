@@ -42,6 +42,9 @@ class AuthController extends Controller
                 $minutes = now()->diffInMinutes($vendor->lockout_time);
                 return back()->withErrors(['email' => "Account locked. Try again in {$minutes} minutes."]);
             }
+            if ($vendor->status != "active") {
+                return back()->withErrors(['email' => "Your account has been {$vendor->status}. Please contact support for assistance."]);
+            }
 
             $remember = $request->has('remember');
 
@@ -140,6 +143,7 @@ class AuthController extends Controller
             'slug' => $slug,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'status' => setting('vendor_default_status') == 1?'active':'pending',
         ];
 
         if (setting('email_verification') != 1) {
@@ -147,6 +151,12 @@ class AuthController extends Controller
         }
 
         $vendor = Vendor::create($vendorData);
+
+        if ($vendor->status != "active") {
+            return redirect()->route('vendor.login')->withErrors([
+                'email' => "Your account is pending approval. Please verify your email and wait for confirmation."
+            ]);
+        }
 
         Auth::guard('vendor')->login($vendor);
 

@@ -1,18 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Vendor\AuthController;
-use App\Http\Controllers\Vendor\DashboardController;
-use App\Http\Controllers\Vendor\ProfileController;
+use App\Http\Controllers\Frontend\AuthController;
+use App\Http\Controllers\Frontend\DashboardController;
+use App\Http\Controllers\Frontend\ProfileController;
 
 // auth routes
+Route::middleware(['web','guest:user','user.maintenance'])->group(function () {
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
 
-Route::prefix('vendor')->name('vendor.')->middleware(['web','guest:vendor','vendor.maintenance'])->group(function () {
-    Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('login', [AuthController::class, 'login'])->name('login.submit');
-
-    Route::get('registration', [AuthController::class, 'showRegistrationForm'])->name('registration');
-    Route::post('registration', [AuthController::class, 'registration'])->name('registration.submit');
+    // Register
+    Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
 
     Route::get('forgot', [AuthController::class, 'showForgotPasswordForm'])->name('forgot');
     Route::post('forgot', [AuthController::class, 'sendResetLinkEmail'])->name('forgot.submit');
@@ -23,7 +23,7 @@ Route::prefix('vendor')->name('vendor.')->middleware(['web','guest:vendor','vend
 
 
 // Otp verify
-Route::prefix('vendor')->name('vendor.')->middleware('web')->group(function () {
+Route::prefix('user')->name('user.')->middleware('web')->group(function () {
     Route::get('otp/{email}', [AuthController::class, 'otp'])->name('otp');
     Route::post('otp', [AuthController::class, 'verifyOtp'])->name('otp.verify');
     Route::get('resend-otp/{email}', [AuthController::class, 'resendOtp'])->name('resendOtp');
@@ -31,17 +31,17 @@ Route::prefix('vendor')->name('vendor.')->middleware('web')->group(function () {
 
 
 // Email verify routes
-Route::get('vendor/verify/{id}/{token}', [AuthController::class, 'verify'])->name('vendor.verify');
+Route::get('user/verify/{id}/{token}', [AuthController::class, 'verify'])->name('user.verify');
 
 // Email Verification
-Route::prefix('vendor')->name('vendor.')->middleware('web','auth:vendor')->group(function () {
+Route::prefix('user')->name('user.')->middleware('web','auth:user')->group(function () {
     Route::get('resend-verification', [AuthController::class, 'resend'])->name('verification.resend');
     Route::get('unverified', [AuthController::class, 'unverified'])->name('unverified');
 
 });
 
-// vendor routes
-Route::prefix('vendor')->name('vendor.')->middleware(['web','auth:vendor','auth.vendor','vendor.maintenance','vendor.verified'])->group(function () {
+// user routes
+Route::prefix('user')->name('user.')->middleware(['web','auth:user','auth.user','user.maintenance','user.verified'])->group(function () {
 
     // Profile Routes
     Route::prefix('profile')->name('profile.')->group(function () {

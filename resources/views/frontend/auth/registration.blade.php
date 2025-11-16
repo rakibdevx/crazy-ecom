@@ -10,7 +10,7 @@ Login
                         <li>
                             <a href="index.html">Home</a>
                         </li>
-                        <li class="active">Login </li>
+                        <li class="active">Register </li>
                     </ul>
                 </div>
             </div>
@@ -29,26 +29,15 @@ Login
                                 </a>
                             </div>
                             <div class="tab-content">
-                                <div id="lg1" class="tab-pane active">
+                                <div id="lg2" class="tab-pane active">
                                     <div class="login-form-container">
                                         <div class="login-register-form">
-                                            @if(session('error'))
-                                                <div class="text text-danger">{{ session('error') }}</div>
-                                            @endif
-                                            <form action="{{route('login')}}" method="post">
-                                                @csrf
-                                                @error('email')
-                                                <div class="text text-danger">{{ $message }}</div>
-                                                @enderror
-                                                <input type="email" name="email" placeholder="Email">
-                                                <input type="password" name="password" placeholder="Password">
+                                            <form action="#" method="post">
+                                                <input type="text" name="name" placeholder="Name">
+                                                <input name="user-email" placeholder="Email" type="email">
+                                                <input type="password" name="user-password" placeholder="Password">
                                                 <div class="button-box">
-                                                    <div class="login-toggle-btn">
-                                                        <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                                        <label for="remember">Remember me</label>
-                                                        <a href="#">Forgot Password?</a>
-                                                    </div>
-                                                    <button type="submit">Login</button>
+                                                    <button type="submit">Register</button>
                                                 </div>
                                             </form>
                                         </div>

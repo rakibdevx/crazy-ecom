@@ -20,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         then: function ($router) {
             require base_path('routes/admin.php');
             require base_path('routes/vendor.php');
+            require base_path('routes/user.php');
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {
@@ -28,6 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth.vendor' => Vendor::class,
             'auth.user' => User::class,
             'vendor.maintenance' => VendorMaintenanceMode::class,
+            'user.maintenance' => VendorMaintenanceMode::class,
             'vendor.verified' => VendorVerify::class,
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,

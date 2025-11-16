@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -35,6 +36,10 @@ class AuthController extends Controller
             if ($user->lockout_time && now()->lessThan($user->lockout_time)) {
                 $minutes = now()->diffInMinutes($user->lockout_time);
                 return back()->withErrors(['email' => "Account locked. Try again in {$minutes} minutes."]);
+            }
+
+            if ($user->status != "active") {
+                return back()->withErrors(['email' => "Your account has been {$user->status}. Please contact support for assistance."]);
             }
 
             $remember = $request->has('remember');
@@ -106,7 +111,7 @@ class AuthController extends Controller
             return redirect()->route('user.login')
                 ->with('error', 'Registration temporarily off');
         }
-        return view('backend.user.auth.registration');
+        return view('frontend.auth.registration');
     }
 
     public function registration(Request $request)
@@ -134,13 +139,20 @@ class AuthController extends Controller
             'slug' => $slug,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'status' => setting('vendor_default_status') == 1?'active':'pending',
         ];
 
         if (setting('email_verification') != 1) {
             $userData['email_verified_at'] = now();
         }
 
-        $user = user::create($userData);
+        $user = User::create($userData);
+
+        if ($user->status != "active") {
+            return redirect()->route('login')->withErrors([
+                'email' => "Your account is pending approval. Please verify your email and wait for confirmation."
+            ]);
+        }
 
         Auth::guard('user')->login($user);
 

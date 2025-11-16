@@ -21,21 +21,6 @@ use Illuminate\Support\Facades\Auth;
     })->name('home');
 
     // Routes
-    // Login
-    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
-
-    // Register
-    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
-
-    // Logout
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-
-
-
-
 
     // Front end Route
     Route::get('/', [HomeController::class, 'index'])->name('index');
@@ -78,7 +63,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 
-    
+
 
 Route::get('/image', function () {
     $path = public_path('demo');
