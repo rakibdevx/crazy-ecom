@@ -6,8 +6,10 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\Vendor;
 use App\Http\Middleware\User;
+use App\Http\Middleware\UserMaintenanceMode;
 use App\Http\Middleware\VendorMaintenanceMode;
 use App\Http\Middleware\VendorVerify;
+use App\Http\Middleware\UserVerify;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
@@ -29,8 +31,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth.vendor' => Vendor::class,
             'auth.user' => User::class,
             'vendor.maintenance' => VendorMaintenanceMode::class,
-            'user.maintenance' => VendorMaintenanceMode::class,
+            'user.maintenance' => UserMaintenanceMode::class,
             'vendor.verified' => VendorVerify::class,
+            'user.verified' => UserVerify::class,
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,

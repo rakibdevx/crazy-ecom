@@ -32,14 +32,51 @@ Login
                                 <div id="lg2" class="tab-pane active">
                                     <div class="login-form-container">
                                         <div class="login-register-form">
-                                            <form action="#" method="post">
-                                                <input type="text" name="name" placeholder="Name">
-                                                <input name="user-email" placeholder="Email" type="email">
-                                                <input type="password" name="user-password" placeholder="Password">
+                                            <form action="{{ route('register') }}" method="post">
+                                                @csrf
+
+                                                {{-- Name Error --}}
+                                                @error('name')
+                                                <div class="text text-danger">{{ $message }}</div>
+                                                @enderror
+                                                <input type="text" name="name" placeholder="Full Name" value="{{ old('name') }}">
+
+                                                {{-- Email Error --}}
+                                                @error('email')
+                                                <div class="text text-danger">{{ $message }}</div>
+                                                @enderror
+                                                <input type="email" name="email" placeholder="Email" value="{{ old('email') }}">
+
+                                                {{-- Password Error --}}
+                                                @error('password')
+                                                <div class="text text-danger">{{ $message }}</div>
+                                                @enderror
+                                                <input type="password" name="password" placeholder="Password">
+
+                                                {{-- Confirm Password Error --}}
+                                                @error('password_confirmation')
+                                                <div class="text text-danger">{{ $message }}</div>
+                                                @enderror
+                                                <input type="password" name="password_confirmation" placeholder="Confirm Password">
+
                                                 <div class="button-box">
+                                                    <div class="login-toggle-btn">
+
+                                                        @error('checkbox')
+                                                        <div class="text text-danger">{{ $message }}</div>
+                                                        @enderror
+
+                                                        {{-- Terms & Conditions Checkbox --}}
+                                                        <input type="checkbox" name="checkbox" id="terms"
+                                                            {{ old('terms') ? 'checked' : '' }}>
+                                                        <label for="terms">I agree to the <a href="">Terms & Conditions</a></label>
+
+                                                    </div>
+
                                                     <button type="submit">Register</button>
                                                 </div>
                                             </form>
+
                                         </div>
                                     </div>
                                 </div>

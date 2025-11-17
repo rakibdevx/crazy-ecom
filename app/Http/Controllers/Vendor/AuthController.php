@@ -152,14 +152,6 @@ class AuthController extends Controller
 
         $vendor = Vendor::create($vendorData);
 
-        if ($vendor->status != "active") {
-            return redirect()->route('vendor.login')->withErrors([
-                'email' => "Your account is pending approval. Please verify your email and wait for confirmation."
-            ]);
-        }
-
-        Auth::guard('vendor')->login($vendor);
-
         if (setting('email_verification') == 1) {
             $verification_link = route('vendor.verify', [
                 'id' => $vendor->id,
@@ -178,6 +170,16 @@ class AuthController extends Controller
             return redirect()->route('vendor.dashboard')
                 ->with('success', 'Welcome, ' . $vendor->name . '! Please verify your email.');
         }
+
+
+        if ($vendor->status != "active") {
+            return redirect()->route('vendor.login')->withErrors([
+                'email' => "Your account is pending approval. Please verify your email and wait for confirmation."
+            ]);
+        }
+
+        Auth::guard('vendor')->login($vendor);
+
 
         // No verification → already verified
         return redirect()->route('vendor.dashboard')
@@ -290,6 +292,14 @@ class AuthController extends Controller
         // delete token
         DB::table('password_resets')->where('email', $request->email)->delete();
 
+        $mailData = \App\Services\MailTemplateService::prepare('Password Changed', [
+            'name' => $vendor->name,
+            'site_name' => setting('site_name'),
+            'support_email' => setting('support_email'),
+        ]);
+
+        Mail::to($vendor->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
+
         return redirect()->route('vendor.login')->with('success', 'Password reset successfully!');
     }
 
@@ -308,12 +318,17 @@ class AuthController extends Controller
         }
 
         if ($vendor->email_verified_at) {
-            return redirect()->route('vendor.dashboard')
+            return redirect()->route('vendor.login')
                 ->with('success', 'Your email is already verified.');
         }
 
         $vendor->email_verified_at = now();
         $vendor->save();
+         if ($vendor->status != "active") {
+            return redirect()->route('login')->withErrors([
+                'email' => "Your account is now verified. Our team will approve it soon! For any assistance, please reach out to support."
+            ]);
+        }
 
         Auth::guard('vendor')->login($vendor);
 

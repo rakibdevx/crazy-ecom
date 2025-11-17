@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\AuthController;
 use App\Http\Controllers\Frontend\DashboardController;
+use App\Http\Controllers\Frontend\OrderController;
 use App\Http\Controllers\Frontend\ProfileController;
 
 // auth routes
@@ -12,7 +13,7 @@ Route::middleware(['web','guest:user','user.maintenance'])->group(function () {
 
     // Register
     Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/register', [AuthController::class, 'registration']);
 
     Route::get('forgot', [AuthController::class, 'showForgotPasswordForm'])->name('forgot');
     Route::post('forgot', [AuthController::class, 'sendResetLinkEmail'])->name('forgot.submit');
@@ -57,5 +58,6 @@ Route::prefix('user')->name('user.')->middleware(['web','auth:user','auth.user',
 
     // dashboard route
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders');
 
 });

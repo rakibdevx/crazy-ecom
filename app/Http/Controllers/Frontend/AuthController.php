@@ -108,7 +108,7 @@ class AuthController extends Controller
     public function showRegistrationForm()
     {
         if (setting('user_registration_enabled') == 0) {
-            return redirect()->route('user.login')
+            return redirect()->route('login')
                 ->with('error', 'Registration temporarily off');
         }
         return view('frontend.auth.registration');
@@ -117,7 +117,7 @@ class AuthController extends Controller
     public function registration(Request $request)
     {
         if (setting('user_registration_enabled') == 0) {
-            return redirect()->route('user.login')
+            return redirect()->route('login')
                 ->with('error', 'Registration temporarily off');
         }
 
@@ -148,14 +148,6 @@ class AuthController extends Controller
 
         $user = User::create($userData);
 
-        if ($user->status != "active") {
-            return redirect()->route('login')->withErrors([
-                'email' => "Your account is pending approval. Please verify your email and wait for confirmation."
-            ]);
-        }
-
-        Auth::guard('user')->login($user);
-
         if (setting('email_verification') == 1) {
             $verification_link = route('user.verify', [
                 'id' => $user->id,
@@ -170,12 +162,16 @@ class AuthController extends Controller
             ]);
 
             Mail::to($user->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
-
-            return redirect()->route('user.dashboard')
-                ->with('success', 'Welcome, ' . $user->name . '! Please verify your email.');
         }
 
-        // No verification → already verified
+        if ($user->status != "active") {
+            return redirect()->route('login')->withErrors([
+                'email' => "Your account is pending approval. Please verify your email and wait for confirmation."
+            ]);
+        }
+
+        Auth::guard('user')->login($user);
+
         return redirect()->route('user.dashboard')
             ->with('success', 'Welcome, ' . $user->name . '!');
     }
@@ -192,7 +188,7 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('user.login')->with('success', 'You have been logged out.');
+        return redirect()->route('login')->with('success', 'You have been logged out.');
     }
 
     /**
@@ -202,7 +198,7 @@ class AuthController extends Controller
      */
     public function showForgotPasswordForm()
     {
-        return view('backend.user.auth.forgot');
+        return view('frontend.auth.forgot');
     }
 
     public function sendResetLinkEmail(Request $request)
@@ -228,7 +224,7 @@ class AuthController extends Controller
         ]);
 
         $resetLink = URL::temporarySignedRoute(
-            'user.resetPassword',
+            'resetPassword',
             now()->addMinutes(60),
             [
                 'token' => $token,
@@ -254,7 +250,7 @@ class AuthController extends Controller
      */
     public function showResetPasswordForm(Request $request)
     {
-        return view('backend.user.auth.reset', [
+        return view('frontend.auth.reset', [
             'token' => $request->token,
             'email' => $request->email,
         ]);
@@ -286,31 +282,44 @@ class AuthController extends Controller
         // delete token
         DB::table('password_resets')->where('email', $request->email)->delete();
 
-        return redirect()->route('user.login')->with('success', 'Password reset successfully!');
+        $mailData = \App\Services\MailTemplateService::prepare('Password Changed', [
+            'name' => $user->name,
+            'site_name' => setting('site_name'),
+            'support_email' => setting('support_email'),
+        ]);
+
+        Mail::to($user->email)->send(new \App\Mail\CustomMail($mailData['subject'], $mailData['body']));
+
+        return redirect()->route('login')->with('success', 'Password reset successfully!');
     }
 
     public function verify($id, $token)
     {
         $user = user::find($id);
         if (! $user) {
-            return redirect()->route('user.login')
-                ->with('error', 'Invalid verification link.');
+            return redirect()->route('login')
+                ->with('success', 'Invalid verification link.');
+
+            dd("fsdf");  
         }
 
-
         if ($token !== sha1($user->email)) {
-            return redirect()->route('user.login')
-                ->with('error', 'Invalid or expired verification link.');
+            return redirect()->route('login')
+            ->with('error', 'Invalid or expired verification link.');
         }
 
         if ($user->email_verified_at) {
-            return redirect()->route('user.dashboard')
-                ->with('success', 'Your email is already verified.');
+            return redirect()->route('login')
+            ->with('success', 'Your email is already verified.');
         }
 
         $user->email_verified_at = now();
         $user->save();
-
+        if ($user->status != "active") {
+            return redirect()->route('login')->withErrors([
+                'email' => "Your account is now verified. Our team will approve it soon! For any assistance, please reach out to support."
+            ]);
+        }
         Auth::guard('user')->login($user);
 
         return redirect()->route('user.dashboard')
@@ -322,7 +331,7 @@ class AuthController extends Controller
         $user = Auth::guard('user')->user();
 
         if (!$user) {
-            return redirect()->route('user.login')
+            return redirect()->route('login')
                 ->with('error', 'You must be logged in to resend verification.');
         }
 
@@ -353,12 +362,12 @@ class AuthController extends Controller
             return redirect()->route('user.dashboard')
                 ->with('success', 'Your email is already verified.');
         }
-        return view('backend.user.unverified.unverified');
+        return view('frontend.auth.unverified');
     }
 
     public function otp($email)
     {
-        return view('backend.user.auth.otp',compact('email'));
+        return view('frontend.auth.otp',compact('email'));
     }
 
     public function verifyOtp(Request $request)
@@ -406,12 +415,12 @@ class AuthController extends Controller
         try {
             $decryptedEmail = Crypt::decryptString($email);
         } catch (\Exception $e) {
-            return redirect()->route('user.login')->withErrors(['email' => 'Invalid verification link.']);
+            return redirect()->route('login')->withErrors(['email' => 'Invalid verification link.']);
         }
 
         $user = user::where('email', $decryptedEmail)->first();
         if (!$user) {
-            return redirect()->route('user.login')->withErrors(['email' => 'Account not found.']);
+            return redirect()->route('login')->withErrors(['email' => 'Account not found.']);
         }
 
         $code = rand(100000, 999999);
