@@ -215,7 +215,7 @@
                     <div class="pro-details-quality">
                         <span>Quantity:</span>
                         <div class="cart-plus-minus">
-                            <input class="cart-plus-minus-box qty-input" type="text" name="qtybutton" value="1">
+                            <input class="cart-plus-minus-box qty-input" type="text" id="selectedQuantity" name="qtybutton" value="1">
                         </div>
                         <input type="hidden" id="product_id" value="{{ $product->id }}">
 
@@ -250,7 +250,7 @@
                                     $isOutOfStock = !$variant || $variant->stock_quantity == 0;
                                 @endphp
 
-                                <a class="btn {{ $isOutOfStock ? 'btn-secondary disabled' : 'btn-primary' }}" id="addToCartBtn"
+                                <a class="btn {{ $isOutOfStock ? 'btn-secondary disabled' : 'btn-primary' }}" id="addToCartBtn" data-id="{{$product->id}}"
                                 href="#"
                                 {{ $isOutOfStock ? 'tabindex=-1 aria-disabled=true' : '' }}>
                                     {{ $isOutOfStock ? 'Out of Stock' : 'Add To Cart' }}
@@ -261,7 +261,7 @@
                                     $isOutOfStock = $product->stock_quantity == 0;
                                 @endphp
 
-                                <a class="btn {{ $isOutOfStock ? 'btn-secondary disabled' : 'btn-primary' }}" id="addToCartBtn"
+                                <a class="btn {{ $isOutOfStock ? 'btn-secondary disabled' : 'btn-primary' }}" id="addToCartBtn" data-id="{{$product->id}}"
                                 href="#"
                                 {{ $isOutOfStock ? 'tabindex=-1 aria-disabled=true' : '' }}>
                                     {{ $isOutOfStock ? 'Out of Stock' : 'Add To Cart' }}
@@ -757,5 +757,54 @@
     });
 
 
+</script>
+<script>
+    $(document).ready(function(){
+
+        $('#addToCartBtn').click(function(e){
+            e.preventDefault();
+
+            var product_id = $(this).data('id');
+            var color = $('#selected_color').val();
+            var size  = $('#selectedSize').val();
+            var quantity  = $('#selectedQuantity').val();
+            $.ajax({
+                url: "{{ route('cart.ajax.add') }}",
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: product_id,
+                    color: color,
+                    size: size,
+                    quantity: quantity,
+                },
+                success: function(response){
+                    if(response.status == 'success'){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Added to Cart',
+                            text: response.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                        $('#cart-count').text(response.cart_count); // Update cart count
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops!',
+                            text: response.message
+                        });
+                    }
+                },
+                error: function(){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops!',
+                        text: 'Something went wrong!'
+                    });
+                }
+            });
+        });
+    });
 </script>
 @endpush

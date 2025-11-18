@@ -200,7 +200,12 @@
                                             </div>
                                         @endif
                                         <div class="pro-add-to-cart-2">
-                                            <button title="Add to Cart">Add To Cart</button>
+                                            <button class="add-to-cart-btn"
+                                                data-id="{{ $product->id }}"
+                                                data-color="{{ $product->color ?? '' }}"
+                                                data-size="{{ $product->size ?? '' }}">
+                                                Add To Cart
+                                            </button>
                                         </div>
                                         </div>
                                     </div>
@@ -335,27 +340,61 @@
 
     </script>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const btn = document.getElementById('view-more-categories');
-        if(btn) {
-            btn.addEventListener('click', function() {
-                const extra = document.querySelectorAll('.extra-category');
-                extra.forEach(li => li.classList.toggle('hidden'));
-                btn.textContent = btn.textContent === 'View More' ? 'View Less' : 'View More';
-            });
-        }
-    });
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('view-more-categories');
+            if(btn) {
+                btn.addEventListener('click', function() {
+                    const extra = document.querySelectorAll('.extra-category');
+                    extra.forEach(li => li.classList.toggle('hidden'));
+                    btn.textContent = btn.textContent === 'View More' ? 'View Less' : 'View More';
+                });
+            }
+        });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const btn = document.getElementById('view-more-brands');
-        if(btn) {
-            btn.addEventListener('click', function() {
-                const extra = document.querySelectorAll('.extra-brands');
-                extra.forEach(li => li.classList.toggle('hidden'));
-                btn.textContent = btn.textContent === 'View More' ? 'View Less' : 'View More';
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('view-more-brands');
+            if(btn) {
+                btn.addEventListener('click', function() {
+                    const extra = document.querySelectorAll('.extra-brands');
+                    extra.forEach(li => li.classList.toggle('hidden'));
+                    btn.textContent = btn.textContent === 'View More' ? 'View Less' : 'View More';
+                });
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('.add-to-cart-btn').click(function(e){
+                e.preventDefault();
+
+                var button = $(this);
+                var id = button.data('id');
+                var color = button.data('color');
+                var size = button.data('size');
+
+                $.ajax({
+                    url: "{{ route('cart.ajax.add') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id: id,
+                        color: color,
+                        size: size
+                    },
+                    success: function(response){
+                        if(response.status == 'success'){
+                            alert(response.message);
+                            // Update Cart count in Navbar
+                            $('#cart-count').text(response.cart_count);
+                        }
+                    },
+                    error: function(xhr){
+                        alert('Something went wrong!');
+                    }
+                });
             });
-        }
-    });
+
+        });
     </script>
 @endpush
 

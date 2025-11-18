@@ -139,7 +139,7 @@ class AuthController extends Controller
             'slug' => $slug,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'status' => setting('vendor_default_status') == 1?'active':'pending',
+            'status' => setting('user_default_status') == 1?'active':'pending',
         ];
 
         if (setting('email_verification') != 1) {
@@ -295,31 +295,31 @@ class AuthController extends Controller
 
     public function verify($id, $token)
     {
-        $user = user::find($id);
+        $user = User::find($id);
         if (! $user) {
             return redirect()->route('login')
-                ->with('success', 'Invalid verification link.');
-
-            dd("fsdf");  
+                ->with('error', 'Invalid verification link.');
         }
 
         if ($token !== sha1($user->email)) {
             return redirect()->route('login')
-            ->with('error', 'Invalid or expired verification link.');
+                ->with('error', 'Invalid or expired verification link.');
         }
 
         if ($user->email_verified_at) {
             return redirect()->route('login')
-            ->with('success', 'Your email is already verified.');
+                ->with('success', 'Your email is already verified. You can login now.');
         }
 
         $user->email_verified_at = now();
         $user->save();
+
         if ($user->status != "active") {
             return redirect()->route('login')->withErrors([
-                'email' => "Your account is now verified. Our team will approve it soon! For any assistance, please reach out to support."
+                'email' => "Your email is verified, but your account is not active yet. Please wait for approval."
             ]);
         }
+
         Auth::guard('user')->login($user);
 
         return redirect()->route('user.dashboard')

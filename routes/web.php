@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Frontend\AuthController;
+use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\NewsletterController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProductController;
@@ -46,6 +47,20 @@ use Illuminate\Support\Facades\Auth;
     });
     Route::get('product/{slug}', [ProductController::class, 'details'])->name('product.details');
     Route::post('/check-stock', [ProductController::class, 'checkStock'])->name('checkStock');
+
+    Route::post('/ajax/add-to-cart', [CartController::class, 'ajaxAddToCart'])->name('cart.ajax.add');
+
+
+    // Show Cart
+    Route::get('/cart', [CartController::class, 'cart'])->name('cart');
+
+    // Update Quantity
+    Route::post('/cart/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
+
+    // Remove Item
+    Route::get('/cart/remove/{id}', [CartController::class, 'removeCart'])->name('cart.remove');
+    Route::get('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+    Route::post('/ajax/apply-coupon', [CartController::class, 'applyCoupon'])->name('cart.ajax.coupon');
 
 
     Route::get('/track-order', [HomeController::class, 'index'])->name('track.order');

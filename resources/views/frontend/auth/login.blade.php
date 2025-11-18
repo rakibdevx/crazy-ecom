@@ -37,6 +37,9 @@ Login
                                     @if(session('error'))
                                         <div class="text text-danger">{{ session('error') }}</div>
                                     @endif
+                                     @if(session('success'))
+                                        <div class="text text-success">{{ session('success') }}</div>
+                                    @endif
                                     <form action="{{route('login')}}" method="post">
                                         @csrf
                                         @error('email')
