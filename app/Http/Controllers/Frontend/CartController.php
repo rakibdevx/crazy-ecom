@@ -200,7 +200,8 @@ class CartController extends Controller
             }
         }
 
-            // dd($results);
+        session(['coupon_code' => $request->code]);
+        
         return response()->json([
             'status'         => 'success',
             'message'        => 'Coupon applied successfully!',

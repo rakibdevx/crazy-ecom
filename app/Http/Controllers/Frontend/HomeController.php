@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Slider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -21,6 +22,20 @@ class HomeController extends Controller
         $featureds = Product::where('status','active')->where('featured','yes')->limit(10)->get();
         $deals = Product::where('status','active')->where('hot_deals','yes')->limit(10)->get();
         return view('frontend.home.index',compact('brands','categories','sliders','best_sells','trendings','featureds','deals'));
+    }
+
+    public function home()
+    {
+         if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.dashboard');
+        }
+        if (Auth::guard('vendor')->check()) {
+            return redirect()->route('vendor.dashboard');
+        }
+        if (Auth::guard('user')->check()) {
+            return redirect()->route('user.dashboard');
+        }
+        return redirect('/');
     }
 
 

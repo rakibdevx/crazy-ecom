@@ -8,7 +8,6 @@ Cart
         <h3 class="cart-page-title">Your cart items</h3>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                <form action="#">
                     <div class="table-content table-responsive cart-table-content">
                         <table>
                             <thead>
@@ -67,7 +66,6 @@ Cart
                             </div>
                         </div>
                     </div>
-                </form>
                 <div class="row">
                     <div class="col-lg-4 col-md-6 offset-lg-4 offset-md-6">
                         <div class="discount-code-wrapper">
@@ -93,7 +91,7 @@ Cart
                                 <h5>Discount : <span>-{{setting('currency_symbol')}}<span id="discount_amount">0</span></span></h5>
                             </div>
                             <h4 class="grand-totall-title">Grand Total <span id="grand-total">$260.00</span></h4>
-                            <a href="#">Proceed to Checkout</a>
+                            <a href="{{route('user.checkout')}}">Proceed to Checkout</a>
                         </div>
                     </div>
                 </div>
@@ -105,6 +103,12 @@ Cart
 @push('js')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    $("#couponForm").on("keydown", function(e){
+        if (e.key === "Enter") {
+            e.preventDefault();
+        }
+    });
+
     var CartPlusMinus = $('.cart-plus-minus');
     CartPlusMinus.prepend('<div class="dec qtybutton">-</div>');
     CartPlusMinus.append('<div class="inc qtybutton">+</div>');

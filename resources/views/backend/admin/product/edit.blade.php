@@ -338,7 +338,7 @@
                                                     @endif
                                                     @if ($Zone_rate ?? false)
                                                     <div class="form-check mb-3">
-                                                        <input class="form-check-input" type="radio" name="shipping_type" id="zone_rate" value="zone_rate" {{ $product->shipping_type == 'zone_rate' ? 'checked' : '' }}>
+                                                        <input class="form-check-input" type="radio" name="shipping_type" id="zone_rate" value="zone" {{ $product->shipping_type == 'zone' ? 'checked' : '' }}>
                                                         <label class="form-check-label fw-bold" for="zone_rate">
                                                             By Zone Shipping
                                                         </label>

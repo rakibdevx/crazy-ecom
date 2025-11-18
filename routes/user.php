@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Frontend\AddressController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\AuthController;
+use App\Http\Controllers\Frontend\CheckOutController;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Frontend\OrderController;
 use App\Http\Controllers\Frontend\ProfileController;
@@ -43,6 +45,15 @@ Route::prefix('user')->name('user.')->middleware('web','auth:user')->group(funct
 
 // user routes
 Route::prefix('user')->name('user.')->middleware(['web','auth:user','auth.user','user.maintenance','user.verified'])->group(function () {
+
+      Route::get('/checkout', [CheckOutController::class, 'index'])->name('checkout');
+
+
+      Route::get('/address', [AddressController::class, 'index'])->name('address');
+      Route::post('/address', [AddressController::class, 'store'])->name('address.store');
+      Route::post('/address/status', [AddressController::class, 'status'])->name('address.status');
+      Route::get('/address/{id}', [AddressController::class, 'delete'])->name('address.delete');
+
 
     // Profile Routes
     Route::prefix('profile')->name('profile.')->group(function () {

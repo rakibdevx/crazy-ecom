@@ -2,30 +2,16 @@
 
 use App\Http\Controllers\Frontend\AuthController;
 use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Frontend\CheckOutController;
 use App\Http\Controllers\Frontend\NewsletterController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-    Route::get('/home', function () {
-        if (Auth::guard('admin')->check()) {
-            return redirect()->route('admin.dashboard');
-        }
-        if (Auth::guard('vendor')->check()) {
-            return redirect()->route('vendor.dashboard');
-        }
-        if (Auth::guard('user')->check()) {
-            return redirect()->route('user.dashboard');
-        }
-        return redirect('/');
-    })->name('home');
-
-    // Routes
-
     // Front end Route
     Route::get('/', [HomeController::class, 'index'])->name('index');
-
+    Route::get('/home', [HomeController::class, 'home'])->name('home');
 
     // newsletters Route
     Route::post('/newsletters', [NewsletterController::class, 'store'])->name('newsletters');
@@ -43,26 +29,20 @@ use Illuminate\Support\Facades\Auth;
         Route::get('hot_deals', [ProductController::class, 'hot_deals'])->name('hot_deals_product');
         Route::get('featured', [ProductController::class, 'featured'])->name('featured_product');
         Route::get('trending', [ProductController::class, 'trending'])->name('trending_product');
-
+        Route::get('/{slug}', [ProductController::class, 'details'])->name('details');
     });
-    Route::get('product/{slug}', [ProductController::class, 'details'])->name('product.details');
-    Route::post('/check-stock', [ProductController::class, 'checkStock'])->name('checkStock');
 
+    Route::post('/check-stock', [ProductController::class, 'checkStock'])->name('checkStock');
     Route::post('/ajax/add-to-cart', [CartController::class, 'ajaxAddToCart'])->name('cart.ajax.add');
 
-
-    // Show Cart
+    //  Cart
     Route::get('/cart', [CartController::class, 'cart'])->name('cart');
-
-    // Update Quantity
     Route::post('/cart/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
-
-    // Remove Item
     Route::get('/cart/remove/{id}', [CartController::class, 'removeCart'])->name('cart.remove');
     Route::get('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
     Route::post('/ajax/apply-coupon', [CartController::class, 'applyCoupon'])->name('cart.ajax.coupon');
 
-
+    // Track Order
     Route::get('/track-order', [HomeController::class, 'index'])->name('track.order');
 
 

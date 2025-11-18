@@ -84,7 +84,7 @@ class CouponService
         }
 
         if ($coupon->min_order_amount && $price < $coupon->min_order_amount) {
-            return ['success' => false,'price'=>$price, 'message' => 'Minimum order amount not reached.'];
+            return ['success' => false, 'message' => 'Minimum order amount not reached.'];
         }
 
         // --- 8. Calculate Discount ---

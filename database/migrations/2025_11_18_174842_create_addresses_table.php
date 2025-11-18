@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('addresses', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->string('address_name');
+            $table->string('name');
+            $table->string('phone');
+            $table->string('email');
+            $table->foreignId('shipping_zone_id')->constrained('shipping_zones')->cascadeOnDelete();
+            $table->text('street_address');
+            $table->enum('status', ['active','inactive'])->default('active');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('addresses');
+    }
+};
