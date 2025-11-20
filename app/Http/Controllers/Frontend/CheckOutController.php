@@ -24,7 +24,7 @@ class CheckOutController extends Controller
 
         $totalDiscount = 0;
         $code = session('coupon_code');
-
+        $cupon = $code;
         if($code)
         {
             $user = Auth::guard('user')->user();
@@ -57,6 +57,6 @@ class CheckOutController extends Controller
             }
         }
 
-        return view('frontend.user.checkout.index', compact('addresses', 'carts','products','totalDiscount'));
+        return view('frontend.user.checkout.index', compact('addresses', 'carts','products','totalDiscount','cupon'));
     }
 }

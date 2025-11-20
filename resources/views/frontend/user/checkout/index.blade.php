@@ -66,17 +66,44 @@ Checkout
                                     @foreach ($carts as $key => $item)
                                         @php
                                             $product = $products[$item['id']] ?? null;
-                                            $shipping += $product->shipping_cost;
                                             $subtotal += $item['price'] * $item['quantity'];
                                         @endphp
-                                        {{-- @dd($product) --}}
                                         <li class="single-product-cart d-flex justify-content-between w-100 pb-3">
                                             <div class="cart-img d-flex">
                                                 <a href="#"><img src="{{asset($item['image'])}}" height="110" alt="{{$item['name']}}"></a>
                                                 <div class="cart-title ps-3">
                                                     <h4><a href="{{route('product.details',$item['slug'])}}">{{$item['name']}}</a></h4>
                                                     <span> {{$item['quantity']}} × {{setting('currency_symbol')}} {{$item['price']}} </span> <br>
-                                                    <span>Shipping: {{setting('currency_symbol')}}{{ $product->shipping_cost??0 }}</span>
+                                                    @php
+                                                        $shippingCost = 0;
+
+                                                        if($product->shipping_type == 'zone') {
+                                                            $address = \App\Models\Address::where('user_id', auth()->guard('user')->id())
+                                                                        ->where('status','active')
+                                                                        ->first();
+
+                                                            if($address) {
+                                                                if($product->vendor_id === null) {
+                                                                    $shippingRate = \App\Models\ShippingRate::where('vendor_id', null)
+                                                                                        ->find($address->shipping_zone_id);
+                                                                } else {
+                                                                    $shippingRate = \App\Models\ShippingRate::where('vendor_id', $product->vendor_id)
+                                                                                        ->find($address->shipping_zone_id);
+                                                                }
+
+                                                                if($shippingRate) {
+                                                                    $shippingCost = $shippingRate->cost;
+                                                                }
+                                                            }
+                                                        } else {
+                                                            $shippingCost = $product->shipping_cost;
+                                                        }
+
+                                                        $shipping += $shippingCost;
+                                                    @endphp
+                                                    <span>
+                                                        Shipping: {{ setting('currency_symbol') }} {{ $shippingCost }}
+                                                    </span>
                                                 </div>
                                             </div>
 
@@ -97,6 +124,8 @@ Checkout
                 <div class="col-lg-5">
                     <div class="your-order-area">
                         <h3>Your order</h3>
+                       <form action="{{route('user.order.store')}}" method="POST">
+                        @csrf
                         <div class="your-order-wrap gray-bg-4">
                             <div class="your-order-info-wrap">
                                 <div class="your-order-info">
@@ -129,7 +158,7 @@ Checkout
                                 </div>
                                 <div class="your-order-info order-subtotal">
                                     <ul>
-                                        <li>Discount <span>-{{setting('currency_symbol')}}{{$totalDiscount}} </span></li>
+                                        <li>Discount @if($cupon)({{$cupon}})@endif <span>-{{setting('currency_symbol')}}{{$totalDiscount}} </span></li>
                                     </ul>
                                 </div>
                                 <div class="your-order-info order-total">
@@ -172,7 +201,9 @@ Checkout
                         </div>
                         <div class="Place-order">
                             <a href="#">Place Order</a>
+                            <input type="submit">Place Order</a>
                         </div>
+                       </form>
                     </div>
                 </div>
             </div>

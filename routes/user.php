@@ -7,6 +7,7 @@ use App\Http\Controllers\Frontend\CheckOutController;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Frontend\OrderController;
 use App\Http\Controllers\Frontend\ProfileController;
+use App\Models\Order;
 
 // auth routes
 Route::middleware(['web','guest:user','user.maintenance'])->group(function () {
@@ -47,6 +48,10 @@ Route::prefix('user')->name('user.')->middleware('web','auth:user')->group(funct
 Route::prefix('user')->name('user.')->middleware(['web','auth:user','auth.user','user.maintenance','user.verified'])->group(function () {
 
       Route::get('/checkout', [CheckOutController::class, 'index'])->name('checkout');
+
+      Route::prefix('order')->name('order.')->group(function () {
+        Route::post('/store', [OrderController::class, 'store'])->name('store');
+      });
 
 
       Route::get('/address', [AddressController::class, 'index'])->name('address');

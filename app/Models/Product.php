@@ -29,6 +29,11 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
+    public function zone() {
+        
+        return $this->belongsTo(Brand::class);
+    }
+
 
     // Variants (One to Many)
     public function variants() {

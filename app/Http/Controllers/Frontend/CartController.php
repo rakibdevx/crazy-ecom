@@ -196,12 +196,12 @@ class CartController extends Controller
 
 
             if ($response['success']) {
-                $totalDiscount += $response['discount'];
+                $totalDiscount += ($response['discount'] *$item['quantity']);
             }
         }
 
         session(['coupon_code' => $request->code]);
-        
+
         return response()->json([
             'status'         => 'success',
             'message'        => 'Coupon applied successfully!',

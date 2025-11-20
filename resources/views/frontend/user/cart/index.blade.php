@@ -163,11 +163,10 @@ Cart
                         showConfirmButton: false
                     });
 
-                    $('#discount_amount').text(response.total_discount);
+                    $('#discount_amount').text(response.total_discount.toFixed(2));
                     let totalPrice = parseFloat($('#total_price').text());
                     let newTotal = totalPrice - parseFloat(response.total_discount);
                     $('#grand-total').text(newTotal.toFixed(2));
-                    console.log(totalPrice);
                 } else {
                     Swal.fire({
                         icon: 'error',
