@@ -257,11 +257,10 @@ Checkout
                                     <label>Shipping Zone<abbr class="required" title="required">*</abbr></label>
                                     <select name="shipping_zone_id">
                                         <option value="">Select an Address</option>
-                                        <option value="1">Azerbaijan</option>
-                                        <option value="2">Bahamas</option>
-                                        <option value="3">Bahrain</option>
-                                        <option value="4">Bangladesh</option>
-                                        <option value="5">Barbados</option>
+                                        @foreach ($zones as $zone)
+                                        <option value="{{$zone->id}}">{{$zone->name}}</option>
+                                        @endforeach
+                                        <option value="">Select an Address</option>
                                     </select>
                                 </div>
                             </div>

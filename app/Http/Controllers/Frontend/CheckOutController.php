@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\Product;
+use App\Models\ShippingZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\CouponService;
@@ -57,6 +58,7 @@ class CheckOutController extends Controller
             }
         }
 
-        return view('frontend.user.checkout.index', compact('addresses', 'carts','products','totalDiscount','cupon'));
+        $zones = ShippingZone::get();
+         return view('frontend.user.checkout.index', compact('zones','addresses', 'carts','products','totalDiscount','cupon'));
     }
 }

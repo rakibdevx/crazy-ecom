@@ -26,7 +26,7 @@ class OrderController extends Controller
         {
             return back()->with(['error' => "Please Add An Address First"]);
         }
-        
+        dd($address);
         DB::beginTransaction();
 
         try {
