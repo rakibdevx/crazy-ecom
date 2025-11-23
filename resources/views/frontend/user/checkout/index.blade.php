@@ -17,6 +17,8 @@ Checkout
 </div>
 <div class="checkout-main-area pt-120 pb-120">
     <div class="container">
+
+
         <div class="checkout-wrap pt-30">
             <div class="row">
                 <div class="col-lg-7">
@@ -116,16 +118,16 @@ Checkout
                             </div>
                         </div>
                         <div class="additional-info-wrap">
+                            <form action="{{route('user.order.store')}}" method="POST">
+                                @csrf
                             <label>Order notes</label>
-                            <textarea placeholder="Notes about your order, e.g. special notes for delivery. " name="message"></textarea>
+                            <textarea placeholder="Notes about your order, e.g. special notes for delivery. " name="notes"></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-5">
                     <div class="your-order-area">
                         <h3>Your order</h3>
-                       <form action="{{route('user.order.store')}}" method="POST">
-                        @csrf
                         <div class="your-order-wrap gray-bg-4">
                             <div class="your-order-info-wrap">
                                 <div class="your-order-info">
@@ -168,6 +170,31 @@ Checkout
                                 </div>
                             </div>
 
+                           <div class="your-order-info py-2">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input @error('is_gift') is-invalid @enderror"
+                                        type="radio"
+                                        name="is_gift"
+                                        id="is_gift_no"
+                                        value="0"
+                                        {{ old('is_gift', isset($order) ? $order->is_gift : '0') == '0' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="is_gift_no">No</label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input @error('is_gift') is-invalid @enderror"
+                                        type="radio"
+                                        name="is_gift"
+                                        id="is_gift_yes"
+                                        value="1"
+                                        {{ old('is_gift', isset($order) ? $order->is_gift : '') == '1' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="is_gift_yes">Yes</label>
+                                </div>
+
+                                @error('is_gift')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
                             <div class="payment-method">
                                 <div class="pay-top sin-payment">
                                     <input id="payment_method_1" class="input-radio" type="radio" value="cheque" checked="checked" name="payment_method">
@@ -203,11 +230,11 @@ Checkout
                             <a href="#">Place Order</a>
                             <input type="submit">Place Order</a>
                         </div>
-                       </form>
                     </div>
                 </div>
             </div>
         </div>
+        </form>
     </div>
 </div>
 

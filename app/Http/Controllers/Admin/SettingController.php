@@ -225,6 +225,7 @@ class SettingController extends Controller
             'app_debug' => 'required|boolean',
             'currency' => 'required|string|max:10',
             'currency_symbol' => 'required|string|max:5',
+            'order_pre_text' => 'required|string|max:10',
             'date_format' => 'required|exists:date_formats,format',
             'time_format' => 'required|exists:time_formats,format',
             'default_pagination' => 'required|integer|min:1|max:500',
@@ -243,6 +244,7 @@ class SettingController extends Controller
         $this->env_update('APP_DEBUG', $debugValue);
         Setting::updateOrCreate(['key' => 'currency'],['value' => $request->currency]);
         Setting::updateOrCreate(['key' => 'currency_symbol'],['value' => $request->currency_symbol]);
+        Setting::updateOrCreate(['key' => 'order_pre_text'],['value' => $request->order_pre_text]);
         Setting::updateOrCreate(['key' => 'date_format'],['value' => $request->date_format]);
         Setting::updateOrCreate(['key' => 'time_format'],['value' => $request->time_format]);
         Setting::updateOrCreate(['key' => 'default_pagination'],['value' => $request->default_pagination]);

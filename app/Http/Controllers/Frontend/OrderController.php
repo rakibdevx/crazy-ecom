@@ -26,28 +26,30 @@ class OrderController extends Controller
         {
             return back()->with(['error' => "Please Add An Address First"]);
         }
-        dd($address);
+
+
         DB::beginTransaction();
 
         try {
             $order = Order::create([
-                'order_number' => 'ORD-' . time(),
-                'name' => $request->name,
-                'phone' => $request->phone,
-                'email' => $request->email,
+                'order_number' => setting('order_pre_text'). time(),
+                'name' => $address->name,
+                'phone' => $address->phone,
+                'email' => $address->email,
                 'notes' => $request->notes ?? null,
-                'shipping_zone_id' => $request->shipping_zone_id,
-                'street_address' => $request->street_address,
-                'city' => $request->city ?? null,
+                'is_gift' => $request->is_gift ?? false,
+                'shipping_zone_id' => $address->shipping_zone_id,
+                'street_address' => $address->street_address,
                 'subtotal' => 0, // update later
-                'discount' => $request->discount ?? 0,
-                'grand_total' => 0, // update later
-                'total_items' => count($request->products),
+                'discount' => 0,
+                'grand_total' => 0,
+                'total_items' => 0,
                 'payment_method' => $request->payment_method ?? 'cash',
                 'payment_status' => 'pending',
                 'placed_at' => now(),
             ]);
 
+            return $order;
             $subtotal = 0;
 
             // 2. Create Order Details
@@ -72,12 +74,10 @@ class OrderController extends Controller
                 $subtotal += $finalPrice;
             }
 
-            // 3. Update Order totals
             $order->subtotal = $subtotal;
             $order->grand_total = $subtotal - ($request->discount ?? 0) + ($request->shipping_amount ?? 0);
             $order->save();
 
-            // 4. Optionally create transaction if payment is online
             if ($request->payment_method !== 'cash') {
                 Transaction::create([
                     'order_id' => $order->id,

@@ -81,6 +81,7 @@ class SettingSeeder extends Seeder
             ['key' => 'app_debug', 'value' => '0'],
             ['key' => 'currency', 'value' => 'BDT'],
             ['key' => 'currency_symbol', 'value' => '৳'],
+            ['key' => 'order_pre_text', 'value' => 'ODR_'],
             ['key' => 'date_format', 'value' => 'd-m-Y'],
             ['key' => 'time_format', 'value' => 'H:i'],
             ['key' => 'default_pagination', 'value' => '20'],

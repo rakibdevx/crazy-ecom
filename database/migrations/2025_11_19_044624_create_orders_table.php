@@ -22,7 +22,6 @@ return new class extends Migration
             // 7-13. Shipping Info
             $table->foreignId('shipping_zone_id')->nullable()->constrained('shipping_zones')->nullOnDelete();
             $table->string('street_address');
-            $table->string('city')->nullable();
             $table->decimal('shipping_amount', 10, 2)->default(0);
 
             // 14-22. Order Summary

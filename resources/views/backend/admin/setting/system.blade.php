@@ -113,6 +113,11 @@
                             <input type="text" name="currency_symbol" value="{{ old('currency_symbol', setting('currency_symbol')) }}" class="form-control @error('currency_symbol') is-invalid @enderror" placeholder="e.g. $" @error('currency_symbol') required @enderror>
                             <div class="invalid-feedback">@error('currency_symbol') {{ $message }} @enderror</div>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Order Pre Text:</label>
+                            <input type="text" name="order_pre_text" value="{{ old('order_pre_text', setting('order_pre_text')) }}" class="form-control @error('order_pre_text') is-invalid @enderror" placeholder="ORD_" @error('order_pre_text') required @enderror>
+                            <div class="invalid-feedback">@error('order_pre_text') {{ $message }} @enderror</div>
+                        </div>
 
                         <div class="mb-3">
                             <label class="form-label">Date Format:</label>
