@@ -171,6 +171,7 @@ Checkout
                             </div>
 
                            <div class="your-order-info py-2">
+                            <label for="">Is Gift </label><br>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input @error('is_gift') is-invalid @enderror"
                                         type="radio"

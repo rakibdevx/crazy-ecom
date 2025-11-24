@@ -173,6 +173,7 @@ class CartController extends Controller
         }
         $results = [];
         $totalDiscount = 0;
+        
         foreach ($cart as $key => $item) {
             $product = Product::find($item['id']);
 

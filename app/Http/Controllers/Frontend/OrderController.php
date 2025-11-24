@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderDetails;
+use App\Models\Product;
 use App\Models\Transaction;
+use App\Services\CouponService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
@@ -15,7 +18,7 @@ class OrderController extends Controller
     /**
      * Store a new order with details and transaction.
      */
-    public function store(Request $request)
+    public function store(Request $request,CouponService $couponService)
     {
         $request->validate([
             'payment_method' => 'required|string',
@@ -26,13 +29,22 @@ class OrderController extends Controller
         {
             return back()->with(['error' => "Please Add An Address First"]);
         }
+        $cart = session()->get('cart', []);
 
+        if (!$cart || count($cart) < 1) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Your cart is empty.',
+            ]);
+        }
+        $user = Auth::guard('user')->user();
 
-        DB::beginTransaction();
+        // DB::beginTransaction();
 
         try {
             $order = Order::create([
                 'order_number' => setting('order_pre_text'). time(),
+                'user_id' => $user->id,
                 'name' => $address->name,
                 'phone' => $address->phone,
                 'email' => $address->email,
@@ -47,32 +59,92 @@ class OrderController extends Controller
                 'payment_method' => $request->payment_method ?? 'cash',
                 'payment_status' => 'pending',
                 'placed_at' => now(),
+                'currency' => setting('currency'),
             ]);
 
-            return $order;
             $subtotal = 0;
+            $discount = 0;
 
-            // 2. Create Order Details
-            foreach ($request->products as $item) {
-                $finalPrice = $item['price'] * $item['quantity'] - ($item['discount'] ?? 0);
 
-                OrderDetail::create([
+            foreach ($cart as $item) {
+                $price = 0;
+                $shiping_cost=0;
+
+                $product = Product::findOrFail($item['id']);
+
+                if ($product->has_variants == 1) {
+
+                    $color = $item['color_id'];
+                    $size = $item['size_id'];
+
+                    if($color == null)
+                    {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'Please Select a Color of '.$product->name,
+                        ]);
+                    }
+                    if($size == null)
+                    {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'Please Select a Size '.$product->name,
+                        ]);
+                    }
+                    $price = optional(
+                        \App\Models\ProductVariant::where('product_id', $product->id)
+                            ->where('color_id', $color)
+                            ->where('size_id', $size)
+                            ->first()
+                    )->price;
+
+                    if (!$price) {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'Please select a valid size and color!',
+                        ]);
+                    }
+                }else
+                {
+                    $price = $product->sale_price;
+                }
+
+                $subtotal += ($price * $item['quantity']);
+
+                $code = session('coupon_code');
+                if($code)
+                {
+                    $response = $couponService->applyCoupon(
+                        $code,
+                        $user,
+                        $item,
+                        $product
+                    );
+                    if (!$response['success']) continue;
+                }
+
+                $orderd = OrderDetail::create([
                     'order_id' => $order->id,
-                    'product_id' => $item['product_id'],
-                    'vendor_id' => $item['vendor_id'] ?? null,
+                    'product_id' => $product->id,
+                    'vendor_id' => $product->vendor_id ?? null,
                     'quantity' => $item['quantity'],
-                    'price' => $item['price'],
-                    'discount' => $item['discount'] ?? 0,
-                    'final_price' => $finalPrice,
-                    'color' => $item['color'] ?? null,
-                    'size' => $item['size'] ?? null,
-                    'warranty' => $item['warranty'] ?? null,
-                    'is_fragile' => $item['is_fragile'] ?? false,
+                    'price' => $price,
+                    'sub_total' => $price * $item['quantity'],
+                    'discount' => $response['discount'] ?? 0,
+                    'final_price' => $response['final_price'],
+                    'color_id' => $item['color_id'] ?? null,
+                    'size_id' => $item['size_id'] ?? null,
+                    'warranty' => $product->warranty ?? null,
+                    'is_fragile' => $product->is_fragile ?? false,
+                    'shipping_cost' => $shiping_cost,
                     'status' => 'pending',
                 ]);
 
-                $subtotal += $finalPrice;
+
             }
+
+
+            dd($order);
 
             $order->subtotal = $subtotal;
             $order->grand_total = $subtotal - ($request->discount ?? 0) + ($request->shipping_amount ?? 0);

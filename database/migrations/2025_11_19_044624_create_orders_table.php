@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
             $table->string('order_number');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('name');
             $table->string('phone');
             $table->string('email');

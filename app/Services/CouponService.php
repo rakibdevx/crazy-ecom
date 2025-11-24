@@ -70,16 +70,18 @@ class CouponService
         {
             if ($product->has_variants == 1)
             {
-                $price = optional(
+                $data = optional(
                     \App\Models\ProductVariant::where('product_id', $product->id)
                         ->where('color_id', $cart['color_id'])
                         ->where('size_id', $cart['size_id'])
                         ->first()
                 )->price;
+                $price = $data * $cart['quantity'];
             }
             else {
 
-                $price = $product->sale_price;
+                $data = $product->sale_price;
+                $price = $data * $cart['quantity'];
             }
         }
 
