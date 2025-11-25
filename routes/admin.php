@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\NewsletterController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\SliderController;
 
 // login route
@@ -160,4 +161,12 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.adm
         Route::get('/mail-template/edit/{id}', [MailTemplateController::class, 'edit'])->name('mail.template.edit');
         Route::post('/mail-template/edit/{id}', [MailTemplateController::class, 'update'])->name('mail.template.update');
     });
+
+
+    Route::resource('order', OrderController::class);
+    Route::prefix('order')->name('order.')->group(function () {
+
+    });
+
+
 });

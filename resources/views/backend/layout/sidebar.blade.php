@@ -112,6 +112,52 @@
                         </ul>
                     </li>
                 @endcanany
+                @canany(['Order-view', 'Order-edit','Order-delete','Order-create','Order-status','All-order','Pending-order','Processing-order','Shipped-order','Delivered-order','Cancelled-order','Ceturned-order'])
+                    <li>
+                        <a href="javascript:;" class="has-arrow">
+                            <div class="parent-icon"><i class="material-icons-outlined">{{setting('currency_symbol')}}</i></div>
+                            <div class="menu-title">Order</div>
+                        </a>
+                        <ul>
+                            @canany(['All-order',])
+                            <li class="{{ request()->routeIs('admin.order.*') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.order.index')}}"><i class="material-icons-outlined">arrow_right</i>Orders</a>
+                            </li>
+                            @endcanany
+                            @canany(['Pending-order',])
+                            <li class="{{ request()->routeIs('admin.order.*') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.order.index')}}"><i class="material-icons-outlined">arrow_right</i>Pending Orders</a>
+                            </li>
+                            @endcanany
+                            @canany(['Processing-order',])
+                            <li class="{{ request()->routeIs('admin.order.*') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.order.index')}}"><i class="material-icons-outlined">arrow_right</i>Processing Orders</a>
+                            </li>
+                            @endcanany
+                            @canany(['Shipped-order',])
+                            <li class="{{ request()->routeIs('admin.order.*') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.order.index')}}"><i class="material-icons-outlined">arrow_right</i>Shipped Orders</a>
+                            </li>
+                            @endcanany
+                            @canany(['Delivered-order',])
+                            <li class="{{ request()->routeIs('admin.order.*') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.order.index')}}"><i class="material-icons-outlined">arrow_right</i>Delivered Orders</a>
+                            </li>
+                            @endcanany
+                            @canany(['Cancelled-order',])
+                            <li class="{{ request()->routeIs('admin.order.*') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.order.index')}}"><i class="material-icons-outlined">arrow_right</i>Cancelled Orders</a>
+                            </li>
+                            @endcanany
+                            @canany(['Ceturned-order',])
+                            <li class="{{ request()->routeIs('admin.order.*') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.order.index')}}"><i class="material-icons-outlined">arrow_right</i>Ceturned Orders</a>
+                            </li>
+                            @endcanany
+                        </ul>
+                    </li>
+                @endcanany
+
                 @canany(['User-view', 'User-edit','User-delete','User-create'])
                     <li class="{{ request()->routeIs('admin.user.*') ? 'mm-active' : '' }}">
                         <a href="{{route('admin.user.index')}}">

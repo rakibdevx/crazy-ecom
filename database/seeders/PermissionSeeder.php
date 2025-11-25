@@ -150,6 +150,21 @@ class PermissionSeeder extends Seeder
             // Newsletter management
             'Newsletter-view',
             'Newsletter-delete',
+
+            // Order management
+            'Order-view',
+            'Order-edit',
+            'Order-delete',
+            'Order-create',
+            'Order-status',
+            'All-order',
+            'Pending-order',
+            'Processing-order',
+            'Shipped-order',
+            'Delivered-order',
+            'Cancelled-order',
+            'Ceturned-order',
+
         ];
 
         foreach ($permissions as $permission) {
