@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
-
+use App\Models\DefaultShiping;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderDetails;
+use App\Models\OrderStatusLog;
 use App\Models\Product;
+use App\Models\ShippingRate;
 use App\Models\Transaction;
 use App\Services\CouponService;
 use Illuminate\Support\Facades\Auth;
@@ -64,11 +66,14 @@ class OrderController extends Controller
 
             $subtotal = 0;
             $discount = 0;
+            $shipping_amount = 0;
+            $cupon_id = 0;
 
 
             foreach ($cart as $item) {
+
                 $price = 0;
-                $shiping_cost=0;
+                $shipping_cost=0;
 
                 $product = Product::findOrFail($item['id']);
 
@@ -109,7 +114,32 @@ class OrderController extends Controller
                     $price = $product->sale_price;
                 }
 
+                if ($product->shipping_type == "product") {
+                    $shipping_cost += $product->shipping_cost;
+                }
+                else if ($product->shipping_type == "flat") {
+                    if ($product->vendor_id == null) {
+                        $shipping_cost += optional(DefaultShiping::where('vendor_id', null)->first())->cost ?? 0;
+                    } else {
+                        $shipping_cost += optional(DefaultShiping::where('vendor_id', $product->vendor_id)->first())->cost ?? 0;
+                    }
+                }
+                else if ($product->shipping_type == "zone") {
+                    if ($product->vendor_id == null) {
+                        $shipping_cost += optional(ShippingRate::where('vendor_id', null)
+                            ->where('zone_id', $address->zone_id)
+                            ->first())->cost ?? 0;
+                    } else {
+                        $shipping_cost += optional(ShippingRate::where('vendor_id', $product->vendor_id)
+                            ->where('zone_id', $address->zone_id)
+                            ->first())->cost ?? 0;
+                    }
+                }
+
+
+
                 $subtotal += ($price * $item['quantity']);
+
 
                 $code = session('coupon_code');
                 if($code)
@@ -123,7 +153,12 @@ class OrderController extends Controller
                     if (!$response['success']) continue;
                 }
 
-                $orderd = OrderDetail::create([
+                $discount += $response['discount'];
+                $cupon_id = $response['coupon_id'];
+                $shipping_amount+= $shipping_cost;
+
+
+                OrderDetail::create([
                     'order_id' => $order->id,
                     'product_id' => $product->id,
                     'vendor_id' => $product->vendor_id ?? null,
@@ -136,32 +171,43 @@ class OrderController extends Controller
                     'size_id' => $item['size_id'] ?? null,
                     'warranty' => $product->warranty ?? null,
                     'is_fragile' => $product->is_fragile ?? false,
-                    'shipping_cost' => $shiping_cost,
+                    'shipping_cost' => $shipping_cost,
                     'status' => 'pending',
                 ]);
 
-
-            }
-
-
-            dd($order);
-
-            $order->subtotal = $subtotal;
-            $order->grand_total = $subtotal - ($request->discount ?? 0) + ($request->shipping_amount ?? 0);
-            $order->save();
-
-            if ($request->payment_method !== 'cash') {
                 Transaction::create([
                     'order_id' => $order->id,
-                    'user_id' => $request->user()->id,
-                    'vendor_id' => null,
+                    'user_id' => $user->id,
+                    'vendor_id' => $product->vendor_id??null,
                     'payment_gateway' => $request->payment_gateway ?? null,
-                    'transaction_id' => $request->transaction_id ?? null,
+                    'transaction_id' => null,
                     'type' => 'payment',
-                    'amount' => $order->grand_total,
+                    'amount' =>  $response['final_price'] + $shipping_cost,
                     'status' => 'pending',
                 ]);
+
+                OrderStatusLog::create([
+                    'order_id'   => $order->id,
+                    'vendor_id'  => $product->vendor_id??null,
+                    'old_status' => 'pending',
+                    'new_status' => 'pending',
+                    'changed_by' => $user->id,
+                    'type' => 'user',
+                    'notes'      => "Order Created",
+                ]);
             }
+
+
+            $order->subtotal = $subtotal;
+            $order->shipping_amount = $shipping_amount;
+            $order->coupon_discount = $discount;
+            $order->total_items = count($cart);
+            $order->currency = setting('currency');
+            $order->coupon_id = $cupon_id;
+            $order->grand_total = $subtotal - ($discount ?? 0) + ($shipping_amount ?? 0);
+            $order->save();
+
+
 
             DB::commit();
 

@@ -12,12 +12,14 @@ return new class extends Migration
     public function up(): void
     {
          Schema::create('order_status_logs', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->foreignId('vendor_id')->nullable()->constrained('vendors')->nullOnDelete();
             $table->string('old_status');
             $table->string('new_status');
-            $table->foreignId('changed_by')->constrained('admins')->onDelete('cascade');
+            $table->integer('changed_by');
+            $table->text('type');
             $table->text('notes')->nullable();
             $table->timestamps();
         });
