@@ -48,7 +48,7 @@ class OrderController extends Controller
 
                     if ($user) {
                         $link = route('admin.user.show', $user->id);
-                        return '
+                        return ' 
                             <a class="d-flex align-items-center gap-3" href="'.$link.'">
                                 <div class="customer-pic">
                                     <img src="'.$image.'" class="rounded-circle" width="40" height="40" alt="'.optional($user)->name.'">
