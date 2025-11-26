@@ -41,7 +41,7 @@ class OrderController extends Controller
         }
         $user = Auth::guard('user')->user();
 
-        // DB::beginTransaction();
+        DB::beginTransaction();
 
         try {
             $order = Order::create([

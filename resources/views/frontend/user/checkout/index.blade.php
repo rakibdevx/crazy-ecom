@@ -97,6 +97,12 @@ Checkout
                                                                     $shippingCost = $shippingRate->cost;
                                                                 }
                                                             }
+                                                        }else if ($product->shipping_type == "flat") {
+                                                            if ($product->vendor_id == null) {
+                                                                $shippingCost += optional(\App\Models\DefaultShiping::where('vendor_id', null)->first())->cost ?? 0;
+                                                            } else {
+                                                                $shippingCost += optional(\App\Models\DefaultShiping::where('vendor_id', $product->vendor_id)->first())->cost ?? 0;
+                                                            }
                                                         } else {
                                                             $shippingCost = $product->shipping_cost;
                                                         }

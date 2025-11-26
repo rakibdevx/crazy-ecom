@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Frontend\ApiIntegrationController;
 
 // login route
 Route::prefix('admin')->name('admin.')->middleware(['web','guest:admin'])->group(function () {
@@ -162,11 +163,25 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin','auth.adm
         Route::post('/mail-template/edit/{id}', [MailTemplateController::class, 'update'])->name('mail.template.update');
     });
 
+    Route::get('/payment-api', [ApiIntegrationController::class, 'payment'])->name('api.payment');
+    Route::post('/payment-api', [ApiIntegrationController::class, 'paymentsave']);
+    Route::get('/sms-api', [ApiIntegrationController::class, 'sms'])->name('api.sms');
+    Route::post('/sms-api', [ApiIntegrationController::class, 'smssave']);
 
-    Route::resource('order', OrderController::class);
+
+
+    Route::resource('orders', OrderController::class);
+
     Route::prefix('order')->name('order.')->group(function () {
-
+        Route::get('/pending', [OrderController::class, 'pending'])->name('pending');
+        Route::get('/processing', [OrderController::class, 'processing'])->name('processing');
+        Route::get('/shipped', [OrderController::class, 'shipped'])->name('shipped');
+        Route::get('/delivered', [OrderController::class, 'delivered'])->name('delivered');
+        Route::get('/cancelled', [OrderController::class, 'cancelled'])->name('cancelled');
+        Route::get('/ceturned', [OrderController::class, 'ceturned'])->name('ceturned');
     });
+
+
 
 
 });

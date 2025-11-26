@@ -12,4 +12,19 @@ class Order extends Model
 
         return $this->belongsTo(User::class);
     }
+    public function zone() {
+
+        return $this->belongsTo(ShippingZone::class,'shipping_zone_id');
+    }
+
+    public function details()
+    {
+        return $this->hasMany(OrderDetail::class);
+    }
+
+    public function orderstatus()
+    {
+        return $this->hasMany(OrderDetail::class);
+    }
+
 }

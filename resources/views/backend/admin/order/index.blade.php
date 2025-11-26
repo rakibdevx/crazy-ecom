@@ -31,13 +31,6 @@
                     <span class="material-icons-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
                 </div>
             </div>
-            @can('Order-create')
-                <div class="col-auto">
-                    <div class="d-flex align-items-center gap-2 justify-content-lg-end">
-                        <a href="{{route('admin.order.create')}}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-2"></i>Add Order</a>
-                    </div>
-                </div>
-            @endcan
         </div><!--end row-->
 
         <div class="card mt-4">
@@ -91,7 +84,7 @@
             responsive: true,
             autoWidth: false,
             ajax: {
-                url: '{{ route('admin.order.index') }}',
+                url: window.location.pathname,
                 data: function (d) {
                     d.search = $('#customSearch').val();
                 }

@@ -165,6 +165,10 @@ class PermissionSeeder extends Seeder
             'Cancelled-order',
             'Ceturned-order',
 
+            // Api 
+            'Api-view',
+            'Api-edit'
+
         ];
 
         foreach ($permissions as $permission) {

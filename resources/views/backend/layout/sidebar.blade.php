@@ -31,7 +31,7 @@
                 ])
                     <li>
                         <a href="javascript:;" class="has-arrow">
-                            <div class="parent-icon"><i class="material-icons-outlined">shopping_bag</i></div>
+                            <div class="parent-icon"><i class="material-icons-outlined">widgets</i></div>
                             <div class="menu-title">Product</div>
                         </a>
                         <ul>
@@ -115,43 +115,43 @@
                 @canany(['Order-view', 'Order-edit','Order-delete','Order-create','Order-status','All-order','Pending-order','Processing-order','Shipped-order','Delivered-order','Cancelled-order','Ceturned-order'])
                     <li>
                         <a href="javascript:;" class="has-arrow">
-                            <div class="parent-icon"><i class="material-icons-outlined">{{setting('currency_symbol')}}</i></div>
+                            <div class="parent-icon"><i class="material-icons-outlined">shopping_bag</i></div>
                             <div class="menu-title">Order</div>
                         </a>
                         <ul>
                             @canany(['All-order',])
-                            <li class="{{ request()->routeIs('admin.order.*') ? 'mm-active' : '' }}">
-                                <a href="{{route('admin.order.index')}}"><i class="material-icons-outlined">arrow_right</i>Orders</a>
+                            <li class="{{ request()->routeIs('admin.orders.index') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.orders.index')}}"><i class="material-icons-outlined">arrow_right</i>Orders</a>
                             </li>
                             @endcanany
                             @canany(['Pending-order',])
-                            <li class="{{ request()->routeIs('admin.order.*') ? 'mm-active' : '' }}">
-                                <a href="{{route('admin.order.index')}}"><i class="material-icons-outlined">arrow_right</i>Pending Orders</a>
+                            <li class="{{ request()->routeIs('admin.order.pending') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.order.pending')}}"><i class="material-icons-outlined">arrow_right</i>Pending Orders</a>
                             </li>
                             @endcanany
                             @canany(['Processing-order',])
-                            <li class="{{ request()->routeIs('admin.order.*') ? 'mm-active' : '' }}">
-                                <a href="{{route('admin.order.index')}}"><i class="material-icons-outlined">arrow_right</i>Processing Orders</a>
+                            <li class="{{ request()->routeIs('admin.order.processing') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.order.processing')}}"><i class="material-icons-outlined">arrow_right</i>Processing Orders</a>
                             </li>
                             @endcanany
                             @canany(['Shipped-order',])
-                            <li class="{{ request()->routeIs('admin.order.*') ? 'mm-active' : '' }}">
-                                <a href="{{route('admin.order.index')}}"><i class="material-icons-outlined">arrow_right</i>Shipped Orders</a>
+                            <li class="{{ request()->routeIs('admin.order.shipped') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.order.shipped')}}"><i class="material-icons-outlined">arrow_right</i>Shipped Orders</a>
                             </li>
                             @endcanany
                             @canany(['Delivered-order',])
-                            <li class="{{ request()->routeIs('admin.order.*') ? 'mm-active' : '' }}">
-                                <a href="{{route('admin.order.index')}}"><i class="material-icons-outlined">arrow_right</i>Delivered Orders</a>
+                            <li class="{{ request()->routeIs('admin.order.delivered') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.order.delivered')}}"><i class="material-icons-outlined">arrow_right</i>Delivered Orders</a>
                             </li>
                             @endcanany
                             @canany(['Cancelled-order',])
-                            <li class="{{ request()->routeIs('admin.order.*') ? 'mm-active' : '' }}">
-                                <a href="{{route('admin.order.index')}}"><i class="material-icons-outlined">arrow_right</i>Cancelled Orders</a>
+                            <li class="{{ request()->routeIs('admin.order.cancelled') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.order.cancelled')}}"><i class="material-icons-outlined">arrow_right</i>Cancelled Orders</a>
                             </li>
                             @endcanany
                             @canany(['Ceturned-order',])
-                            <li class="{{ request()->routeIs('admin.order.*') ? 'mm-active' : '' }}">
-                                <a href="{{route('admin.order.index')}}"><i class="material-icons-outlined">arrow_right</i>Ceturned Orders</a>
+                            <li class="{{ request()->routeIs('admin.order.ceturned') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.order.ceturned')}}"><i class="material-icons-outlined">arrow_right</i>Ceturned Orders</a>
                             </li>
                             @endcanany
                         </ul>
@@ -303,6 +303,23 @@
                         </ul>
                     </li>
                 @endcanany
+                @canany(['Api-view', 'Api-edit'])
+                    <li>
+                        <a href="javascript:;" class="has-arrow">
+                            <div class="parent-icon"><i class="material-icons-outlined">description</i></div>
+                            <div class="menu-title">API Intrigation</div>
+                        </a>
+                        <ul>
+                            <li class="{{ request()->routeIs('admin.api.payment') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.api.payment')}}"><i class="material-icons-outlined">arrow_right</i>Payment</a>
+                            </li>
+                            <li class="{{ request()->routeIs('admin.api.sms*') ? 'mm-active' : '' }}">
+                                <a href="{{route('admin.api.sms')}}"><i class="material-icons-outlined">arrow_right</i>Sms</a>
+                            </li>
+                        </ul>
+                    </li>
+                @endcanany
+
                 @canany(['Slider-view', 'Slider-edit','Slider-delete','Slider-create'])
                     <li class="{{ request()->routeIs('admin.newsletter.*') ? 'mm-active' : '' }}">
                         <a href="{{route('admin.sliders.index')}}">
