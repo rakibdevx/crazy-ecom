@@ -73,3 +73,18 @@ return new class extends Migration
         Schema::dropIfExists('orders');
     }
 };
+
+
+"":"",
+"val_id":"251130104510QycV6py1gPsMOb2",
+"amount":"141.52",
+"card_type":"BKASH-BKash",
+"store_amount":"137.98",
+"bank_tran_id":"2511301045101jdu0zW7pnySBQP",
+"tran_date":"2025-11-30 10:45:02",
+"currency":"BDT",
+"card_issuer":"BKash Mobile Banking",
+"card_brand":"MOBILEBANKING",
+"verify_sign":"9d17c9cba91f265633901e559e209490",
+"currency_amount":"141.52",
+"currency_rate":"1.0000",

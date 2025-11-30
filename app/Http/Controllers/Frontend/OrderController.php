@@ -67,7 +67,7 @@ class OrderController extends Controller
             $subtotal = 0;
             $discount = 0;
             $shipping_amount = 0;
-            $cupon_id = 0;
+            $cupon_id = null;
 
 
             foreach ($cart as $item) {
@@ -151,10 +151,12 @@ class OrderController extends Controller
                         $product
                     );
                     if (!$response['success']) continue;
+
+
+                    $discount += $response['discount'];
+                    $cupon_id = $response['coupon_id'];
                 }
 
-                $discount += $response['discount'];
-                $cupon_id = $response['coupon_id'];
                 $shipping_amount+= $shipping_cost;
 
 
@@ -166,7 +168,7 @@ class OrderController extends Controller
                     'price' => $price,
                     'sub_total' => $price * $item['quantity'],
                     'discount' => $response['discount'] ?? 0,
-                    'final_price' => $response['final_price'],
+                    'final_price' => $response['final_price']?? $price * $item['quantity'],
                     'color_id' => $item['color_id'] ?? null,
                     'size_id' => $item['size_id'] ?? null,
                     'warranty' => $product->warranty ?? null,
@@ -182,7 +184,7 @@ class OrderController extends Controller
                     'payment_gateway' => $request->payment_gateway ?? null,
                     'transaction_id' => null,
                     'type' => 'payment',
-                    'amount' =>  $response['final_price'] + $shipping_cost,
+                    'amount' =>   $price * $item['quantity'] + $shipping_cost,
                     'status' => 'pending',
                 ]);
 
@@ -210,6 +212,12 @@ class OrderController extends Controller
 
 
             DB::commit();
+
+            if($order->payment_method == 'ssl')
+            {
+                return redirect()->route('ssl.pay', ['order' => $order->order_number]);
+            }
+
 
             return response()->json([
                 'success' => true,

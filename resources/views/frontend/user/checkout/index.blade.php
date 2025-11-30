@@ -225,8 +225,8 @@ Checkout
                                     </div>
                                 </div>
                                 <div class="pay-top sin-payment sin-payment-3">
-                                    <input id="payment-method-4" class="input-radio" type="radio" value="cheque" name="payment_method">
-                                    <label for="payment-method-4">PayPal <img alt="" src="assets/images/icon-img/payment.png"><a href="#">What is PayPal?</a></label>
+                                    <input id="payment-method-4" class="input-radio" type="radio" value="ssl" name="payment_method">
+                                    <label for="payment-method-4">SSL <img alt="" src="assets/images/icon-img/payment.png"><a href="#">What is PayPal?</a></label>
                                     <div class="payment-box payment_method_bacs">
                                         <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
                                     </div>
