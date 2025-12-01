@@ -163,7 +163,7 @@ class OrderController extends Controller
 
 
 
-                $det = OrderDetail::create([
+                $det = OrderDetail::create([ 
                     'order_id' => $order->id,
                     'product_id' => $product->id,
                     'vendor_id' => $product->vendor_id ?? null,
