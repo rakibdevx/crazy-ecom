@@ -69,7 +69,6 @@ class OrderController extends Controller
             $shipping_amount = 0;
             $cupon_id = null;
 
-
             foreach ($cart as $item) {
 
                 $price = 0;
@@ -114,6 +113,7 @@ class OrderController extends Controller
                     $price = $product->sale_price;
                 }
 
+
                 if ($product->shipping_type == "product") {
                     $shipping_cost += $product->shipping_cost;
                 }
@@ -142,25 +142,28 @@ class OrderController extends Controller
 
 
                 $code = session('coupon_code');
-                if($code)
-                {
-                    $response = $couponService->applyCoupon(
-                        $code,
-                        $user,
-                        $item,
-                        $product
-                    );
-                    if (!$response['success']) continue;
+
+                // if($code)
+                //     {
+                //         $response = $couponService->applyCoupon(
+                //             $code,
+                //             $user,
+                //             $item,
+                //             $product
+                //         );
+                //         if (!$response['success']) continue;
 
 
-                    $discount += $response['discount'];
-                    $cupon_id = $response['coupon_id'];
-                }
+                //         $discount += $response['discount'] ?? 0;
+                //         $cupon_id = $response['coupon_id'];
+                //     }
+                //     return $code;
 
                 $shipping_amount+= $shipping_cost;
 
 
-                OrderDetail::create([
+
+                $det = OrderDetail::create([
                     'order_id' => $order->id,
                     'product_id' => $product->id,
                     'vendor_id' => $product->vendor_id ?? null,

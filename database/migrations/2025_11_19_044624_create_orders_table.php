@@ -36,11 +36,18 @@ return new class extends Migration
 
             // 23-28. Payment
             $table->string('payment_method')->nullable();
+            $table->string('card_type')->nullable();
+            $table->string('card_issuer')->nullable();
+            $table->string('card_brand')->nullable();
             $table->enum('payment_status', ['pending','paid','failed','refunded'])->default('pending');
             $table->decimal('paid_amount', 10, 2)->default(0);
+            $table->decimal('store_amount', 10, 2)->default(0);
+            $table->decimal('getway_charge', 10, 2)->default(0);
             $table->decimal('refund_amount', 10, 2)->default(0);
+            $table->decimal('currency_rate', 10, 4)->default(0);
             $table->timestamp('paid_at')->nullable();
             $table->string('transaction_id')->nullable();
+            $table->string('bank_tran_id')->nullable();
 
             // 29-35. Coupon / Discounts
             $table->foreignId('coupon_id')->nullable()->constrained('coupons')->nullOnDelete();
@@ -73,18 +80,3 @@ return new class extends Migration
         Schema::dropIfExists('orders');
     }
 };
-
-
-"":"",
-"val_id":"251130104510QycV6py1gPsMOb2",
-"amount":"141.52",
-"card_type":"BKASH-BKash",
-"store_amount":"137.98",
-"bank_tran_id":"2511301045101jdu0zW7pnySBQP",
-"tran_date":"2025-11-30 10:45:02",
-"currency":"BDT",
-"card_issuer":"BKash Mobile Banking",
-"card_brand":"MOBILEBANKING",
-"verify_sign":"9d17c9cba91f265633901e559e209490",
-"currency_amount":"141.52",
-"currency_rate":"1.0000",
